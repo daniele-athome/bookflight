@@ -2,12 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Calendar test</title>
 
-<link type="text/css" rel="stylesheet" href="https://unpkg.com/@fullcalendar/core@4.4.0/main.min.css"/>
-<link type="text/css" rel="stylesheet" href="https://unpkg.com/@fullcalendar/daygrid@4.4.0/main.min.css"/>
-<link type="text/css" rel="stylesheet" href="https://unpkg.com/@fullcalendar/list@4.4.0/main.min.css"/>
-<link type="text/css" rel="stylesheet" href="https://unpkg.com/@fullcalendar/timegrid@4.4.0/main.min.css"/>
+<link type="text/css" rel="stylesheet" href="https://unpkg.com/@fullcalendar/core@4.4.0/main.min.css">
+<link type="text/css" rel="stylesheet" href="https://unpkg.com/@fullcalendar/daygrid@4.4.0/main.min.css">
+<link type="text/css" rel="stylesheet" href="https://unpkg.com/@fullcalendar/list@4.4.0/main.min.css">
+<link type="text/css" rel="stylesheet" href="https://unpkg.com/@fullcalendar/timegrid@4.4.0/main.min.css">
 
 <style type="text/css">
 html, body {
@@ -21,6 +22,13 @@ html, body {
   max-width: 900px;
   margin: 40px auto;
 }
+
+@media (max-width: 768px){
+    .fc-toolbar .fc-left, .fc-toolbar .fc-center, .fc-toolbar .fc-right {
+        display: inline-block;
+        float: none !important;
+    }
+}
 </style>
 
 </head>
@@ -30,6 +38,7 @@ html, body {
 <div id="calendar"></div>
 
 <script src="https://unpkg.com/@fullcalendar/core@4.4.0/main.min.js"></script>
+<script src="https://unpkg.com/@fullcalendar/core@4.4.0/locales/it.js"></script>
 <script src="https://unpkg.com/@fullcalendar/daygrid@4.4.0/main.min.js"></script>
 <script src="https://unpkg.com/@fullcalendar/list@4.4.0/main.min.js"></script>
 <script src="https://unpkg.com/@fullcalendar/google-calendar@4.4.0/main.min.js"></script>
@@ -40,14 +49,21 @@ document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
-    plugins: [ 'timeGrid', 'list', 'googleCalendar' ],
+    plugins: [ 'dayGrid', 'timeGrid', 'list', 'googleCalendar' ],
     header: {
       left: 'prev,next today',
       center: 'title',
-      right: 'timeGridMonth,timeGridWeek,listYear'
+      right: 'dayGridMonth,timeGridWeek,listDay'
+    },
+    buttonText: {
+    	listMonth: 'Agenda mese',
+    	listWeek: 'Agenda settimana',
+    	listDay: 'Agenda giorno'
     },
 
-    displayEventTime: false, // don't show the time column in list view
+    defaultView: 'listYear',
+    locale: 'it',
+    displayEventTime: true, // don't show the time column in list view
 
     googleCalendarApiKey: 'AIzaSyDijFzSBlkyl_zVH2gQuaokJpm7y-mIKkg',
 
