@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
     eventClick: function(arg) {
 
       // opens events in a popup window
+      console.log(arg.event);
       window.open(arg.event.url, '_blank', 'width=700,height=600');
 
       // prevents current tab from navigating
