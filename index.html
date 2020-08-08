@@ -110,7 +110,7 @@ html, body {
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                <button type="button" class="btn btn-primary">Prenota</button>
+                <button type="button" class="btn btn-primary" id="book-button-save">Prenota</button>
             </div>
         </div>
     </div>
@@ -169,8 +169,8 @@ html, body {
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                <button type="button" class="btn btn-danger">Elimina</button>
-                <button type="button" class="btn btn-primary">Modifica</button>
+                <button type="button" class="btn btn-danger" id="edit-button-delete">Elimina</button>
+                <button type="button" class="btn btn-primary" id="edit-button-save">Modifica</button>
             </div>
         </div>
     </div>
@@ -188,9 +188,20 @@ html, body {
 
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
+    $('#book-button-save').click(function () {
+        // TODO
+        alert('Non implementato.');
+    });
+    $('#edit-button-save').click(function () {
+        // TODO
+        alert('Non implementato.');
+    });
+    $('#edit-button-delete').click(function () {
+        // TODO
+        alert('Non implementato.');
+    });
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         plugins: ['bootstrap', 'dayGrid', 'timeGrid', 'list', 'googleCalendar'],
         themeSystem: 'bootstrap',
         customButtons: {
@@ -227,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
         events: '9kf3jm0tpcfvpc6i8qe7fhm1p0@group.calendar.google.com',
 
         eventClick: function (arg) {
-            let timeOptions = {
+            var timeOptions = {
                 hour: "2-digit", minute: "2-digit", hour12: false, timeZone: arg.event.start.timeZone
             };
 
@@ -245,7 +256,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             arg.jsEvent.preventDefault();
         }
-
     });
 
     calendar.render();
