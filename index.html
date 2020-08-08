@@ -57,6 +57,67 @@ html, body {
 
 <div id="calendar"></div>
 
+<div class="modal fade" id="bookFlight" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Prenota</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="pilot-name" class="col-form-label">Socio:</label>
+                        <select class="custom-select" id="pilot-name" required>
+                            <option>Claudia</option>
+                            <option>Daniele</option>
+                            <option>Davide</option>
+                            <option>Manuel</option>
+                            <option>Paolo</option>
+                            <option>Simone</option>
+                            <option>Victoriano</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="flight-date-start" class="col-form-label">Inizio:</label>
+                        <div class="form-row">
+                            <div class="col">
+                                <input type="date" class="form-control" id="flight-date-start" required/>
+                            </div>
+                            <div class="col">
+                                <input type="time" class="form-control" id="flight-time-start" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="flight-date-end" class="col-form-label">Fine:</label>
+                        <div class="form-row">
+                            <div class="col">
+                                <input type="date" class="form-control" id="flight-date-end" required/>
+                            </div>
+                            <div class="col">
+                                <input type="time" class="form-control" id="flight-time-end" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Note:</label>
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                <button type="button" class="btn btn-primary">Prenota</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="jquery/jquery-3.5.1.min.js"></script>
+<script src="bootstrap/bootstrap.min.js"></script>
 <script src="fullcalendar/core/main.min.js"></script>
 <script src="fullcalendar/bootstrap/main.min.js"></script>
 <script src="fullcalendar/core/locales/it.js"></script>
@@ -76,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
         bookflight: {
         text: 'Prenota',
         click: function() {
-          alert('Non implementato.');
+          $('#bookFlight').modal('show');
         }
       }
     },
