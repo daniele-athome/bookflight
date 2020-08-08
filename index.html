@@ -69,8 +69,8 @@ html, body {
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="pilot-name" class="col-form-label">Socio:</label>
-                        <select class="custom-select" id="pilot-name" required>
+                        <label for="book-pilot-name" class="col-form-label">Socio:</label>
+                        <select class="custom-select" id="book-pilot-name" required>
                             <option>Claudia</option>
                             <option>Daniele</option>
                             <option>Davide</option>
@@ -81,30 +81,30 @@ html, body {
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="flight-date-start" class="col-form-label">Inizio:</label>
+                        <label for="book-flight-date-start" class="col-form-label">Inizio:</label>
                         <div class="form-row">
                             <div class="col">
-                                <input type="date" class="form-control" id="flight-date-start" required/>
+                                <input type="date" class="form-control" id="book-flight-date-start" required/>
                             </div>
                             <div class="col">
-                                <input type="time" class="form-control" id="flight-time-start" required/>
+                                <input type="time" class="form-control" id="book-flight-time-start" required/>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="flight-date-end" class="col-form-label">Fine:</label>
+                        <label for="book-flight-date-end" class="col-form-label">Fine:</label>
                         <div class="form-row">
                             <div class="col">
-                                <input type="date" class="form-control" id="flight-date-end" required/>
+                                <input type="date" class="form-control" id="book-flight-date-end" required/>
                             </div>
                             <div class="col">
-                                <input type="time" class="form-control" id="flight-time-end" required/>
+                                <input type="time" class="form-control" id="book-flight-time-end" required/>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="message-text" class="col-form-label">Note:</label>
-                        <textarea class="form-control" id="message-text"></textarea>
+                        <label for="book-notes" class="col-form-label">Note:</label>
+                        <textarea class="form-control" id="book-notes"></textarea>
                     </div>
                 </form>
             </div>
@@ -137,7 +137,11 @@ document.addEventListener('DOMContentLoaded', function() {
         bookflight: {
         text: 'Prenota',
         click: function() {
-          $('#bookFlight').modal('show');
+            var tomorrow = new Date();
+            tomorrow.setDate(new Date().getDate() + 1);
+            document.getElementById('book-flight-date-start').valueAsDate = tomorrow;
+            document.getElementById('book-flight-date-end').valueAsDate = tomorrow;
+            $('#bookFlight').modal('show');
         }
       }
     },
