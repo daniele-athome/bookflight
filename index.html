@@ -116,6 +116,66 @@ html, body {
     </div>
 </div>
 
+<div class="modal fade" id="editFlight" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifica</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="edit-pilot-name" class="col-form-label">Socio:</label>
+                        <select class="custom-select" id="edit-pilot-name" required>
+                            <option>Claudia</option>
+                            <option>Daniele</option>
+                            <option>Davide</option>
+                            <option>Manuel</option>
+                            <option>Paolo</option>
+                            <option>Simone</option>
+                            <option>Victoriano</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-flight-date-start" class="col-form-label">Inizio:</label>
+                        <div class="form-row">
+                            <div class="col">
+                                <input type="date" class="form-control" id="edit-flight-date-start" required/>
+                            </div>
+                            <div class="col">
+                                <input type="time" class="form-control" id="edit-flight-time-start" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-flight-date-end" class="col-form-label">Fine:</label>
+                        <div class="form-row">
+                            <div class="col">
+                                <input type="date" class="form-control" id="edit-flight-date-end" required/>
+                            </div>
+                            <div class="col">
+                                <input type="time" class="form-control" id="edit-flight-time-end" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-notes" class="col-form-label">Note:</label>
+                        <textarea class="form-control" id="edit-notes"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                <button type="button" class="btn btn-danger">Elimina</button>
+                <button type="button" class="btn btn-primary">Modifica</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="jquery/jquery-3.5.1.min.js"></script>
 <script src="bootstrap/bootstrap.min.js"></script>
 <script src="fullcalendar/core/main.min.js"></script>
@@ -128,57 +188,67 @@ html, body {
 
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
+    var calendarEl = document.getElementById('calendar');
 
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    plugins: [ 'bootstrap', 'dayGrid', 'timeGrid', 'list', 'googleCalendar' ],
-    themeSystem: 'bootstrap',
-    customButtons: {
-        bookflight: {
-        text: 'Prenota',
-        click: function() {
-            var tomorrow = new Date();
-            tomorrow.setDate(new Date().getDate() + 1);
-            document.getElementById('book-flight-date-start').valueAsDate = tomorrow;
-            document.getElementById('book-flight-date-end').valueAsDate = tomorrow;
-            $('#bookFlight').modal('show');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        plugins: ['bootstrap', 'dayGrid', 'timeGrid', 'list', 'googleCalendar'],
+        themeSystem: 'bootstrap',
+        customButtons: {
+            bookflight: {
+                text: 'Prenota',
+                click: function () {
+                    var tomorrow = new Date();
+                    tomorrow.setDate(new Date().getDate() + 1);
+                    document.getElementById('book-flight-date-start').valueAsDate = tomorrow;
+                    document.getElementById('book-flight-date-end').valueAsDate = tomorrow;
+                    $('#bookFlight').modal('show');
+                }
+            }
+        },
+        header: {
+            left: 'prev,next today bookflight',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+        buttonText: {
+            listWeek: 'Agenda'
+        },
+
+        defaultView: 'listWeek',
+        locale: 'it',
+        height: 'auto',
+        displayEventTime: true, // don't show the time column in list view
+        allDaySlot: false,
+        minTime: '05:00:00',
+        maxTime: '22:00:00',
+
+        googleCalendarApiKey: 'AIzaSyDijFzSBlkyl_zVH2gQuaokJpm7y-mIKkg',
+
+        events: '9kf3jm0tpcfvpc6i8qe7fhm1p0@group.calendar.google.com',
+
+        eventClick: function (arg) {
+            let timeOptions = {
+                hour: "2-digit", minute: "2-digit", hour12: false, timeZone: arg.event.start.timeZone
+            };
+
+            // opens events in a popup window
+            console.log(arg.event);
+            //window.open(arg.event.url, '_blank', 'width=700,height=600');
+
+            $('#edit-pilot-name').val(arg.event.title);
+            document.getElementById('edit-flight-date-start').valueAsDate = arg.event.start;
+            document.getElementById('edit-flight-time-start').value = arg.event.start.toLocaleTimeString('it-it', timeOptions);
+            document.getElementById('edit-flight-date-end').valueAsDate = arg.event.end;
+            document.getElementById('edit-flight-time-end').value = arg.event.end.toLocaleTimeString('it-it', timeOptions);
+            $('#edit-notes').val(arg.event.extendedProps.description);
+            $('#editFlight').modal('show');
+
+            arg.jsEvent.preventDefault();
         }
-      }
-    },
-    header: {
-      left: 'prev,next today bookflight',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-    },
-    buttonText: {
-    	listWeek: 'Agenda'
-    },
 
-    defaultView: 'listWeek',
-    locale: 'it',
-    height: 'auto',
-    displayEventTime: true, // don't show the time column in list view
-    allDaySlot: false,
-    minTime: '05:00:00',
-    maxTime: '22:00:00',
+    });
 
-    googleCalendarApiKey: 'AIzaSyDijFzSBlkyl_zVH2gQuaokJpm7y-mIKkg',
-
-    events: '9kf3jm0tpcfvpc6i8qe7fhm1p0@group.calendar.google.com',
-
-    eventClick: function(arg) {
-
-      // opens events in a popup window
-      console.log(arg.event);
-      window.open(arg.event.url, '_blank', 'width=700,height=600');
-
-      // prevents current tab from navigating
-      arg.jsEvent.preventDefault();
-    }
-
-  });
-
-  calendar.render();
+    calendar.render();
 });
 </script>
 
