@@ -50,6 +50,12 @@ function update_event($config, $event_id, $title, $start, $end, $description = n
     return $calendar->events->update($config['google_calendar_id'], $event_id, $event);
 }
 
+function delete_event($config, $event_id)
+{
+    $calendar = create_googlecal_client($config);
+    return $calendar->events->delete($config['google_calendar_id'], $event_id);
+}
+
 function make_event($title, $start, $end, $description = null)
 {
     $event = new Google_Service_Calendar_Event();

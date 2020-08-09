@@ -281,8 +281,46 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     $('#edit-button-delete').click(function () {
-        // TODO
-        alert("Non implementato.");
+        var submit = document.getElementById('edit-button-delete');
+        if (submit.disabled) {
+            return;
+        }
+
+        if (!confirm('Cancellare la prenotazione?')) {
+            return;
+        }
+
+        submit.disabled = true;
+        document.getElementById('edit-button-save').disabled = true;
+        $('#delete-loading').removeClass('d-none');
+
+        $.ajax({
+            type: 'POST',
+            url: 'delete.php',
+            data: $('#editFlightForm').serialize(),
+            complete: function() {
+                $('#delete-loading').addClass('d-none');
+                document.getElementById('edit-button-delete').disabled = false;
+                document.getElementById('edit-button-save').disabled = false;
+            },
+            success: function(data) {
+                console.log(data);
+                $('#editFlight').modal('hide');
+                calendar.refetchEvents();
+                alert('Prenotazione cancellata.');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.status);
+                console.log(errorThrown);
+
+                if (jqXHR.status === 400) {
+                    alert("Dati non validi.");
+                }
+                else {
+                    alert("Errore sconosciuto.");
+                }
+            }
+        });
     });
 
     calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
