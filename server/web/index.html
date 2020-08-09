@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
             success: function(data) {
                 console.log(data);
                 $('#bookFlight').modal('hide');
-                calendar.refetchEvents();
+                setTimeout(function() { calendar.refetchEvents(); }, 1000);
                 alert('Prenotazione effettuata.');
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
             success: function(data) {
                 console.log(data);
                 $('#editFlight').modal('hide');
-                calendar.refetchEvents();
+                setTimeout(function() { calendar.refetchEvents(); }, 1000);
                 alert('Prenotazione modificata.');
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
             success: function(data) {
                 console.log(data);
                 $('#editFlight').modal('hide');
-                calendar.refetchEvents();
+                setTimeout(function() { calendar.refetchEvents(); }, 1000);
                 alert('Prenotazione cancellata.');
             },
             error: function(jqXHR, textStatus, errorThrown) {
