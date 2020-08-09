@@ -1,4 +1,4 @@
-Fly Roma Calendar test
-======================
+Book flight app
+===============
 
-A proof of concept for now.
+A simple web application to book and update flights.
