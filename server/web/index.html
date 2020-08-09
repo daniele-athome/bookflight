@@ -220,8 +220,8 @@ document.addEventListener('DOMContentLoaded', function() {
             success: function(data) {
                 console.log(data);
                 $('#bookFlight').modal('hide');
-                alert('Prenotazione effettuata.');
                 calendar.refetchEvents();
+                alert('Prenotazione effettuata.');
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.status);
@@ -261,8 +261,8 @@ document.addEventListener('DOMContentLoaded', function() {
             success: function(data) {
                 console.log(data);
                 $('#editFlight').modal('hide');
-                alert('Prenotazione modificata.');
                 calendar.refetchEvents();
+                alert('Prenotazione modificata.');
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.status);

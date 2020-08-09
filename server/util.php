@@ -39,6 +39,19 @@ function search_events($config, $start, $end, $event_id = null)
 function create_event($config, $title, $start, $end, $description = null)
 {
     $calendar = create_googlecal_client($config);
+    $event = make_event($title, $start, $end, $description);
+    return $calendar->events->insert($config['google_calendar_id'], $event);
+}
+
+function update_event($config, $event_id, $title, $start, $end, $description = null)
+{
+    $calendar = create_googlecal_client($config);
+    $event = make_event($title, $start, $end, $description);
+    return $calendar->events->update($config['google_calendar_id'], $event_id, $event);
+}
+
+function make_event($title, $start, $end, $description = null)
+{
     $event = new Google_Service_Calendar_Event();
     $event->summary = $title;
     $event->description = $description;
@@ -48,12 +61,7 @@ function create_event($config, $title, $start, $end, $description = null)
     $event_end = new Google_Service_Calendar_EventDateTime();
     $event_end->dateTime = $end->format(GOOGLE_CALENDAR_DATETIME_FORMAT);
     $event->setEnd($event_end);
-    return $calendar->events->insert($config['google_calendar_id'], $event);
-}
-
-function update_event($config, $event)
-{
-    // TODO parameters enough?
+    return $event;
 }
 
 function create_googlecal_client($config)

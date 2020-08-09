@@ -30,6 +30,6 @@ if (count(search_events($config, $start_date, $end_date, $event_id)) > 0) {
     return_json(['message' => 'Evento in conflitto']);
 }
 
-$event = update_event($config, $pilot_name, $start_date, $end_date, $notes);
+$event = update_event($config, $event_id, $pilot_name, $start_date, $end_date, $notes);
 http_response_code(200);
 return_json(['event' => $event]);
