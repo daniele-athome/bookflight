@@ -13,15 +13,19 @@ function return_json($data)
  * @param array $config
  * @param DateTime $start
  * @param DateTime $end
+ * @param string $event_id
  * @return array
  */
-function search_events($config, $start, $end)
+function search_events($config, $start, $end, $event_id = null)
 {
     $calendar = create_googlecal_client($config);
-    return $calendar->events->listEvents($config['google_calendar_id'], [
+    $events = $calendar->events->listEvents($config['google_calendar_id'], [
         'timeMin' => $start->format(GOOGLE_CALENDAR_DATETIME_FORMAT),
         'timeMax' => $end->format(GOOGLE_CALENDAR_DATETIME_FORMAT)
     ])->getItems();
+    return array_filter($events, function($value) use ($event_id) {
+        return $value->id != $event_id;
+    });
 }
 
 /**

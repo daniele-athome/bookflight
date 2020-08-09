@@ -129,10 +129,11 @@ html, body {
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="editFlightForm">
+                    <input type="hidden" name="event-id" id="edit-event-id"/>
                     <div class="form-group">
                         <label for="edit-pilot-name" class="col-form-label">Socio:</label>
-                        <select class="custom-select" id="edit-pilot-name" required>
+                        <select class="custom-select" name="pilot-name" id="edit-pilot-name" required>
                             <option>Claudia</option>
                             <option>Daniele</option>
                             <option>Davide</option>
@@ -146,10 +147,10 @@ html, body {
                         <label for="edit-flight-date-start" class="col-form-label">Inizio:</label>
                         <div class="form-row">
                             <div class="col">
-                                <input type="date" class="form-control" id="edit-flight-date-start" required/>
+                                <input type="date" class="form-control" name="flight-date-start" id="edit-flight-date-start" required/>
                             </div>
                             <div class="col">
-                                <input type="time" class="form-control" id="edit-flight-time-start" required/>
+                                <input type="time" class="form-control" name="flight-time-start" id="edit-flight-time-start" required/>
                             </div>
                         </div>
                     </div>
@@ -157,23 +158,29 @@ html, body {
                         <label for="edit-flight-date-end" class="col-form-label">Fine:</label>
                         <div class="form-row">
                             <div class="col">
-                                <input type="date" class="form-control" id="edit-flight-date-end" required/>
+                                <input type="date" class="form-control" name="flight-date-end" id="edit-flight-date-end" required/>
                             </div>
                             <div class="col">
-                                <input type="time" class="form-control" id="edit-flight-time-end" required/>
+                                <input type="time" class="form-control" name="flight-time-end" id="edit-flight-time-end" required/>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="edit-notes" class="col-form-label">Note:</label>
-                        <textarea class="form-control" id="edit-notes"></textarea>
+                        <textarea class="form-control" name="notes" id="edit-notes"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                <button type="button" class="btn btn-danger" id="edit-button-delete">Elimina</button>
-                <button type="button" class="btn btn-primary" id="edit-button-save">Modifica</button>
+                <button type="button" class="btn btn-danger" id="edit-button-delete">
+                    <span class="spinner-border spinner-border-sm d-none" id="delete-loading" role="status" aria-hidden="true"></span>
+                    Elimina
+                </button>
+                <button type="button" class="btn btn-primary" id="edit-button-save">
+                    <span class="spinner-border spinner-border-sm d-none" id="edit-loading" role="status" aria-hidden="true"></span>
+                    Modifica
+                </button>
             </div>
         </div>
     </div>
@@ -233,8 +240,45 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     $('#edit-button-save').click(function () {
-        // TODO
-        alert("Non implementato.");
+        var submit = document.getElementById('edit-button-save');
+        if (submit.disabled) {
+            return;
+        }
+
+        submit.disabled = true;
+        document.getElementById('edit-button-delete').disabled = true;
+        $('#edit-loading').removeClass('d-none');
+
+        $.ajax({
+            type: 'POST',
+            url: 'update.php',
+            data: $('#editFlightForm').serialize(),
+            complete: function() {
+                $('#edit-loading').addClass('d-none');
+                document.getElementById('edit-button-save').disabled = false;
+                document.getElementById('edit-button-delete').disabled = false;
+            },
+            success: function(data) {
+                console.log(data);
+                $('#editFlight').modal('hide');
+                alert('Prenotazione modificata.');
+                calendar.refetchEvents();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.status);
+                console.log(errorThrown);
+
+                if (jqXHR.status === 400) {
+                    alert("Dati non validi.");
+                }
+                else if (jqXHR.status === 409) {
+                    alert("Un'altra prenotazione è già presente per l'orario indicato!");
+                }
+                else {
+                    alert("Errore sconosciuto.");
+                }
+            }
+        });
     });
     $('#edit-button-delete').click(function () {
         // TODO
@@ -286,6 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(arg.event);
             //window.open(arg.event.url, '_blank', 'width=700,height=600');
 
+            $('#edit-event-id').val(arg.event.id);
             $('#edit-pilot-name').val(arg.event.title);
             document.getElementById('edit-flight-date-start').valueAsDate = arg.event.start;
             document.getElementById('edit-flight-time-start').value = arg.event.start.toLocaleTimeString('it-it', timeOptions);
