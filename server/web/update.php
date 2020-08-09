@@ -15,7 +15,7 @@ $notes = $_POST['notes'];
 $start_date = DateTime::createFromFormat('Y-m-d H:i', $_POST['flight-date-start'] . ' ' . $_POST['flight-time-start']);
 $end_date = DateTime::createFromFormat('Y-m-d H:i', $_POST['flight-date-end'] . ' ' . $_POST['flight-time-end']);
 
-if (!$pilot_name or !$start_date or !$end_date) {
+if (!$event_id or !$pilot_name or !$start_date or !$end_date) {
     http_response_code(400);
     return_json(['message' => 'Parametri non validi']);
 }
