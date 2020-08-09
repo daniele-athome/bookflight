@@ -3,7 +3,7 @@
 - [x] visualizzazione eventi
 - [x] creazione eventi (+ lato server)
 - [x] modifica eventi (+ lato server)
-- [ ] cancellazione eventi (+ lato server)
+- [x] cancellazione eventi (+ lato server)
 
 ### Evoluzioni
 
