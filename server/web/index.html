@@ -67,10 +67,10 @@ html, body {
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="bookFlightForm">
                     <div class="form-group">
                         <label for="book-pilot-name" class="col-form-label">Socio:</label>
-                        <select class="custom-select" id="book-pilot-name" required>
+                        <select class="custom-select" name="pilot-name" id="book-pilot-name" required>
                             <option>Claudia</option>
                             <option>Daniele</option>
                             <option>Davide</option>
@@ -84,10 +84,10 @@ html, body {
                         <label for="book-flight-date-start" class="col-form-label">Inizio:</label>
                         <div class="form-row">
                             <div class="col">
-                                <input type="date" class="form-control" id="book-flight-date-start" required/>
+                                <input type="date" class="form-control" name="flight-date-start" id="book-flight-date-start" required/>
                             </div>
                             <div class="col">
-                                <input type="time" class="form-control" id="book-flight-time-start" required/>
+                                <input type="time" class="form-control" name="flight-time-start" id="book-flight-time-start" required/>
                             </div>
                         </div>
                     </div>
@@ -95,22 +95,25 @@ html, body {
                         <label for="book-flight-date-end" class="col-form-label">Fine:</label>
                         <div class="form-row">
                             <div class="col">
-                                <input type="date" class="form-control" id="book-flight-date-end" required/>
+                                <input type="date" class="form-control" name="flight-date-end" id="book-flight-date-end" required/>
                             </div>
                             <div class="col">
-                                <input type="time" class="form-control" id="book-flight-time-end" required/>
+                                <input type="time" class="form-control" name="flight-time-end" id="book-flight-time-end" required/>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="book-notes" class="col-form-label">Note:</label>
-                        <textarea class="form-control" id="book-notes"></textarea>
+                        <textarea class="form-control" name="notes" id="book-notes"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                <button type="button" class="btn btn-primary" id="book-button-save">Prenota</button>
+                <button type="button" class="btn btn-primary" id="book-button-save">
+                    <span class="spinner-border spinner-border-sm d-none" id="book-loading" role="status" aria-hidden="true"></span>
+                    Prenota
+                </button>
             </div>
         </div>
     </div>
@@ -187,21 +190,58 @@ html, body {
 <script src="fullcalendar/timegrid/main.min.js"></script>
 
 <script type="text/javascript">
+var calendar = null;
+
 document.addEventListener('DOMContentLoaded', function() {
     $('#book-button-save').click(function () {
-        // TODO
-        alert('Non implementato.');
+        var submit = document.getElementById('book-button-save');
+        if (submit.disabled) {
+            return;
+        }
+
+        submit.disabled = true;
+        $('#book-loading').removeClass('d-none');
+
+        $.ajax({
+            type: 'POST',
+            url: 'book.php',
+            data: $('#bookFlightForm').serialize(),
+            complete: function() {
+                $('#book-loading').addClass('d-none');
+                document.getElementById('book-button-save').disabled = false;
+            },
+            success: function(data) {
+                console.log(data);
+                $('#bookFlight').modal('hide');
+                alert('Prenotazione effettuata.');
+                calendar.refetchEvents();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.status);
+                console.log(errorThrown);
+
+                if (jqXHR.status === 400) {
+                    alert("Dati non validi.");
+                }
+                else if (jqXHR.status === 409) {
+                    alert("Un'altra prenotazione è già presente per l'orario indicato!");
+                }
+                else {
+                    alert("Errore sconosciuto.");
+                }
+            }
+        });
     });
     $('#edit-button-save').click(function () {
         // TODO
-        alert('Non implementato.');
+        alert("Non implementato.");
     });
     $('#edit-button-delete').click(function () {
         // TODO
-        alert('Non implementato.');
+        alert("Non implementato.");
     });
 
-    var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+    calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         plugins: ['bootstrap', 'dayGrid', 'timeGrid', 'list', 'googleCalendar'],
         themeSystem: 'bootstrap',
         customButtons: {
