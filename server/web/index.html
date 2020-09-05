@@ -201,6 +201,12 @@ html, body {
 var calendar = null;
 
 document.addEventListener('DOMContentLoaded', function() {
+    $('#book-flight-date-start').change(function() {
+        var startAsDate = document.getElementById('book-flight-date-start').valueAsDate;
+        if (startAsDate) {
+            document.getElementById('book-flight-date-end').valueAsDate = new Date(startAsDate.getTime());
+        }
+    });
     $('#book-button-save').click(function () {
         var submit = document.getElementById('book-button-save');
         if (submit.disabled) {
