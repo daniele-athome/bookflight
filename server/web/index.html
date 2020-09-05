@@ -246,6 +246,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    $('#edit-flight-date-start').change(function() {
+        var startAsDate = document.getElementById('edit-flight-date-start').valueAsDate;
+        if (startAsDate) {
+            document.getElementById('edit-flight-date-end').valueAsDate = new Date(startAsDate.getTime());
+        }
+    });
     $('#edit-button-save').click(function () {
         var submit = document.getElementById('edit-button-save');
         if (submit.disabled) {
