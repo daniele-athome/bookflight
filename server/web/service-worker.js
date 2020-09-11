@@ -73,8 +73,10 @@ self.addEventListener('fetch', (evt) => {
         return;
     }
 
+    let eventRequest = evt.request.clone();
+    eventRequest.credentials = "same-origin";
     evt.respondWith(
-        fetch(evt.request.clone())
+        fetch(eventRequest)
             .catch(() => {
                 return caches.open(CACHE_NAME)
                     .then((cache) => {
