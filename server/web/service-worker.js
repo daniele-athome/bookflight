@@ -1,11 +1,12 @@
 'use strict';
 
 // Update cache names any time any of the cached files change.
-const CACHE_NAME = 'static-cache-v2';
+const CACHE_NAME = 'static-cache-v3';
 
 // List of files to cache.
 // Minimum needed for offline page.
 const FILES_TO_CACHE = [
+    'manifest.json',
     'offline.html',
     'style.css',
     'favicon.ico',
