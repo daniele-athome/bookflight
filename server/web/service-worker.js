@@ -67,11 +67,17 @@ self.addEventListener('activate', (evt) => {
 
 self.addEventListener('fetch', (evt) => {
     console.log('[ServiceWorker] Fetch', evt.request.url);
+    if (evt.request.mode !== 'navigate') {
+        // Not a page navigation, bail.
+        return;
+    }
+
     const requestUrl = new URL(evt.request.url);
     if (/\.php$/.test(requestUrl.pathname)) {
         // server-side request
         return;
     }
+
     evt.respondWith(
         fetch(evt.request)
             .catch(() => {
