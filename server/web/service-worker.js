@@ -6,28 +6,28 @@ const CACHE_NAME = 'static-cache-v1';
 // List of files to cache.
 // Minimum needed for offline page.
 const FILES_TO_CACHE = [
-    '/offline.html',
-    '/style.css',
+    'offline.html',
+    'style.css',
 
-    '/bootstrap/bootstrap.min.css',
-    '/bootstrap/bootstrap.min.js',
+    'bootstrap/bootstrap.min.css',
+    'bootstrap/bootstrap.min.js',
 
-    '/fontawesome/css/all.min.css',
-    '/fontawesome/webfonts/fa-solid-900.woff',
-    '/fontawesome/webfonts/fa-solid-900.woff2',
-    '/fontawesome/webfonts/fa-brands-400.ttf',
-    '/fontawesome/webfonts/fa-brands-400.svg',
-    '/fontawesome/webfonts/fa-regular-400.ttf',
-    '/fontawesome/webfonts/fa-regular-400.svg',
-    '/fontawesome/webfonts/fa-regular-400.woff',
-    '/fontawesome/webfonts/fa-solid-900.eot',
-    '/fontawesome/webfonts/fa-regular-400.eot',
-    '/fontawesome/webfonts/fa-solid-900.svg',
-    '/fontawesome/webfonts/fa-brands-400.woff',
-    '/fontawesome/webfonts/fa-brands-400.woff2',
-    '/fontawesome/webfonts/fa-brands-400.eot',
-    '/fontawesome/webfonts/fa-solid-900.ttf',
-    '/fontawesome/webfonts/fa-regular-400.woff2',
+    'fontawesome/css/all.min.css',
+    'fontawesome/webfonts/fa-solid-900.woff',
+    'fontawesome/webfonts/fa-solid-900.woff2',
+    'fontawesome/webfonts/fa-brands-400.ttf',
+    'fontawesome/webfonts/fa-brands-400.svg',
+    'fontawesome/webfonts/fa-regular-400.ttf',
+    'fontawesome/webfonts/fa-regular-400.svg',
+    'fontawesome/webfonts/fa-regular-400.woff',
+    'fontawesome/webfonts/fa-solid-900.eot',
+    'fontawesome/webfonts/fa-regular-400.eot',
+    'fontawesome/webfonts/fa-solid-900.svg',
+    'fontawesome/webfonts/fa-brands-400.woff',
+    'fontawesome/webfonts/fa-brands-400.woff2',
+    'fontawesome/webfonts/fa-brands-400.eot',
+    'fontawesome/webfonts/fa-solid-900.ttf',
+    'fontawesome/webfonts/fa-regular-400.woff2',
 ];
 
 self.addEventListener('install', (evt) => {
