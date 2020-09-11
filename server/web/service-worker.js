@@ -1,13 +1,19 @@
 'use strict';
 
 // Update cache names any time any of the cached files change.
-const CACHE_NAME = 'static-cache-v1';
+const CACHE_NAME = 'static-cache-v2';
 
 // List of files to cache.
 // Minimum needed for offline page.
 const FILES_TO_CACHE = [
     'offline.html',
     'style.css',
+    'favicon.ico',
+    'favicon-512x512.png',
+    'favicon-192x192.png',
+    'favicon-32x32.png',
+    'favicon-96x96.png',
+    'favicon-16x16.png',
 
     'bootstrap/bootstrap.min.css',
     'bootstrap/bootstrap.min.js',
