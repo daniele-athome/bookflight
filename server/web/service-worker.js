@@ -76,7 +76,14 @@ self.addEventListener('fetch', (evt) => {
             .catch(() => {
                 return caches.open(CACHE_NAME)
                     .then((cache) => {
-                        return cache.match('offline.html');
+                        console.log('[ServiceWorker] Hitting cache for ' + evt.request.url);
+                        const requestUrl = new URL(evt.request.url);
+                        if (/\/$/.test(requestUrl.pathname) || /index\.html$/.test(requestUrl.pathname)) {
+                            return cache.match('offline.html');
+                        }
+                        else {
+                            return cache.match(evt.request)
+                        }
                     });
             })
     );
