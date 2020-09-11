@@ -67,8 +67,9 @@ self.addEventListener('activate', (evt) => {
 
 self.addEventListener('fetch', (evt) => {
     console.log('[ServiceWorker] Fetch', evt.request.url);
-    if (evt.request.mode !== 'navigate') {
-        // Not a page navigation, bail.
+    const requestUrl = new URL(evt.request.url);
+    if (/\.php$/.test(requestUrl.pathname)) {
+        // server-side request
         return;
     }
     evt.respondWith(
@@ -82,10 +83,9 @@ self.addEventListener('fetch', (evt) => {
                             return cache.match('offline.html');
                         }
                         else {
-                            return cache.match(evt.request)
+                            return cache.match(evt.request);
                         }
                     });
             })
     );
-
 });
