@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Prenotazioni I-8104</title>
@@ -23,19 +20,3 @@
 
 <link type="text/css" rel="stylesheet" href="fontawesome/css/all.min.css">
 <link type="text/css" rel="stylesheet" href="bootstrap/bootstrap.min.css">
-<link type="text/css" rel="stylesheet" href="style.css">
-
-</head>
-
-<body>
-
-<div class="container">
-    <div class="py-5 text-center">
-        <img class="d-block mx-auto mb-4" src="favicon-512x512.png" alt="" style="width: 10em; height: 10em">
-        <h2>Sei offline!</h2>
-        <p class="lead">Serve la connessione a Internet per usare questa app.</p>
-    </div>
-</div>
-
-</body>
-</html>

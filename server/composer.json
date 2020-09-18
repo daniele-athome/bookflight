@@ -1,6 +1,10 @@
 {
     "require": {
         "google/apiclient": "^2.7",
-        "ext-json": "*"
+        "delight-im/auth": "*",
+        "ext-json": "*",
+        "ext-sqlite3": "*",
+        "ext-pdo_sqlite": "*",
+        "ext-openssl": "*"
     }
 }

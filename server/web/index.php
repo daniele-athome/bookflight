@@ -1,28 +1,24 @@
+<?php
+
+require_once '../vendor/autoload.php';
+
+define('BASE_DIR', realpath( __DIR__ . DIRECTORY_SEPARATOR . '..'));
+
+$config = require('../config.php');
+
+/** @var \Delight\Auth\Auth $auth */
+$auth = require('../auth.php');
+if (!$auth->isLoggedIn()) {
+    http_response_code(302);
+    header('Location: login.php');
+    die();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Prenotazioni I-8104</title>
-
-<meta name="application-name" content="Prenotazioni I-8104"/>
-<meta name="theme-color" content="#0473ff"/>
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-<link rel="manifest" crossorigin="use-credentials" href="manifest.json">
-<link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
-<link rel="icon" type="image/png" sizes="192x192"  href="favicon-192x192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="96x96" href="favicon-96x96.png">
-<link rel="apple-touch-icon" sizes="192x192" href="favicon-192x192.png">
-<link rel="apple-touch-icon" sizes="512x512" href="favicon-512x512.png">
-
-<link type="text/css" rel="stylesheet" href="fontawesome/css/all.min.css">
-<link type="text/css" rel="stylesheet" href="bootstrap/bootstrap.min.css">
+<?php require('../head.php'); ?>
 <link type="text/css" rel="stylesheet" href="fullcalendar/core/main.min.css">
 <link type="text/css" rel="stylesheet" href="fullcalendar/bootstrap/main.min.css">
 <link type="text/css" rel="stylesheet" href="fullcalendar/daygrid/main.min.css">
@@ -176,16 +172,9 @@
 <script src="fullcalendar/google-calendar/main.min.js"></script>
 <script src="fullcalendar/timegrid/main.min.js"></script>
 
-<script type="text/javascript">
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js', {scope: './'})
-            .then((reg) => {
-                console.log('Service worker registered.', reg);
-            });
-    });
-}
+<?php require('../service_worker.php') ?>
 
+<script type="text/javascript">
 var calendar = null;
 
 document.addEventListener('DOMContentLoaded', function() {

@@ -1,13 +1,13 @@
 'use strict';
 
 // Update cache names any time any of the cached files change.
-const CACHE_NAME = 'static-cache-v3';
+const CACHE_NAME = 'static-cache-v4';
 
 // List of files to cache.
 // Minimum needed for offline page.
 const FILES_TO_CACHE = [
     'manifest.json',
-    'offline.html',
+    'offline.php',
     'style.css',
     'favicon.ico',
     'favicon-512x512.png',
@@ -68,8 +68,8 @@ self.addEventListener('activate', (evt) => {
 self.addEventListener('fetch', (evt) => {
     console.log('[ServiceWorker] Fetch', evt.request.url);
     const requestUrl = new URL(evt.request.url);
-    if (/\.php$/.test(requestUrl.pathname)) {
-        // server-side request
+    if (/\.php$/.test(requestUrl.pathname) && !/index\.php$/.test(requestUrl.pathname)) {
+        // server-side request (excluding home page)
         return;
     }
 
@@ -82,8 +82,8 @@ self.addEventListener('fetch', (evt) => {
                     .then((cache) => {
                         console.log('[ServiceWorker] Hitting cache for ' + evt.request.url);
                         const requestUrl = new URL(evt.request.url);
-                        if (/\/$/.test(requestUrl.pathname) || /index\.html$/.test(requestUrl.pathname)) {
-                            return cache.match('offline.html');
+                        if (/\/$/.test(requestUrl.pathname) || /index\.php$/.test(requestUrl.pathname)) {
+                            return cache.match('offline.php');
                         }
                         else {
                             return cache.match(evt.request);

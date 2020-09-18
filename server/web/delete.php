@@ -7,6 +7,9 @@ define('BASE_DIR', realpath( __DIR__ . DIRECTORY_SEPARATOR . '..'));
 
 $config = require('../config.php');
 
+/** @var \Delight\Auth\Auth $auth */
+$auth = require('../auth_guard.php');
+
 header('Content-Type: application/json');
 
 $event_id = $_POST['event-id'];
