@@ -4,6 +4,11 @@ require_once 'vendor/autoload.php';
 
 define('GOOGLE_CALENDAR_DATETIME_FORMAT', 'Y-m-d\TH:i:sP');
 
+function encode($content)
+{
+    return htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
 function return_json($data)
 {
     die(json_encode($data));
