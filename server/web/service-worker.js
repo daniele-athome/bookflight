@@ -74,7 +74,6 @@ self.addEventListener('fetch', (evt) => {
     }
 
     let eventRequest = evt.request.clone();
-    eventRequest.credentials = "same-origin";
     evt.respondWith(
         fetch(eventRequest)
             .catch(() => {
