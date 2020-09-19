@@ -242,6 +242,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 else if (jqXHR.status === 409) {
                     alert("Un'altra prenotazione è già presente per l'orario indicato!");
                 }
+                else if (jqXHR.status === 401) {
+                    // ma si...
+                    location.reload();
+                }
                 else {
                     alert("Errore sconosciuto.");
                 }
@@ -288,6 +292,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 else if (jqXHR.status === 409) {
                     alert("Un'altra prenotazione è già presente per l'orario indicato!");
+                }
+                else if (jqXHR.status === 401) {
+                    // ma si...
+                    location.reload();
                 }
                 else {
                     alert("Errore sconosciuto.");
