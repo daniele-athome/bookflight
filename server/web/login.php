@@ -43,15 +43,16 @@ if ($username && $password) {
 <html lang="it">
 <head>
 <?php require('../head.php'); ?>
-<link type="text/css" rel="stylesheet" href="style.css">
+<link type="text/css" rel="stylesheet" href="login.css">
 </head>
 
-<body class="body-signin">
+<body>
 
 <div class="container text-center">
 
     <form class="form-signin" method="post">
         <img class="mb-4" src="favicon-512x512.png" alt="" style="width: 10em; height: 10em">
+        <h1 class="h3 mb-3 font-weight-normal">Login</h1>
         <?php if ($login_failed): ?>
         <div class="alert alert-danger">
             Utente o password non validi.
