@@ -1,0 +1,5 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target" : { "namespace": "android_app", "package_name": "it.casaricci.bookflight",
+                   "sha256_cert_fingerprints": ["8C:7B:F3:43:CA:74:2B:5C:22:0B:BB:75:9D:E1:10:29:3B:70:8D:6B:57:8D:62:71:35:B4:08:5E:4B:73:CF:EC"] }
+    }]
