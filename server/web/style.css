@@ -3,6 +3,24 @@
     margin: 20px auto;
 }
 
+.form-group {
+    margin-bottom: 0.2rem;
+}
+
+.form-suntimes {
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-bottom: -8px;
+}
+
+.text-sunrise {
+    margin-right: 10px;
+}
+
+.text-sunset {
+    margin-left: 10px;
+}
+
 @media(max-width: 767px) {
     .fc-toolbar.fc-header-toolbar {
         display: flex;

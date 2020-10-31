@@ -66,6 +66,14 @@ if (!$auth->isLoggedIn()) {
                                 <input type="time" class="form-control" name="flight-time-start" id="book-flight-time-start" required/>
                             </div>
                         </div>
+                        <div class="form-text form-suntimes">
+                            <span class="text-sunrise">
+                                <i class="fas fa-fw fa-sun"></i> <span id="book-flight-start-sunrise">--:--:--</span>
+                            </span>
+                            <span class="text-sunset">
+                                <i class="fas fa-fw fa-moon"></i> <span id="book-flight-start-sunset">--:--:--</span>
+                            </span>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="book-flight-date-end" class="col-form-label">Fine (data - ora):</label>
@@ -76,6 +84,14 @@ if (!$auth->isLoggedIn()) {
                             <div class="col">
                                 <input type="time" class="form-control" name="flight-time-end" id="book-flight-time-end" required/>
                             </div>
+                        </div>
+                        <div class="form-text form-suntimes">
+                            <span class="text-sunrise">
+                                <i class="fas fa-fw fa-sun"></i> <span id="book-flight-end-sunrise">--:--:--</span>
+                            </span>
+                            <span class="text-sunset">
+                                <i class="fas fa-fw fa-moon"></i> <span id="book-flight-end-sunset">--:--:--</span>
+                            </span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -129,6 +145,14 @@ if (!$auth->isLoggedIn()) {
                                 <input type="time" class="form-control" name="flight-time-start" id="edit-flight-time-start" required/>
                             </div>
                         </div>
+                        <div class="form-text form-suntimes">
+                            <span class="text-sunrise">
+                                <i class="fas fa-fw fa-sun"></i> <span id="edit-flight-start-sunrise">--:--:--</span>
+                            </span>
+                            <span class="text-sunset">
+                                <i class="fas fa-fw fa-moon"></i> <span id="edit-flight-start-sunset">--:--:--</span>
+                            </span>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="edit-flight-date-end" class="col-form-label">Fine (data - ora):</label>
@@ -139,6 +163,14 @@ if (!$auth->isLoggedIn()) {
                             <div class="col">
                                 <input type="time" class="form-control" name="flight-time-end" id="edit-flight-time-end" required/>
                             </div>
+                        </div>
+                        <div class="form-text form-suntimes">
+                            <span class="text-sunrise">
+                                <i class="fas fa-fw fa-sun"></i> <span id="edit-flight-end-sunrise">--:--:--</span>
+                            </span>
+                            <span class="text-sunset">
+                                <i class="fas fa-fw fa-moon"></i> <span id="edit-flight-end-sunset">--:--:--</span>
+                            </span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -171,11 +203,17 @@ if (!$auth->isLoggedIn()) {
 <script src="fullcalendar/list/main.min.js"></script>
 <script src="fullcalendar/google-calendar/main.min.js"></script>
 <script src="fullcalendar/timegrid/main.min.js"></script>
+<script src="suncalc/suncalc.min.js"></script>
 
 <?php require('../service_worker.php') ?>
 
 <script type="text/javascript">
 var calendar = null;
+
+function getSuntimes(date) {
+    // Fly Roma coordinates and height (190 ft)
+    return SunCalc.getTimes(date, 41.88, 12.71, 58);
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     // back button with dialogs -- thanks to https://stackoverflow.com/a/61431389/1045199
@@ -203,10 +241,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // book flight
     $('#book-flight-date-start').change(function() {
         var startAsDate = document.getElementById('book-flight-date-start').valueAsDate;
         if (startAsDate) {
+            var suntimes = getSuntimes(startAsDate);
+            $('#book-flight-start-sunrise').text(suntimes.sunrise.toLocaleTimeString("it-IT"));
+            $('#book-flight-start-sunset').text(suntimes.sunset.toLocaleTimeString("it-IT"));
             document.getElementById('book-flight-date-end').valueAsDate = new Date(startAsDate.getTime());
+            $('#book-flight-end-sunrise').text(suntimes.sunrise.toLocaleTimeString("it-IT"));
+            $('#book-flight-end-sunset').text(suntimes.sunset.toLocaleTimeString("it-IT"));
+        }
+        else {
+            $('#book-flight-start-sunrise').text("--:--:--");
+            $('#book-flight-start-sunset').text("--:--:--");
+        }
+    });
+    $('#book-flight-date-end').change(function() {
+        var endAsDate = document.getElementById('book-flight-date-end').valueAsDate;
+        if (endAsDate) {
+            var suntimes = getSuntimes(endAsDate);
+            $('#book-flight-end-sunrise').text(suntimes.sunrise.toLocaleTimeString("it-IT"));
+            $('#book-flight-end-sunset').text(suntimes.sunset.toLocaleTimeString("it-IT"));
+        }
+        else {
+            $('#book-flight-end-sunrise').text("--:--:--");
+            $('#book-flight-end-sunset').text("--:--:--");
         }
     });
     $('#book-button-save').click(function () {
@@ -252,10 +312,33 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // edit flight
     $('#edit-flight-date-start').change(function() {
         var startAsDate = document.getElementById('edit-flight-date-start').valueAsDate;
         if (startAsDate) {
+            var suntimes = getSuntimes(startAsDate);
+            $('#edit-flight-start-sunrise').text(suntimes.sunrise.toLocaleTimeString("it-IT"));
+            $('#edit-flight-start-sunset').text(suntimes.sunset.toLocaleTimeString("it-IT"));
             document.getElementById('edit-flight-date-end').valueAsDate = new Date(startAsDate.getTime());
+            $('#edit-flight-end-sunrise').text(suntimes.sunrise.toLocaleTimeString("it-IT"));
+            $('#edit-flight-end-sunset').text(suntimes.sunset.toLocaleTimeString("it-IT"));
+        }
+        else {
+            $('#edit-flight-start-sunrise').text("--:--:--");
+            $('#edit-flight-start-sunset').text("--:--:--");
+        }
+    });
+    $('#edit-flight-date-end').change(function() {
+        var endAsDate = document.getElementById('edit-flight-date-end').valueAsDate;
+        if (endAsDate) {
+            var suntimes = getSuntimes(endAsDate);
+            $('#edit-flight-end-sunrise').text(suntimes.sunrise.toLocaleTimeString("it-IT"));
+            $('#edit-flight-end-sunset').text(suntimes.sunset.toLocaleTimeString("it-IT"));
+        }
+        else {
+            $('#edit-flight-end-sunrise').text("--:--:--");
+            $('#edit-flight-end-sunset').text("--:--:--");
         }
     });
     $('#edit-button-save').click(function () {
@@ -357,6 +440,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     tomorrow.setDate(new Date().getDate() + 1);
                     document.getElementById('book-flight-date-start').valueAsDate = tomorrow;
                     document.getElementById('book-flight-date-end').valueAsDate = tomorrow;
+                    var suntimes = getSuntimes(tomorrow);
+                    $('#book-flight-start-sunrise').text(suntimes.sunrise.toLocaleTimeString("it-IT"));
+                    $('#book-flight-start-sunset').text(suntimes.sunset.toLocaleTimeString("it-IT"));
+                    $('#book-flight-end-sunrise').text(suntimes.sunrise.toLocaleTimeString("it-IT"));
+                    $('#book-flight-end-sunset').text(suntimes.sunset.toLocaleTimeString("it-IT"));
                     $('#bookFlight').modal('show');
                 }
             }
@@ -393,10 +481,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
             $('#edit-event-id').val(arg.event.id);
             $('#edit-pilot-name').val(arg.event.title);
+
             document.getElementById('edit-flight-date-start').valueAsDate = arg.event.start;
             document.getElementById('edit-flight-time-start').value = arg.event.start.toLocaleTimeString('it-it', timeOptions);
+            var suntimesStart = getSuntimes(arg.event.start);
+            $('#edit-flight-start-sunrise').text(suntimesStart.sunrise.toLocaleTimeString("it-IT"));
+            $('#edit-flight-start-sunset').text(suntimesStart.sunset.toLocaleTimeString("it-IT"));
+
             document.getElementById('edit-flight-date-end').valueAsDate = arg.event.end;
             document.getElementById('edit-flight-time-end').value = arg.event.end.toLocaleTimeString('it-it', timeOptions);
+            var suntimesEnd = getSuntimes(arg.event.end);
+            $('#edit-flight-end-sunrise').text(suntimesEnd.sunrise.toLocaleTimeString("it-IT"));
+            $('#edit-flight-end-sunset').text(suntimesEnd.sunset.toLocaleTimeString("it-IT"));
+
             $('#edit-notes').val(arg.event.extendedProps.description);
             $('#editFlight').modal('show');
 
