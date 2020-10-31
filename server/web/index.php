@@ -437,7 +437,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 text: 'Prenota',
                 click: function () {
                     var tomorrow = new Date();
-                    tomorrow.setDate(new Date().getDate() + 1);
+                    tomorrow.setDate(tomorrow.getDate() + 1);
                     document.getElementById('book-flight-date-start').valueAsDate = tomorrow;
                     document.getElementById('book-flight-date-end').valueAsDate = tomorrow;
                     var suntimes = getSuntimes(tomorrow);
