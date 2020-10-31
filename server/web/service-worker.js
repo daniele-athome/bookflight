@@ -1,7 +1,7 @@
 'use strict';
 
 // Update cache names any time any of the cached files change.
-const CACHE_NAME = 'static-cache-v8';
+const CACHE_NAME = 'static-cache-v9';
 
 // List of files to cache.
 // Minimum needed for offline page.

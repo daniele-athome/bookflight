@@ -429,6 +429,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    var defaultDate = new Date();
+    if (defaultDate.getDay() === 0 && defaultDate.getHours() >= 22) {
+        // week is ending, move to next one
+        defaultDate.setDate(defaultDate.getDate() + 1);
+    }
+
     calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         plugins: ['bootstrap', 'dayGrid', 'timeGrid', 'list', 'googleCalendar'],
         themeSystem: 'bootstrap',
@@ -459,6 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
             listWeek: 'Agenda'
         },
 
+        defaultDate: defaultDate,
         defaultView: 'listWeek',
         locale: 'it',
         height: 'auto',
