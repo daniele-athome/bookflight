@@ -24,7 +24,7 @@ if (!$auth->isLoggedIn()) {
 <link type="text/css" rel="stylesheet" href="fullcalendar/daygrid/main.min.css">
 <link type="text/css" rel="stylesheet" href="fullcalendar/list/main.min.css">
 <link type="text/css" rel="stylesheet" href="fullcalendar/timegrid/main.min.css">
-<link type="text/css" rel="stylesheet" href="style.css">
+<link type="text/css" rel="stylesheet" href="style.css?v=8">
 
 </head>
 
@@ -441,6 +441,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('book-flight-date-start').valueAsDate = tomorrow;
                     document.getElementById('book-flight-date-end').valueAsDate = tomorrow;
                     var suntimes = getSuntimes(tomorrow);
+                    console.log(suntimes);
                     $('#book-flight-start-sunrise').text(suntimes.sunrise.toLocaleTimeString("it-IT"));
                     $('#book-flight-start-sunset').text(suntimes.sunset.toLocaleTimeString("it-IT"));
                     $('#book-flight-end-sunrise').text(suntimes.sunrise.toLocaleTimeString("it-IT"));
