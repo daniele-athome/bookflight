@@ -478,6 +478,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         events: '9kf3jm0tpcfvpc6i8qe7fhm1p0@group.calendar.google.com',
 
+        eventRender: function(arg) {
+            if (arg.event.extendedProps.description) {
+                var descEl = $('<small class="text-muted text-description"></small>').text(arg.event.extendedProps.description);
+                $(arg.el).find('.fc-list-item-title').append('&nbsp;').append(descEl);
+            }
+        },
+
         eventClick: function (arg) {
             var timeOptions = {
                 hour: "2-digit", minute: "2-digit", hour12: false, timeZone: arg.event.start.timeZone

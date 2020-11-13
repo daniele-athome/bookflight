@@ -21,6 +21,10 @@
     margin-left: 10px;
 }
 
+.text-description {
+    word-break: break-word;
+}
+
 @media(max-width: 767px) {
     .fc-toolbar.fc-header-toolbar {
         display: flex;
