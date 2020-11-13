@@ -67,10 +67,10 @@ if (!$auth->isLoggedIn()) {
                             </div>
                         </div>
                         <div class="form-text form-suntimes">
-                            <span class="text-sunrise">
+                            <span class="text-sunrise" title="Alba">
                                 <i class="fas fa-fw fa-sun"></i> <span id="book-flight-start-sunrise">--:--:--</span>
                             </span>
-                            <span class="text-sunset">
+                            <span class="text-sunset" title="Tramonto">
                                 <i class="fas fa-fw fa-moon"></i> <span id="book-flight-start-sunset">--:--:--</span>
                             </span>
                         </div>
@@ -86,10 +86,10 @@ if (!$auth->isLoggedIn()) {
                             </div>
                         </div>
                         <div class="form-text form-suntimes">
-                            <span class="text-sunrise">
+                            <span class="text-sunrise" title="Alba">
                                 <i class="fas fa-fw fa-sun"></i> <span id="book-flight-end-sunrise">--:--:--</span>
                             </span>
-                            <span class="text-sunset">
+                            <span class="text-sunset" title="Tramonto">
                                 <i class="fas fa-fw fa-moon"></i> <span id="book-flight-end-sunset">--:--:--</span>
                             </span>
                         </div>
@@ -146,10 +146,10 @@ if (!$auth->isLoggedIn()) {
                             </div>
                         </div>
                         <div class="form-text form-suntimes">
-                            <span class="text-sunrise">
+                            <span class="text-sunrise" title="Alba">
                                 <i class="fas fa-fw fa-sun"></i> <span id="edit-flight-start-sunrise">--:--:--</span>
                             </span>
-                            <span class="text-sunset">
+                            <span class="text-sunset" title="Tramonto">
                                 <i class="fas fa-fw fa-moon"></i> <span id="edit-flight-start-sunset">--:--:--</span>
                             </span>
                         </div>
@@ -165,10 +165,10 @@ if (!$auth->isLoggedIn()) {
                             </div>
                         </div>
                         <div class="form-text form-suntimes">
-                            <span class="text-sunrise">
+                            <span class="text-sunrise" title="Alba">
                                 <i class="fas fa-fw fa-sun"></i> <span id="edit-flight-end-sunrise">--:--:--</span>
                             </span>
-                            <span class="text-sunset">
+                            <span class="text-sunset" title="Tramonto">
                                 <i class="fas fa-fw fa-moon"></i> <span id="edit-flight-end-sunset">--:--:--</span>
                             </span>
                         </div>
