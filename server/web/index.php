@@ -481,8 +481,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         eventRender: function(arg) {
             if (arg.event.extendedProps.description) {
-                var descEl = $('<small class="text-muted text-description"></small>').text(arg.event.extendedProps.description);
-                $(arg.el).find('.fc-list-item-title').append('&nbsp;').append(descEl);
+                if (arg.view.type == 'listWeek') {
+                    $(arg.el).find('.fc-list-item-title').append('&nbsp;')
+                        .append($('<small class="text-muted text-description"></small>').text(arg.event.extendedProps.description));
+                }
+                else {
+                    $(arg.el).find('.fc-title')
+                        .after($('<div class="fc-description"></div>').text(arg.event.extendedProps.description));
+                }
             }
         },
 
