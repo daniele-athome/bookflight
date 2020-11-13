@@ -464,6 +464,7 @@ document.addEventListener('DOMContentLoaded', function() {
         buttonText: {
             listWeek: 'Agenda'
         },
+        noEventsMessage: 'Caricamento...',
 
         defaultDate: defaultDate,
         defaultView: 'listWeek',
@@ -516,6 +517,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    calendar.setOption('loading', function(isLoading) {
+        calendar.setOption('noEventsMessage', isLoading ? 'Caricamento...' : 'Non ci sono eventi da visualizzare');
+    });
     calendar.render();
 });
 </script>
