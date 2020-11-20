@@ -1,0 +1,17 @@
+/bin
+/gen
+/.settings
+.DS_Store
+libs/*.properties
+proguard/
+.gradle
+*.iml
+/build
+/local.properties
+/node_modules
+.idea
+.floo
+.flooignore
+*.aab
+*.apk
+/package-lock.json

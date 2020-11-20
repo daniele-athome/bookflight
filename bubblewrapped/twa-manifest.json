@@ -1,0 +1,31 @@
+{
+  "packageId": "it.casaricci.bookflight",
+  "host": "i-8104.casaricci.it",
+  "name": "Prenotazioni I-8104",
+  "launcherName": "Prenotazioni",
+  "display": "standalone",
+  "themeColor": "#0473FF",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#FFFFFF",
+  "enableNotifications": false,
+  "startUrl": "/",
+  "iconUrl": "https://i-8104.casaricci.it/favicon-512x512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "/home/daniele/repository/android/android.keystore",
+    "alias": "casaricci"
+  },
+  "appVersionName": 2,
+  "appVersionCode": 2,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://i-8104.casaricci.it/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {},
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "appVersion": 2
+}
