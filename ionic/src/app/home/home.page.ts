@@ -46,26 +46,6 @@ export class HomePage implements OnInit, AfterViewInit {
         googleCalendarApiKey: environment.googleCalendarApiKey,
         events: environment.events,
     };
-    /*
-        customButtons: {
-            bookflight: {
-                text: 'Prenota',
-                click: function () {
-                    var tomorrow = new Date();
-                    tomorrow.setDate(tomorrow.getDate() + 1);
-                    document.getElementById('book-flight-date-start').valueAsDate = tomorrow;
-                    document.getElementById('book-flight-date-end').valueAsDate = tomorrow;
-                    var suntimes = getSuntimes(tomorrow);
-                    console.log(suntimes);
-                    $('#book-flight-start-sunrise').text(suntimes.sunrise.toLocaleTimeString("it-IT"));
-                    $('#book-flight-start-sunset').text(suntimes.sunset.toLocaleTimeString("it-IT"));
-                    $('#book-flight-end-sunrise').text(suntimes.sunrise.toLocaleTimeString("it-IT"));
-                    $('#book-flight-end-sunset').text(suntimes.sunset.toLocaleTimeString("it-IT"));
-                    $('#bookFlight').modal('show');
-                }
-            }
-        },
-     */
 
     @ViewChild('calendar')
     calendarComponent: FullCalendarComponent;
