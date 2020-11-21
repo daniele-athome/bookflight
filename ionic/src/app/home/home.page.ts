@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 
-import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
+import { CalendarOptions, FullCalendarComponent, EventMountArg } from '@fullcalendar/angular';
 import itLocale from '@fullcalendar/core/locales/it';
 
 import { environment } from '../../environments/environment';
+declare var $: any;
 
 @Component({
     selector: 'app-home',
@@ -39,6 +40,8 @@ export class HomePage implements OnInit, AfterViewInit {
                 click: () => this.book()
             }
         },
+
+        eventDidMount: arg => this.renderEvent(arg),
 
         googleCalendarApiKey: environment.googleCalendarApiKey,
         events: environment.events,
@@ -90,6 +93,19 @@ export class HomePage implements OnInit, AfterViewInit {
     private book() {
         // TODO
         alert('Ciao!');
+    }
+
+    private renderEvent(arg: EventMountArg) {
+        if (arg.event.extendedProps.description) {
+            if (arg.view.type == 'listWeek') {
+                $(arg.el).find('.fc-list-event-title').append('&nbsp;')
+                    .append($('<small class="text-muted fc-list-event-description"></small>').text(arg.event.extendedProps.description));
+            }
+            else {
+                $(arg.el).find('.fc-event-title')
+                    .after($('<div class="fc-event-description"></div>').text(arg.event.extendedProps.description));
+            }
+        }
     }
 
 }

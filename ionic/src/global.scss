@@ -24,3 +24,37 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.fc {
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.fc-list-event-description, .fc-event-description {
+    word-break: break-word;
+}
+
+@media(max-width: 767px) {
+    .fc-toolbar.fc-header-toolbar {
+        display: flex;
+        flex-direction: column;
+    }
+    .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(1) {
+        order: 3;
+        margin-top: 4px;
+    }
+    .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(2) {
+        order: 1;
+    }
+    .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(3) {
+        order: 2;
+        margin-top: 4px;
+    }
+    .fc-event-description {
+        display: none;
+    }
+}
