@@ -1,14 +1,16 @@
-import { environment } from '../../environments/environment';
-import { Component } from '@angular/core';
-import { CalendarOptions } from '@fullcalendar/angular';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+
+import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import itLocale from '@fullcalendar/core/locales/it';
+
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-home',
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit, AfterViewInit {
 
     calendarOptions: CalendarOptions = {
         initialView: 'listWeek',
@@ -21,6 +23,7 @@ export class HomePage {
         slotMinTime: '05:00:00',
         slotMaxTime: '22:00:00',
         noEventsText: 'Caricamento...',
+        loading: isLoading => this.setLoading(isLoading),
 
         headerToolbar: {
             left: 'prev,next today bookflight',
@@ -33,6 +36,7 @@ export class HomePage {
         customButtons: {
             bookflight: {
                 text: 'Prenota',
+                click: () => this.book()
             }
         },
 
@@ -60,6 +64,9 @@ export class HomePage {
         },
      */
 
+    @ViewChild('calendar')
+    calendarComponent: FullCalendarComponent;
+
     constructor() {
         const defaultDate = new Date();
         if (defaultDate.getDay() === 0 && defaultDate.getHours() >= 22) {
@@ -67,7 +74,17 @@ export class HomePage {
             defaultDate.setDate(defaultDate.getDate() + 1);
         }
         this.calendarOptions.initialDate = defaultDate;
-        this.calendarOptions.customButtons.bookflight.click = () => this.book()
+    }
+
+    ngOnInit() {
+    }
+
+    ngAfterViewInit() {
+    }
+
+    private setLoading(isLoading: boolean) {
+        this.calendarOptions.noEventsText = isLoading ?
+            'Caricamento...' : 'Non ci sono eventi da visualizzare';
     }
 
     private book() {
