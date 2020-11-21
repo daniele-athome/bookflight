@@ -1,0 +1,7 @@
+{
+  "name": "bookflight",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
