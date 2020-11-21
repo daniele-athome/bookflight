@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "bookflight",
+  "appId": "it.casaricci.bookflight",
+  "appName": "Prenotazioni",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
