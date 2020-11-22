@@ -57,7 +57,11 @@ export class HomePage implements OnInit, AfterViewInit {
     }
 
     isToday() {
-        // TODO
+        const calendar = this.calendarComponent?.getApi();
+        if (calendar) {
+            const today = new Date();
+            return today >= calendar.view.currentStart && today < calendar.view.currentEnd;
+        }
         return false;
     }
 
