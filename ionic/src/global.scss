@@ -31,11 +31,16 @@
 
 .fc {
     max-width: 900px;
-    margin: 20px auto;
+    margin: 8px auto;
 }
 
 .fc-list-event-description, .fc-event-description {
     word-break: break-word;
+}
+
+.fc-custom-title h2 {
+    margin-top: 4px;
+    margin-bottom: 0;
 }
 
 @media(max-width: 767px) {

@@ -1,4 +1,54 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="primary">
+            <ion-button (click)="book()" fill="solid" color="danger">
+                <ion-icon slot="icon-only" ios="airplane" md="airplane"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <!--
+        <ion-title>Prenotazioni</ion-title>
+        -->
+        <ion-title>{{ calendar?.getApi()?.view.title }}</ion-title>
+    </ion-toolbar>
+
+</ion-header>
+
 <ion-content [fullscreen]="true">
+
+    <ion-toolbar>
+        <ion-segment value="listWeek" (ionChange)="setCalendarMode($event)">
+            <ion-segment-button value="dayGridMonth">
+                Mese
+            </ion-segment-button>
+            <ion-segment-button value="timeGridWeek">
+                Settimana
+            </ion-segment-button>
+            <ion-segment-button value="timeGridDay">
+                Giorno
+            </ion-segment-button>
+            <ion-segment-button value="listWeek">
+                Agenda
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+
+    <!--
+    <div class="fc-custom-title">
+        <h2 class="ion-text-center">{{ calendar?.getApi()?.view.title }}</h2>
+    </div>
+    -->
+
+    <div class="ion-text-center">
+        <ion-button [size]="getToolButtonSize()" fill="solid" color="primary">
+            <ion-icon slot="icon-only" ios="chevron-back" md="chevron-back"></ion-icon>
+        </ion-button>
+        <ion-button [size]="getToolButtonSize()" fill="solid" color="primary">
+            <ion-icon slot="icon-only" ios="chevron-forward" md="chevron-forward"></ion-icon>
+        </ion-button>
+        <ion-button [size]="getToolButtonSize()" fill="solid" color="primary">
+            Oggi
+        </ion-button>
+    </div>
 
     <full-calendar #calendar [options]="calendarOptions"></full-calendar>
 

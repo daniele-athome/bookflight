@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { getMode } from '@ionic/core';
 
 import { CalendarOptions, FullCalendarComponent, EventMountArg } from '@fullcalendar/angular';
 import itLocale from '@fullcalendar/core/locales/it';
@@ -24,23 +25,9 @@ export class HomePage implements OnInit, AfterViewInit {
         slotMinTime: '05:00:00',
         slotMaxTime: '22:00:00',
         noEventsText: 'Caricamento...',
+        headerToolbar: false,
+
         loading: isLoading => this.setLoading(isLoading),
-
-        headerToolbar: {
-            left: 'prev,next today bookflight',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-        },
-        buttonText: {
-            listWeek: 'Agenda'
-        },
-        customButtons: {
-            bookflight: {
-                text: 'Prenota',
-                click: () => this.book()
-            }
-        },
-
         eventDidMount: arg => this.renderEvent(arg),
 
         googleCalendarApiKey: environment.googleCalendarApiKey,
@@ -65,12 +52,20 @@ export class HomePage implements OnInit, AfterViewInit {
     ngAfterViewInit() {
     }
 
+    getToolButtonSize() {
+        return getMode() == 'ios' ? 'small' : 'default';
+    }
+
+    setCalendarMode($event: any) {
+        this.calendarComponent.getApi().changeView($event.detail.value);
+    }
+
     private setLoading(isLoading: boolean) {
         this.calendarOptions.noEventsText = isLoading ?
             'Caricamento...' : 'Non ci sono eventi da visualizzare';
     }
 
-    private book() {
+    book() {
         // TODO
         alert('Ciao!');
     }
