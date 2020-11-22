@@ -8,32 +8,32 @@ export const environment = {
     events: [
         {
             title: 'Paolo',
-            start: '2020-11-18T16:00:00',
-            end: '2020-11-18T18:00:00',
+            start: '2020-11-25T16:00:00',
+            end: '2020-11-25T18:00:00',
             extendedProps: {
                 description: 'Esami',
             }
         },
         {
             title: 'Daniele',
-            start: '2020-11-19T16:00:00',
-            end: '2020-11-19T18:00:00',
+            start: '2020-11-26T16:00:00',
+            end: '2020-11-26T18:00:00',
             extendedProps: {
                 description: 'Istruzionale',
             }
         },
         {
             title: 'Manuel',
-            start: '2020-11-20T18:00:00',
-            end: '2020-11-20T23:00:00',
+            start: '2020-11-27T18:00:00',
+            end: '2020-11-27T23:00:00',
             extendedProps: {
                 description: 'Volo notturno con testo lungo descrizione lunghissima non sapevo cosa scrivere',
             }
         },
         {
             title: 'Claudia',
-            start: '2020-11-15T09:00:00',
-            end: '2020-11-15T10:00:00',
+            start: '2020-11-20T09:00:00',
+            end: '2020-11-20T10:00:00',
         },
     ],
 };
