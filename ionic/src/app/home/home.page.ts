@@ -56,6 +56,11 @@ export class HomePage implements OnInit, AfterViewInit {
         return getMode() == 'ios' ? 'small' : 'default';
     }
 
+    isToday() {
+        // TODO
+        return false;
+    }
+
     setCalendarMode($event: any) {
         this.calendarComponent.getApi().changeView($event.detail.value);
     }
@@ -63,6 +68,18 @@ export class HomePage implements OnInit, AfterViewInit {
     private setLoading(isLoading: boolean) {
         this.calendarOptions.noEventsText = isLoading ?
             'Caricamento...' : 'Non ci sono eventi da visualizzare';
+    }
+
+    next() {
+        this.calendarComponent.getApi().next();
+    }
+
+    previous() {
+        this.calendarComponent.getApi().prev();
+    }
+
+    today() {
+        this.calendarComponent.getApi().today();
     }
 
     book() {
