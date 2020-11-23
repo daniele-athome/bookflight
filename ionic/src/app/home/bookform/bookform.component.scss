@@ -9,9 +9,12 @@ ion-input.ion-no-padding {
     vertical-align: top;
 }
 
-ion-datetime {
-    --padding-start: 0;
-    --padding-end: 0;
-    --padding-top: 4px;
-    --padding-bottom: 4px;
+ion-input.datetime-input {
+    --padding-start: 4px;
+    --padding-end: 4px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+
+    // TODO proper border styles
+    border: 1px solid black;
 }
