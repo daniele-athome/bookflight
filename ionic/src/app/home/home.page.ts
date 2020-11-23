@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { IonRouterOutlet, Platform } from "@ionic/angular";
-import { getMode } from '@ionic/core';
 import { Plugins } from "@capacitor/core";
 const { App } = Plugins;
 
@@ -62,10 +61,6 @@ export class HomePage implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-    }
-
-    getToolButtonSize() {
-        return getMode() == 'ios' ? 'small' : 'default';
     }
 
     isToday() {

@@ -5,9 +5,6 @@
                 <ion-icon slot="icon-only" ios="airplane" md="airplane"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <!--
-        <ion-title>Prenotazioni</ion-title>
-        -->
         <ion-title>{{ calendar?.getApi()?.view.title }}</ion-title>
     </ion-toolbar>
 
@@ -32,23 +29,25 @@
         </ion-segment>
     </ion-toolbar>
 
-    <!--
-    <div class="fc-custom-title">
-        <h2 class="ion-text-center">{{ calendar?.getApi()?.view.title }}</h2>
-    </div>
-    -->
-
-    <div class="ion-text-center">
-        <ion-button (click)="previous()" [size]="getToolButtonSize()" fill="solid" color="primary">
-            <ion-icon slot="icon-only" ios="chevron-back" md="chevron-back"></ion-icon>
-        </ion-button>
-        <ion-button (click)="next()" [size]="getToolButtonSize()" fill="solid" color="primary">
-            <ion-icon slot="icon-only" ios="chevron-forward" md="chevron-forward"></ion-icon>
-        </ion-button>
-        <ion-button (click)="today()" [disabled]="isToday()" [size]="getToolButtonSize()" fill="solid" color="primary">
-            Oggi
-        </ion-button>
-    </div>
+    <ion-grid class="ion-no-padding ion-margin-horizontal">
+        <ion-row>
+            <ion-col>
+                <ion-button (click)="previous()" expand="block" fill="solid" color="primary">
+                    <ion-icon slot="icon-only" ios="chevron-back" md="chevron-back"></ion-icon>
+                </ion-button>
+            </ion-col>
+            <ion-col>
+                <ion-button (click)="today()" [disabled]="isToday()" expand="block" fill="solid" color="primary">
+                    Oggi
+                </ion-button>
+            </ion-col>
+            <ion-col>
+                <ion-button (click)="next()" expand="block" fill="solid" color="primary">
+                    <ion-icon slot="icon-only" ios="chevron-forward" md="chevron-forward"></ion-icon>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 
     <ion-grid class="ion-no-margin ion-no-padding">
         <ion-row>
