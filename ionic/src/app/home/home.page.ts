@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { IonRouterOutlet, Platform } from "@ionic/angular";
+import { IonRouterOutlet, ModalController, Platform } from "@ionic/angular";
 import { Plugins } from "@capacitor/core";
 const { App } = Plugins;
 
@@ -7,6 +7,7 @@ import { CalendarOptions, FullCalendarComponent, EventMountArg } from '@fullcale
 import itLocale from '@fullcalendar/core/locales/it';
 
 import { environment } from '../../environments/environment';
+import { BookformComponent } from "./bookform/bookform.component";
 declare var $: any;
 
 @Component({
@@ -41,7 +42,8 @@ export class HomePage implements OnInit, AfterViewInit {
 
     constructor(
         private platform: Platform,
-        private routerOutlet: IonRouterOutlet
+        private routerOutlet: IonRouterOutlet,
+        private modalController: ModalController
     ) {
         this.platform.backButton.subscribeWithPriority(-1, () => {
             if (!this.routerOutlet.canGoBack()) {
@@ -93,9 +95,12 @@ export class HomePage implements OnInit, AfterViewInit {
         this.calendarComponent.getApi().today();
     }
 
-    book() {
+    async book() {
         // TODO
-        alert('Ciao!');
+        const modal = await this.modalController.create({
+            component: BookformComponent
+        });
+        return await modal.present();
     }
 
     private renderEvent(arg: EventMountArg) {
