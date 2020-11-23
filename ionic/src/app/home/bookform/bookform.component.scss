@@ -8,3 +8,10 @@ ion-input.ion-no-padding {
     font-size: 20px;
     vertical-align: top;
 }
+
+ion-datetime {
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 4px;
+    --padding-bottom: 4px;
+}
