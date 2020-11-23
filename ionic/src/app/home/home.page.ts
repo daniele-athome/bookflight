@@ -1,5 +1,8 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { IonRouterOutlet, Platform } from "@ionic/angular";
 import { getMode } from '@ionic/core';
+import { Plugins } from "@capacitor/core";
+const { App } = Plugins;
 
 import { CalendarOptions, FullCalendarComponent, EventMountArg } from '@fullcalendar/angular';
 import itLocale from '@fullcalendar/core/locales/it';
@@ -37,7 +40,16 @@ export class HomePage implements OnInit, AfterViewInit {
     @ViewChild('calendar')
     calendarComponent: FullCalendarComponent;
 
-    constructor() {
+    constructor(
+        private platform: Platform,
+        private routerOutlet: IonRouterOutlet
+    ) {
+        this.platform.backButton.subscribeWithPriority(-1, () => {
+            if (!this.routerOutlet.canGoBack()) {
+                App.exitApp();
+            }
+        })
+
         const defaultDate = new Date();
         if (defaultDate.getDay() === 0 && defaultDate.getHours() >= 22) {
             // week is ending, move to next one
