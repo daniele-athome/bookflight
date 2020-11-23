@@ -36,6 +36,15 @@ export const environment = {
             end: '2020-11-20T10:00:00',
         },
     ],
+    pilots: [
+        'Claudia',
+        'Daniele',
+        'Davide',
+        'Manuel',
+        'Paolo',
+        'Simone',
+        'Victoriano',
+    ]
 };
 
 /*

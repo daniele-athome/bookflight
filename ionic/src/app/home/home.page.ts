@@ -3,11 +3,12 @@ import { IonRouterOutlet, ModalController, Platform } from "@ionic/angular";
 import { Plugins } from "@capacitor/core";
 const { App } = Plugins;
 
-import { CalendarOptions, FullCalendarComponent, EventMountArg } from '@fullcalendar/angular';
+import { CalendarOptions, FullCalendarComponent, EventMountArg, EventClickArg } from '@fullcalendar/angular';
 import itLocale from '@fullcalendar/core/locales/it';
 
 import { environment } from '../../environments/environment';
 import { BookformComponent } from "./bookform/bookform.component";
+import { EventApi } from "@fullcalendar/common";
 declare var $: any;
 
 @Component({
@@ -32,6 +33,7 @@ export class HomePage implements OnInit, AfterViewInit {
 
         loading: isLoading => this.setLoading(isLoading),
         eventDidMount: arg => this.renderEvent(arg),
+        eventClick: arg => this.onEventClick(arg),
 
         googleCalendarApiKey: environment.googleCalendarApiKey,
         events: environment.events,
@@ -96,9 +98,18 @@ export class HomePage implements OnInit, AfterViewInit {
     }
 
     async book() {
-        // TODO
         const modal = await this.modalController.create({
             component: BookformComponent
+        });
+        return await modal.present();
+    }
+
+    async edit(event: EventApi) {
+        const modal = await this.modalController.create({
+            component: BookformComponent,
+            componentProps: {
+                event: event
+            }
         });
         return await modal.present();
     }
@@ -114,6 +125,11 @@ export class HomePage implements OnInit, AfterViewInit {
                     .after($('<div class="fc-event-description"></div>').text(arg.event.extendedProps.description));
             }
         }
+    }
+
+    async onEventClick(arg: EventClickArg) {
+        arg.jsEvent.preventDefault();
+        return await this.edit(arg.event);
     }
 
 }
