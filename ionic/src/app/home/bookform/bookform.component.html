@@ -22,14 +22,14 @@
     <ion-list lines="full">
 
         <ion-item>
-            <ion-label position="stacked">Pilota</ion-label>
+            <ion-label position="stacked" color="primary">Pilota</ion-label>
             <ion-select [(ngModel)]="eventModel.title" interface="alert" [interfaceOptions]="selectOptions" required="true">
                 <ion-select-option *ngFor="let pilot of getPilotList()">{{ pilot }}</ion-select-option>
             </ion-select>
         </ion-item>
 
         <ion-item>
-            <ion-label position="stacked">Inizio (data - ora)</ion-label>
+            <ion-label position="stacked" color="primary">Inizio (data - ora)</ion-label>
             <ion-grid fixed="true">
                 <ion-row>
                     <ion-col size="6">
@@ -42,11 +42,19 @@
                             class="ion-no-padding" type="time" required="true"></ion-input>
                     </ion-col>
                 </ion-row>
+                <ion-row class="text-sun-times ion-padding-horizontal">
+                    <span class="text-sunrise">
+                        <ion-icon icon="sunny"></ion-icon> <span class="text-sun-time">--:--:--</span>
+                    </span>
+                    <span class="text-sunset" title="Tramonto">
+                        <ion-icon icon="moon"></ion-icon> <span class="text-sun-time">--:--:--</span>
+                    </span>
+                </ion-row>
             </ion-grid>
         </ion-item>
 
         <ion-item>
-            <ion-label position="stacked">Fine (data - ora)</ion-label>
+            <ion-label position="stacked" color="primary">Fine (data - ora)</ion-label>
             <ion-grid fixed="true">
                 <ion-row>
                     <ion-col size="6">
@@ -58,6 +66,14 @@
                         <ion-input [(ngModel)]="eventModel.endTime"
                             class="ion-no-padding" type="time" required="true"></ion-input>
                     </ion-col>
+                </ion-row>
+                <ion-row class="text-sun-times ion-padding-horizontal">
+                    <span class="text-sunrise" title="Alba">
+                        <ion-icon icon="sunny"></ion-icon> <span class="text-sun-time">--:--:--</span>
+                    </span>
+                    <span class="text-sunset" title="Tramonto">
+                        <ion-icon icon="moon"></ion-icon> <span class="text-sun-time">--:--:--</span>
+                    </span>
                 </ion-row>
             </ion-grid>
 
@@ -81,7 +97,7 @@
         </ion-item>
 
         <ion-item>
-            <ion-label position="stacked">Note</ion-label>
+            <ion-label position="stacked" color="primary">Note</ion-label>
             <ion-textarea [(ngModel)]="eventModel.description"></ion-textarea>
         </ion-item>
 

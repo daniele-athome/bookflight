@@ -3,3 +3,8 @@ ion-input.ion-no-padding {
     --padding-top: 0;
     --padding-bottom: 0;
 }
+
+.text-sunrise ion-icon, .text-sunset ion-icon {
+    font-size: 20px;
+    vertical-align: top;
+}
