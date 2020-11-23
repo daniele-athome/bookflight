@@ -31,17 +31,17 @@
 
     <ion-grid class="ion-no-padding ion-margin-horizontal">
         <ion-row>
-            <ion-col>
+            <ion-col size-xl="1" offset-xl="4">
                 <ion-button (click)="previous()" expand="block" fill="solid" color="primary">
                     <ion-icon slot="icon-only" ios="chevron-back" md="chevron-back"></ion-icon>
                 </ion-button>
             </ion-col>
-            <ion-col>
+            <ion-col size-xl="2">
                 <ion-button (click)="today()" [disabled]="isToday()" expand="block" fill="solid" color="primary">
                     Oggi
                 </ion-button>
             </ion-col>
-            <ion-col>
+            <ion-col size-xl="1">
                 <ion-button (click)="next()" expand="block" fill="solid" color="primary">
                     <ion-icon slot="icon-only" ios="chevron-forward" md="chevron-forward"></ion-icon>
                 </ion-button>
