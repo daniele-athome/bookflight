@@ -51,7 +51,7 @@ export class HomePage implements OnInit, AfterViewInit {
             if (!this.routerOutlet.canGoBack()) {
                 App.exitApp();
             }
-        })
+        });
 
         const defaultDate = new Date();
         if (defaultDate.getDay() === 0 && defaultDate.getHours() >= 22) {
