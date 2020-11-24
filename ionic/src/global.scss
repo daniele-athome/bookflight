@@ -48,6 +48,11 @@
 
 .fc {
     margin: 0 auto;
+    line-height: 1.5;
+}
+
+.fc a {
+    color: black;
 }
 
 .fc-list-event-description, .fc-event-description {
@@ -57,6 +62,11 @@
 .fc-custom-title h2 {
     margin-top: 4px;
     margin-bottom: 0;
+}
+
+.ios .fc-toolbar-custom {
+    padding-top: 0;
+    padding-bottom: 4px;
 }
 
 @media(max-width: 767px) {
