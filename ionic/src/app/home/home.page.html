@@ -2,7 +2,9 @@
     <ion-toolbar>
         <ion-buttons slot="primary">
             <ion-button (click)="book()" fill="solid" color="danger">
-                <ion-icon slot="icon-only" ios="airplane" md="airplane"></ion-icon>
+                <ion-icon class="ion-hide-sm-up" slot="icon-only" ios="airplane" md="airplane"></ion-icon>
+                <ion-icon class="ion-hide-sm-down" slot="start" ios="airplane" md="airplane"></ion-icon>
+                <span class="ion-hide-sm-down">Prenota</span>
             </ion-button>
         </ion-buttons>
         <ion-title>{{ calendar?.getApi()?.view.title }}</ion-title>
