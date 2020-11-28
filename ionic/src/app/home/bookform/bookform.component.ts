@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from "@ionic/angular";
 import { environment } from '../../../environments/environment';
 import { EventApi } from '@fullcalendar/angular';
-import { CalEvent } from './calevent.model';
+import { CalendarService } from "../../services/calendar.service";
+import { CalEvent } from '../../models/calevent.model';
 import * as SunCalc from 'suncalc';
 
 @Component({
@@ -24,7 +25,8 @@ export class BookformComponent implements OnInit {
     startDateSuntimes: any;
     endDateSuntimes: any;
 
-    constructor(private modalController: ModalController) {
+    constructor(private modalController: ModalController,
+                private calendarService: CalendarService) {
     }
 
     ngOnInit() {
