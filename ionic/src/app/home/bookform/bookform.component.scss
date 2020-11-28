@@ -15,6 +15,6 @@ ion-input.datetime-input {
     --padding-top: 10px;
     --padding-bottom: 10px;
 
-    // TODO proper border styles
-    border: 1px solid black;
+    border: 2px solid var(--ion-color-primary);
+    border-radius: 5px;
 }
