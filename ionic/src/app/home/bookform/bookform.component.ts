@@ -3,6 +3,7 @@ import { ModalController } from "@ionic/angular";
 import { environment } from '../../../environments/environment';
 import { EventApi } from '@fullcalendar/angular';
 import { CalEvent } from './calevent.model';
+import * as SunCalc from 'suncalc';
 
 @Component({
     selector: 'app-bookform',
@@ -20,6 +21,8 @@ export class BookformComponent implements OnInit {
 
     event: EventApi;
     eventModel: CalEvent = {};
+    startDateSuntimes: any;
+    endDateSuntimes: any;
 
     constructor(private modalController: ModalController) {
     }
@@ -43,7 +46,31 @@ export class BookformComponent implements OnInit {
         }
         else {
             this.title = 'Prenota';
+
+            // TODO use last used pilot name
+
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            this.eventModel = {
+                startDate: tomorrow,
+                endDate: tomorrow,
+            };
         }
+
+        this.updateSunTimes();
+    }
+
+    updateSunTimes() {
+        this.startDateSuntimes = this.eventModel.startDate ? this.getSunTimes(this.eventModel.startDate) : null;
+        this.endDateSuntimes = this.eventModel.endDate ? this.getSunTimes(this.eventModel.endDate) : null;
+    }
+
+    private getSunTimes(date) {
+        return SunCalc.getTimes(date,
+            environment.location.latitude,
+            environment.location.longitude,
+            environment.location.height);
     }
 
     dismiss() {

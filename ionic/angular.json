@@ -41,6 +41,7 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/suncalc/suncalc.js"
             ]
           },
           "configurations": {

@@ -18,3 +18,18 @@ ion-input.datetime-input {
     border: 2px solid var(--ion-color-primary);
     border-radius: 5px;
 }
+
+input.datetime-input {
+    padding: 10px 4px;
+    border-radius: 5px;
+    border-width: 2px;
+    border-style: solid;
+    width: 100%;
+
+    &:valid, &:focus {
+        border-color: var(--ion-color-primary);
+    }
+    &:invalid {
+        border-color: var(--ion-color-danger);
+    }
+}

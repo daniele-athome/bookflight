@@ -33,21 +33,21 @@
             <ion-grid fixed="true">
                 <ion-row>
                     <ion-col size="6">
-                        <ion-input [ngModel]="eventModel.startDate | date:'yyyy-MM-dd'"
-                                   (ngModelChange)="eventModel.startDate = $event"
-                                   class="datetime-input" type="date" required="true"></ion-input>
+                        <input [(ngModel)]="eventModel.startDate" useValueAsDate
+                               (ngModelChange)="updateSunTimes()"
+                                   class="datetime-input" type="date" required="required"/>
                     </ion-col>
-                    <ion-col size="5">
+                    <ion-col size="6">
                         <ion-input [(ngModel)]="eventModel.startTime"
                             class="datetime-input" type="time" required="true"></ion-input>
                     </ion-col>
                 </ion-row>
                 <ion-row class="text-sun-times ion-padding-horizontal">
                     <span class="text-sunrise">
-                        <ion-icon icon="sunny"></ion-icon> <span class="text-sun-time">--:--:--</span>
+                        <ion-icon icon="sunny"></ion-icon> <span class="text-sun-time">{{startDateSuntimes ? (startDateSuntimes.sunrise | date:'HH:mm:ss') : '--:--:--'}}</span>
                     </span>
                     <span class="text-sunset" title="Tramonto">
-                        <ion-icon icon="moon"></ion-icon> <span class="text-sun-time">--:--:--</span>
+                        <ion-icon icon="moon"></ion-icon> <span class="text-sun-time">{{startDateSuntimes ? (startDateSuntimes.sunset | date:'HH:mm:ss') : '--:--:--'}}</span>
                     </span>
                 </ion-row>
             </ion-grid>
@@ -58,21 +58,21 @@
             <ion-grid fixed="true">
                 <ion-row>
                     <ion-col size="6">
-                        <ion-input [ngModel]="eventModel.endDate | date:'yyyy-MM-dd'"
-                                   (ngModelChange)="eventModel.endDate = $event"
-                                   class="datetime-input" type="date" required="true"></ion-input>
+                        <input [(ngModel)]="eventModel.endDate" useValueAsDate
+                               (ngModelChange)="updateSunTimes()"
+                                   class="datetime-input" type="date" required="required"/>
                     </ion-col>
-                    <ion-col size="5">
+                    <ion-col size="6">
                         <ion-input [(ngModel)]="eventModel.endTime"
                             class="datetime-input" type="time" required="true"></ion-input>
                     </ion-col>
                 </ion-row>
                 <ion-row class="text-sun-times ion-padding-horizontal">
                     <span class="text-sunrise" title="Alba">
-                        <ion-icon icon="sunny"></ion-icon> <span class="text-sun-time">--:--:--</span>
+                        <ion-icon icon="sunny"></ion-icon> <span class="text-sun-time">{{(endDateSuntimes?.sunrise | date:'HH:mm:ss') || '--:--:--'}}</span>
                     </span>
                     <span class="text-sunset" title="Tramonto">
-                        <ion-icon icon="moon"></ion-icon> <span class="text-sun-time">--:--:--</span>
+                        <ion-icon icon="moon"></ion-icon> <span class="text-sun-time">{{(endDateSuntimes?.sunset | date:'HH:mm:ss') || '--:--:--'}}</span>
                     </span>
                 </ion-row>
             </ion-grid>
