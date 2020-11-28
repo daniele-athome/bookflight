@@ -61,7 +61,21 @@ export class BookformComponent implements OnInit {
         this.updateSunTimes();
     }
 
-    updateSunTimes() {
+    setStartDate(date: string) {
+        const parsedDate = new Date(date);
+        // @ts-ignore
+        this.eventModel.startDate = !isNaN(parsedDate) ? parsedDate : null;
+        this.updateSunTimes();
+    }
+
+    setEndDate(date: string) {
+        const parsedDate = new Date(date);
+        // @ts-ignore
+        this.eventModel.endDate = !isNaN(parsedDate) ? parsedDate : null;
+        this.updateSunTimes();
+    }
+
+    private updateSunTimes() {
         this.startDateSuntimes = this.eventModel.startDate ? this.getSunTimes(this.eventModel.startDate) : null;
         this.endDateSuntimes = this.eventModel.endDate ? this.getSunTimes(this.eventModel.endDate) : null;
     }
