@@ -5,6 +5,7 @@
 export const environment = {
     production: false,
     googleCalendarApiKey: null,
+    googleApiServiceAccount: null,
     events: [
         {
             title: 'Paolo',
