@@ -13,6 +13,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
+import { HttpClientModule } from "@angular/common/http";
 
 // register FullCalendar plugins
 FullCalendarModule.registerPlugins([
@@ -27,6 +28,7 @@ FullCalendarModule.registerPlugins([
     entryComponents: [],
     imports: [
         BrowserModule,
+        HttpClientModule,
         IonicModule.forRoot(),
         FullCalendarModule,
         AppRoutingModule

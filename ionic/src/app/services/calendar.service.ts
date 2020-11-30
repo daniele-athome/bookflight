@@ -1,30 +1,78 @@
 import { Injectable } from '@angular/core';
 import { CalEvent } from '../models/calevent.model';
-import { calendar_v3, google } from 'googleapis';
 import { environment } from "../../environments/environment";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { KEYUTIL, KJUR } from "jsrsasign";
 
-// FIXME this will never work since googleapis is for Node, not for the browser
-// workaround: https://medium.com/angular-in-depth/google-apis-with-angular-214fadb8fbc5
+// https://github.com/Maxim-Mazurok/angular-google-calendar-typescript-example
+
+interface GoogleServiceAccount {
+    type: string,
+    project_id: string,
+    private_key_id: string,
+    private_key: string,
+    client_email: string,
+    client_id: string,
+    auth_uri: string,
+    token_uri: string,
+    auth_provider_x509_cert_url: string,
+    client_x509_cert_url: string,
+}
 
 @Injectable({
     providedIn: 'root'
 })
 export class CalendarService {
 
-    private client: calendar_v3.Calendar;
-
-    constructor() {
-        const auth = new google.auth.GoogleAuth({
-            keyFile: environment.googleApiServiceAccount,
-            scopes: [
-                'https://www.googleapis.com/auth/calendar.events',
-                'https://www.googleapis.com/auth/calendar'
-            ],
-        });
-        this.client = new calendar_v3.Calendar({auth: auth});
+    constructor(private http: HttpClient) {
+        gapi.load('client:auth2', () => this.onAuthLoaded());
     }
 
-    // TODO
+    private onAuthLoaded() {
+        // TODO
+        this.http.get(environment.googleApiServiceAccount)
+            .subscribe((data: GoogleServiceAccount) => {
+                console.log(data);
+
+                gapi.client
+                    .init({
+                        apiKey: environment.googleCalendarApiKey,
+                        discoveryDocs: [
+                            "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+                        ]
+                    }).then(() => {
+                        this.buildJWT(data);
+                });
+            });
+    }
+
+    private buildJWT(serviceAccount: GoogleServiceAccount) {
+        const header = JSON.stringify({"alg":"RS256","typ":"JWT"});
+        const claim = JSON.stringify({
+            aud: "https://www.googleapis.com/oauth2/v3/token",
+            scope: "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events",
+            iss: serviceAccount.client_email,
+            exp: KJUR.jws.IntDate.get("now + 1hour"),
+            iat: KJUR.jws.IntDate.get("now"),
+        });
+        const jws = KJUR.jws.JWS.sign(null, header, claim, serviceAccount.private_key);
+
+        const params = new HttpParams()
+            .set("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer")
+            .set("assertion", jws);
+        this.http.post("https://oauth2.googleapis.com/token", params)
+            .subscribe((data: gapi.auth.GoogleApiOAuth2TokenObject) => {
+                console.log(data);
+                gapi.client.setToken(data);
+                gapi.client.calendar.events.get({
+                    calendarId: environment.events,
+                    eventId: "2cvdqs39q7a3sqgrbbdnm3vgdo"
+                }).then(res => {
+                    console.log(res);
+                });
+
+            });
+    }
 
     public createEvent(event: CalEvent) {
         // TODO
@@ -36,12 +84,6 @@ export class CalendarService {
 
     public deleteEvent(eventId: string) {
         // TODO
-        this.client.events.delete({
-            calendarId: environment.events as unknown as string,
-            eventId: eventId
-        }, (err, res) => {
-            // TODO
-        });
     }
 
 }

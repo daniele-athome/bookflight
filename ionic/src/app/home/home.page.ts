@@ -61,7 +61,19 @@ export class HomePage implements OnInit, AfterViewInit {
         this.calendarOptions.initialDate = defaultDate;
     }
 
-    ngOnInit() {
+    async ngOnInit() {
+        // include gapi script
+        await this.loadGapi();
+    }
+
+    private loadGapi() {
+        const script = document.createElement('script');
+        script.src = 'https://apis.google.com/js/api.js';
+        window.document.body.appendChild(script);
+        return new Promise<void>((resolve, reject) => {
+            script.addEventListener('error', (error) => reject(error));
+            script.addEventListener('load', () => resolve());
+        });
     }
 
     ngAfterViewInit() {
