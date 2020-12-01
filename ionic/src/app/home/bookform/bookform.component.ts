@@ -5,6 +5,7 @@ import { EventApi } from '@fullcalendar/angular';
 import { CalendarService } from "../../services/calendar.service";
 import { CalEvent } from '../../models/calevent.model';
 import * as SunCalc from 'suncalc';
+import * as datetime from "../../utils/datetime";
 
 @Component({
     selector: 'app-bookform',
@@ -135,6 +136,10 @@ export class BookformComponent implements OnInit {
     }
 
     async save() {
+        if (!this.validate()) {
+            return false;
+        }
+
         const loading = await this.startLoading("Un attimo...");
 
         if (this.event) {
@@ -161,6 +166,28 @@ export class BookformComponent implements OnInit {
                     await this.errorAlert("Impossibile creare la prenotazione.", "Errore!");
                 });
         }
+    }
+
+    private validate(): boolean {
+        if (!this.eventModel.title) {
+            this.errorAlert("Scegli il pilota.", "Errore");
+            return false;
+        }
+
+        if (!this.eventModel.startDate || !this.eventModel.startTime ||
+            !this.eventModel.endDate || !this.eventModel.endTime) {
+            this.errorAlert("Inserisci data/ora inizio e fine.", "Errore");
+            return false;
+        }
+
+        const startDate = datetime.joinDateTime(this.eventModel.startDate, this.eventModel.startTime);
+        const endDate = datetime.joinDateTime(this.eventModel.endDate, this.eventModel.endTime);
+        if (endDate.isBefore(startDate, "minute") || endDate.isSame(startDate, "minute")) {
+            this.errorAlert("Data/ora inizio successive a data/ora fine!", "Errore");
+            return false;
+        }
+
+        return true;
     }
 
     async startLoading(message: string): Promise<HTMLIonLoadingElement> {

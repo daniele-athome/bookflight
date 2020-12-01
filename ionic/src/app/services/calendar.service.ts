@@ -116,6 +116,9 @@ export class CalendarService {
         });
     }
 
+    public eventConflicts(event: CalEvent) {
+        // TODO
+    }
 
     public createEvent(event: CalEvent) {
         return this.ensureAuthToken()
