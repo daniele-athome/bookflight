@@ -124,14 +124,13 @@ export class BookformComponent implements OnInit {
         const loading = await this.startLoading("Un attimo...");
         this.calendarService.deleteEvent(this.event.id)
             .then(() => {
+                loading.dismiss();
                 this.dismiss('ok');
             })
-            .catch((error) => {
-                // TODO
+            .catch(async (error) => {
                 console.log(error);
-            })
-            .finally(() => {
-                loading.dismiss();
+                await loading.dismiss();
+                await this.errorAlert("Impossibile cancellare la prenotazione.", "Errore!");
             });
     }
 
@@ -141,31 +140,25 @@ export class BookformComponent implements OnInit {
         if (this.event) {
             this.calendarService.updateEvent(this.event.id, this.eventModel)
                 .then(() => {
-                    // TODO what here?
+                    loading.dismiss();
                     this.dismiss('ok');
                 })
-                .catch((error) => {
-                    // TODO
+                .catch(async (error) => {
                     console.log(error);
-                    alert('ERRORE!');
-                })
-                .finally(() => {
-                    loading.dismiss();
+                    await loading.dismiss();
+                    await this.errorAlert("Impossibile modificare la prenotazione.", "Errore!");
                 });
         }
         else {
             this.calendarService.createEvent(this.eventModel)
                 .then(() => {
-                    // TODO what here?
+                    loading.dismiss();
                     this.dismiss('ok');
                 })
-                .catch((error) => {
-                    // TODO
+                .catch(async (error) => {
                     console.log(error);
-                    alert('ERRORE!');
-                })
-                .finally(() => {
-                    loading.dismiss();
+                    await loading.dismiss();
+                    await this.errorAlert("Impossibile creare la prenotazione.", "Errore!");
                 });
         }
     }
@@ -176,9 +169,19 @@ export class BookformComponent implements OnInit {
             backdropDismiss: false,
             message: message
         });
-        // noinspection ES6MissingAwait
-        loading.present();
-        return loading;
+        await loading.present();
+        return new Promise<HTMLIonLoadingElement>((resolve) => {
+            resolve(loading);
+        });
+    }
+
+    async errorAlert(message: string, title?: string) {
+        const alert = await this.alertController.create({
+            header: title,
+            message: message,
+            buttons: ['OK']
+        });
+        await alert.present();
     }
 
     getPilotList() {
