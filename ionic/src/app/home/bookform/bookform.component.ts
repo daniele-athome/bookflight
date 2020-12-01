@@ -142,11 +142,29 @@ export class BookformComponent implements OnInit {
 
         const loading = await this.startLoading("Un attimo...");
 
+        this.calendarService.eventConflicts(this.event ? this.event.id : null, this.eventModel)
+            .then(async (conflicts) => {
+                if (conflicts) {
+                    await loading.dismiss();
+                    await this.errorAlert("Un'altra prenotazione è già presente per l'orario indicato!", "Errore!");
+                }
+                else {
+                    this.doSave(loading);
+                }
+            })
+            .catch(async (error) => {
+                console.log(error);
+                await loading.dismiss();
+                await this.errorAlert("Impossibile verificare la prenotazione.", "Errore!");
+            });
+    }
+
+    private doSave(loading: HTMLIonLoadingElement) {
         if (this.event) {
             this.calendarService.updateEvent(this.event.id, this.eventModel)
-                .then(() => {
-                    loading.dismiss();
-                    this.dismiss('ok');
+                .then(async () => {
+                    await loading.dismiss();
+                    await this.dismiss('ok');
                 })
                 .catch(async (error) => {
                     console.log(error);

@@ -116,8 +116,18 @@ export class CalendarService {
         });
     }
 
-    public eventConflicts(event: CalEvent) {
-        // TODO
+    public eventConflicts(eventId: string, event: CalEvent) {
+        return this.ensureAuthToken()
+            .then(async () => {
+                const events = await gapi.client.calendar.events.list({
+                    calendarId: environment.events,
+                    timeMin: datetime.formatDateTime(event.startDate, event.startTime),
+                    timeMax: datetime.formatDateTime(event.endDate, event.endTime),
+                });
+                return events.result.items.filter((value) => {
+                    return value.id != eventId;
+                }).length > 0;
+            });
     }
 
     public createEvent(event: CalEvent) {
