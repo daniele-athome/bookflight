@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from "@ionic/angular";
+import { AlertController, LoadingController, ModalController } from "@ionic/angular";
 import { environment } from '../../../environments/environment';
 import { EventApi } from '@fullcalendar/angular';
 import { CalendarService } from "../../services/calendar.service";
@@ -26,6 +26,8 @@ export class BookformComponent implements OnInit {
     endDateSuntimes: any;
 
     constructor(private modalController: ModalController,
+                private alertController: AlertController,
+                private loadingController: LoadingController,
                 private calendarService: CalendarService) {
     }
 
@@ -89,36 +91,94 @@ export class BookformComponent implements OnInit {
             environment.location.height);
     }
 
-    dismiss() {
-        // noinspection JSIgnoredPromiseFromCall
-        this.modalController.dismiss({
+    dismiss(role?: string) {
+        return this.modalController.dismiss({
             'dismissed': true
+        }, role);
+    }
+
+    async delete() {
+        const alert = await this.alertController.create({
+            header: 'Cancellare?',
+            message: 'Non cancellare prenotazioni altrui senza il consenso del pilota.',
+            buttons: [
+                {
+                    text: 'Annulla',
+                    role: 'cancel',
+                    cssClass: 'secondary'
+                },
+                {
+                    text: 'OK',
+                    role: 'destructive',
+                    cssClass: 'danger',
+                    handler: async () => {
+                        await this.doDelete();
+                    }
+                }
+            ]
         });
+        await alert.present();
     }
 
-    delete() {
-        // TODO
-        alert('DELETE!');
+    async doDelete() {
+        const loading = await this.startLoading("Un attimo...");
+        this.calendarService.deleteEvent(this.event.id)
+            .then(() => {
+                this.dismiss('ok');
+            })
+            .catch((error) => {
+                // TODO
+                console.log(error);
+            })
+            .finally(() => {
+                loading.dismiss();
+            });
     }
 
-    save() {
-        // TODO
+    async save() {
+        const loading = await this.startLoading("Un attimo...");
+
         if (this.event) {
-            // TODO update
-            alert('UPDATE!');
-        }
-        else {
-            this.calendarService.createEvent(this.eventModel)
+            this.calendarService.updateEvent(this.event.id, this.eventModel)
                 .then(() => {
                     // TODO what here?
-                    this.dismiss();
+                    this.dismiss('ok');
                 })
                 .catch((error) => {
                     // TODO
                     console.log(error);
                     alert('ERRORE!');
+                })
+                .finally(() => {
+                    loading.dismiss();
                 });
         }
+        else {
+            this.calendarService.createEvent(this.eventModel)
+                .then(() => {
+                    // TODO what here?
+                    this.dismiss('ok');
+                })
+                .catch((error) => {
+                    // TODO
+                    console.log(error);
+                    alert('ERRORE!');
+                })
+                .finally(() => {
+                    loading.dismiss();
+                });
+        }
+    }
+
+    async startLoading(message: string): Promise<HTMLIonLoadingElement> {
+        const loading = await this.loadingController.create({
+            showBackdrop: true,
+            backdropDismiss: false,
+            message: message
+        });
+        // noinspection ES6MissingAwait
+        loading.present();
+        return loading;
     }
 
     getPilotList() {

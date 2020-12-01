@@ -89,3 +89,7 @@
         display: none;
     }
 }
+
+.alert-button.alert-button-role-destructive {
+    color: var(--ion-color-danger);
+}

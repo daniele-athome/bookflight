@@ -104,6 +104,7 @@ export class HomePage implements OnInit, AfterViewInit {
         const modal = await this.modalController.create({
             component: BookformComponent
         });
+        modal.onDidDismiss().then((data) => this.onEditorDismiss(data));
         return await modal.present();
     }
 
@@ -114,7 +115,15 @@ export class HomePage implements OnInit, AfterViewInit {
                 event: event
             }
         });
+        modal.onDidDismiss().then((data) => this.onEditorDismiss(data));
         return await modal.present();
+    }
+
+    private onEditorDismiss(data) {
+        console.log(data);
+        if (data.role == 'ok') {
+            this.calendarComponent.getApi().refetchEvents();
+        }
     }
 
     private renderEvent(arg: EventMountArg) {

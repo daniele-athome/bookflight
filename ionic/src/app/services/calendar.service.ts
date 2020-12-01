@@ -134,11 +134,28 @@ export class CalendarService {
     }
 
     public updateEvent(eventId: string, event: CalEvent) {
-        // TODO
+        return this.ensureAuthToken()
+            .then(() => {
+                const gevent: gapi.client.calendar.Event = {
+                    summary: event.title,
+                    description: event.description,
+                    start: {dateTime: datetime.formatDateTime(event.startDate, event.startTime)} as gapi.client.calendar.EventDateTime,
+                    end: {dateTime: datetime.formatDateTime(event.endDate, event.endTime)} as gapi.client.calendar.EventDateTime,
+                };
+                return gapi.client.calendar.events.update(
+                    {calendarId: environment.events, eventId: eventId},
+                    gevent
+                );
+            });
     }
 
     public deleteEvent(eventId: string) {
-        // TODO
+        return this.ensureAuthToken()
+            .then(() => {
+                return gapi.client.calendar.events.delete(
+                    {calendarId: environment.events, eventId: eventId}
+                );
+            });
     }
 
 }
