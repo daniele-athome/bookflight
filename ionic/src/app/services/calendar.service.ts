@@ -1,27 +1,17 @@
 import { Injectable } from '@angular/core';
 import { CalEvent } from '../models/calevent.model';
+import { GoogleServiceAccount } from "../models/google.model";
 import { environment } from "../../environments/environment";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { KJUR } from "jsrsasign";
+import * as datetime from "../utils/datetime";
 
 import * as dayjs from 'dayjs';
 import * as utc from 'dayjs/plugin/utc';
+
 dayjs.extend(utc);
 
 // https://github.com/Maxim-Mazurok/angular-google-calendar-typescript-example
-
-interface GoogleServiceAccount {
-    type: string,
-    project_id: string,
-    private_key_id: string,
-    private_key: string,
-    client_email: string,
-    client_id: string,
-    auth_uri: string,
-    token_uri: string,
-    auth_provider_x509_cert_url: string,
-    client_x509_cert_url: string,
-}
 
 @Injectable({
     providedIn: 'root'
@@ -126,10 +116,6 @@ export class CalendarService {
         });
     }
 
-    private formatDateTime(date: Date, time: string): string {
-        return dayjs(dayjs(date).format('YYYY-MM-DD') + 'T' + time, "YYYY-MM-DDTHH:mm")
-            .local().format("YYYY-MM-DD[T]HH:mm:ssZ");
-    }
 
     public createEvent(event: CalEvent) {
         return this.ensureAuthToken()
@@ -137,8 +123,8 @@ export class CalendarService {
                 const gevent: gapi.client.calendar.Event = {
                     summary: event.title,
                     description: event.description,
-                    start: {dateTime: this.formatDateTime(event.startDate, event.startTime)} as gapi.client.calendar.EventDateTime,
-                    end: {dateTime: this.formatDateTime(event.endDate, event.endTime)} as gapi.client.calendar.EventDateTime,
+                    start: {dateTime: datetime.formatDateTime(event.startDate, event.startTime)} as gapi.client.calendar.EventDateTime,
+                    end: {dateTime: datetime.formatDateTime(event.endDate, event.endTime)} as gapi.client.calendar.EventDateTime,
                 };
                 return gapi.client.calendar.events.insert(
                     {calendarId: environment.events},
