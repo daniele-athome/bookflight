@@ -103,7 +103,22 @@ export class BookformComponent implements OnInit {
 
     save() {
         // TODO
-        alert('SAVE!');
+        if (this.event) {
+            // TODO update
+            alert('UPDATE!');
+        }
+        else {
+            this.calendarService.createEvent(this.eventModel)
+                .then(() => {
+                    // TODO what here?
+                    this.dismiss();
+                })
+                .catch((error) => {
+                    // TODO
+                    console.log(error);
+                    alert('ERRORE!');
+                });
+        }
     }
 
     getPilotList() {

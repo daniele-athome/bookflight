@@ -9,6 +9,7 @@ import itLocale from '@fullcalendar/core/locales/it';
 import { environment } from '../../environments/environment';
 import { BookformComponent } from "./bookform/bookform.component";
 import { EventApi } from "@fullcalendar/common";
+import { CalendarService } from "../services/calendar.service";
 declare var $: any;
 
 @Component({
@@ -45,7 +46,8 @@ export class HomePage implements OnInit, AfterViewInit {
     constructor(
         private platform: Platform,
         private routerOutlet: IonRouterOutlet,
-        private modalController: ModalController
+        private modalController: ModalController,
+        private calendarService: CalendarService
     ) {
         this.platform.backButton.subscribeWithPriority(-1, () => {
             if (!this.routerOutlet.canGoBack()) {
@@ -62,18 +64,7 @@ export class HomePage implements OnInit, AfterViewInit {
     }
 
     async ngOnInit() {
-        // include gapi script
-        await this.loadGapi();
-    }
-
-    private loadGapi() {
-        const script = document.createElement('script');
-        script.src = 'https://apis.google.com/js/api.js';
-        window.document.body.appendChild(script);
-        return new Promise<void>((resolve, reject) => {
-            script.addEventListener('error', (error) => reject(error));
-            script.addEventListener('load', () => resolve());
-        });
+        await this.calendarService.init();
     }
 
     ngAfterViewInit() {
