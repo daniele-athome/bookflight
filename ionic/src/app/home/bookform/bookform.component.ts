@@ -126,7 +126,7 @@ export class BookformComponent implements OnInit {
         this.calendarService.deleteEvent(this.event.id)
             .then(() => {
                 loading.dismiss();
-                this.dismiss('ok');
+                this.dismiss('deleted');
             })
             .catch(async (error) => {
                 console.log(error);
@@ -164,7 +164,7 @@ export class BookformComponent implements OnInit {
             this.calendarService.updateEvent(this.event.id, this.eventModel)
                 .then(async () => {
                     await loading.dismiss();
-                    await this.dismiss('ok');
+                    await this.dismiss('updated');
                 })
                 .catch(async (error) => {
                     console.log(error);
@@ -176,7 +176,7 @@ export class BookformComponent implements OnInit {
             this.calendarService.createEvent(this.eventModel)
                 .then(() => {
                     loading.dismiss();
-                    this.dismiss('ok');
+                    this.dismiss('created');
                 })
                 .catch(async (error) => {
                     console.log(error);

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { IonRouterOutlet, ModalController, Platform } from "@ionic/angular";
+import { IonRouterOutlet, ModalController, Platform, ToastController } from "@ionic/angular";
 import { Plugins } from "@capacitor/core";
 const { App } = Plugins;
 
@@ -47,6 +47,7 @@ export class HomePage implements OnInit, AfterViewInit {
         private platform: Platform,
         private routerOutlet: IonRouterOutlet,
         private modalController: ModalController,
+        private toastController: ToastController,
         private calendarService: CalendarService
     ) {
         this.platform.backButton.subscribeWithPriority(-1, () => {
@@ -119,9 +120,28 @@ export class HomePage implements OnInit, AfterViewInit {
         return await modal.present();
     }
 
-    private onEditorDismiss(data) {
+    private async onEditorDismiss(data) {
         console.log(data);
-        if (data.role == 'ok') {
+        if (data.role) {
+            let toastMessage;
+            switch (data.role) {
+                case 'deleted':
+                    toastMessage = 'Prenotazione cancellata';
+                    break;
+                case 'updated':
+                    toastMessage = 'Prenotazione modificata';
+                    break;
+                case 'created':
+                    toastMessage = 'Prenotazione effettuata';
+                    break;
+            }
+            if (toastMessage) {
+                const toast = await this.toastController.create({
+                    message: toastMessage,
+                    duration: 2000
+                });
+                toast.present();
+            }
             this.calendarComponent.getApi().refetchEvents();
         }
     }
