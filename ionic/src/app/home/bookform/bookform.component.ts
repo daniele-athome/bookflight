@@ -69,8 +69,8 @@ export class BookformComponent implements OnInit {
     setStartDate(date: string) {
         const parsedDate = datetime.parseISODate(date);
         this.eventModel.startDate = parsedDate.isValid() ? parsedDate.toDate() : null;
-        // TODO update end date
-        this.updateSunTimes();
+        this.setEndDate(date);
+        // sun times will be updated by setEndDate
     }
 
     setEndDate(date: string) {
