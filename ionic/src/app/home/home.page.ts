@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { IonRouterOutlet, ModalController, Platform, ToastController } from "@ionic/angular";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonRouterOutlet, ModalController, Platform, ToastController, ViewDidEnter } from "@ionic/angular";
 import { Plugins } from "@capacitor/core";
 const { App } = Plugins;
+const { SplashScreen } = Plugins;
 
 import { CalendarOptions, FullCalendarComponent, EventMountArg, EventClickArg } from '@fullcalendar/angular';
 import itLocale from '@fullcalendar/core/locales/it';
@@ -17,7 +18,7 @@ declare var $: any;
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit, AfterViewInit {
+export class HomePage implements OnInit, ViewDidEnter {
 
     calendarOptions: CalendarOptions = {
         initialView: 'listWeek',
@@ -68,7 +69,8 @@ export class HomePage implements OnInit, AfterViewInit {
         await this.calendarService.init();
     }
 
-    ngAfterViewInit() {
+    ionViewDidEnter() {
+        SplashScreen.hide();
     }
 
     isToday() {
