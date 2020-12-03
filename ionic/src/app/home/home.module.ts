@@ -7,6 +7,8 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 import { FullCalendarModule } from "@fullcalendar/angular";
 import { BookformComponent } from "./bookform/bookform.component";
+import { ConfigService } from "../services/config.service";
+import { CalendarService } from "../services/calendar.service";
 
 @NgModule({
     imports: [
@@ -15,6 +17,10 @@ import { BookformComponent } from "./bookform/bookform.component";
         IonicModule,
         HomePageRoutingModule,
         FullCalendarModule,
+    ],
+    providers: [
+        ConfigService,
+        CalendarService,
     ],
     declarations: [
         HomePage,

@@ -14,6 +14,8 @@ import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
 import { HttpClientModule } from "@angular/common/http";
+import { ConfigService } from "./services/config.service";
+import { NativeStorage } from "@ionic-native/native-storage/ngx";
 
 // register FullCalendar plugins
 FullCalendarModule.registerPlugins([
@@ -36,6 +38,8 @@ FullCalendarModule.registerPlugins([
     providers: [
         StatusBar,
         SplashScreen,
+        ConfigService,
+        NativeStorage,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]

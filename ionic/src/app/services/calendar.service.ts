@@ -13,9 +13,7 @@ dayjs.extend(utc);
 
 // https://github.com/Maxim-Mazurok/angular-google-calendar-typescript-example
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class CalendarService {
 
     private loaded = false;

@@ -6,6 +6,7 @@ import { CalendarService } from "../../services/calendar.service";
 import { CalEvent } from '../../models/calevent.model';
 import * as SunCalc from 'suncalc';
 import * as datetime from "../../utils/datetime";
+import { ConfigService } from "../../services/config.service";
 
 @Component({
     selector: 'app-bookform',
@@ -29,10 +30,11 @@ export class BookformComponent implements OnInit {
     constructor(private modalController: ModalController,
                 private alertController: AlertController,
                 private loadingController: LoadingController,
+                private configService: ConfigService,
                 private calendarService: CalendarService) {
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         if (this.event) {
             this.title = 'Modifica';
 
@@ -52,12 +54,14 @@ export class BookformComponent implements OnInit {
         else {
             this.title = 'Prenota';
 
-            // TODO use last used pilot name
+            // use last used pilot name
+            const pilotName = await this.configService.getLastPilotName();
 
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
 
             this.eventModel = {
+                title: pilotName,
                 startDate: tomorrow,
                 endDate: tomorrow,
             };
@@ -173,9 +177,10 @@ export class BookformComponent implements OnInit {
         }
         else {
             this.calendarService.createEvent(this.eventModel)
-                .then(() => {
-                    loading.dismiss();
-                    this.dismiss('created');
+                .then(async () => {
+                    await this.configService.setLastPilotName(this.eventModel.title);
+                    await loading.dismiss();
+                    await this.dismiss('created');
                 })
                 .catch(async (error) => {
                     console.log(error);
