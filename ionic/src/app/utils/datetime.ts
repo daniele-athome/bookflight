@@ -1,5 +1,9 @@
 import * as dayjs from "dayjs";
 
+export function parseISODate(date: string): dayjs.Dayjs {
+    return dayjs(date)
+}
+
 export function formatDateTime(date: Date, time: string): string {
     return joinDateTime(date, time).format("YYYY-MM-DD[T]HH:mm:ssZ");
 }

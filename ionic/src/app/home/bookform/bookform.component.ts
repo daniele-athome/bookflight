@@ -67,16 +67,15 @@ export class BookformComponent implements OnInit {
     }
 
     setStartDate(date: string) {
-        const parsedDate = new Date(date);
-        // @ts-ignore
-        this.eventModel.startDate = !isNaN(parsedDate) ? parsedDate : null;
+        const parsedDate = datetime.parseISODate(date);
+        this.eventModel.startDate = parsedDate.isValid() ? parsedDate.toDate() : null;
+        // TODO update end date
         this.updateSunTimes();
     }
 
     setEndDate(date: string) {
-        const parsedDate = new Date(date);
-        // @ts-ignore
-        this.eventModel.endDate = !isNaN(parsedDate) ? parsedDate : null;
+        const parsedDate = datetime.parseISODate(date);
+        this.eventModel.endDate = parsedDate.isValid() ? parsedDate.toDate() : null;
         this.updateSunTimes();
     }
 
