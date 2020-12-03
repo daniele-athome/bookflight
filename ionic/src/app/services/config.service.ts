@@ -1,29 +1,20 @@
 import { Injectable } from '@angular/core';
-import { NativeStorage } from "@ionic-native/native-storage/ngx";
-import { Capacitor } from '@capacitor/core';
+import { Plugins } from '@capacitor/core';
+const { Storage } = Plugins;
 
 @Injectable()
 export class ConfigService {
 
-    constructor(private nativeStorage: NativeStorage) {
+    constructor() {
     }
 
     public async getLastPilotName(): Promise<string> {
-        if (Capacitor.isPluginAvailable('NativeStorage')) {
-            return await this.nativeStorage.getItem('lastPilotName') as string;
-        }
-        else {
-            return new Promise<string>(resolve => resolve(localStorage.getItem('lastPilotName')));
-        }
+        const ret = await Storage.get({key: 'lastPilotName'});
+        return ret ? ret.value : null;
     }
 
-    public async setLastPilotName(name: string): Promise<void> {
-        if (Capacitor.isPluginAvailable('NativeStorage')) {
-            return await this.nativeStorage.setItem('lastPilotName', name);
-        }
-        else {
-            localStorage.setItem('lastPilotName', name);
-        }
+    public async setLastPilotName(name: string) {
+        await Storage.set({key: 'lastPilotName', value: name});
     }
 
 }
