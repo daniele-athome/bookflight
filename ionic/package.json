@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "resources": "cordova-res android --skip-config --copy"
+    "resources": "cordova-res android --skip-config --icon-background-source '#ffffff' --copy"
   },
   "private": true,
   "dependencies": {
