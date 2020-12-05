@@ -9,6 +9,7 @@ import { FullCalendarModule } from "@fullcalendar/angular";
 import { BookformComponent } from "./bookform/bookform.component";
 import { ConfigService } from "../services/config.service";
 import { CalendarService } from "../services/calendar.service";
+import { GoogleCalendarApiService } from "../services/gcalendar.api.service";
 
 @NgModule({
     imports: [
@@ -20,6 +21,7 @@ import { CalendarService } from "../services/calendar.service";
     ],
     providers: [
         ConfigService,
+        GoogleCalendarApiService,
         CalendarService,
     ],
     declarations: [
