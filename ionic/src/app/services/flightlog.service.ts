@@ -75,7 +75,7 @@ export class FlightLogService {
                     return this.sheetsApiService.getRows(
                         environment.flightlog as unknown as string,
                         "Registro voli",
-                        "A2:H"
+                        "A2:I"
                     );
                 })
             );
@@ -89,7 +89,7 @@ export class FlightLogService {
                     return this.sheetsApiService.appendRow(
                         environment.flightlog as unknown as string,
                         "Registro voli",
-                        "A:H",
+                        "A:I",
                         [
                             [
                                 '2020-12-01 19:18:00',
