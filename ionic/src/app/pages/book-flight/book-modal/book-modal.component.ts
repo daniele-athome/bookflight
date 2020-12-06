@@ -9,11 +9,11 @@ import * as datetime from "../../../utils/datetime";
 import { ConfigService } from "../../../services/config.service";
 
 @Component({
-    selector: 'app-bookform',
-    templateUrl: './bookform.component.html',
-    styleUrls: ['./bookform.component.scss'],
+    selector: 'app-book-modal',
+    templateUrl: './book-modal.component.html',
+    styleUrls: ['./book-modal.component.scss'],
 })
-export class BookformComponent implements OnInit {
+export class BookModalComponent implements OnInit {
 
     selectOptions = {
         header: false,

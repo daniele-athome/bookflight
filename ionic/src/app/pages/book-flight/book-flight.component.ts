@@ -8,7 +8,7 @@ import { CalendarOptions, FullCalendarComponent, EventMountArg, EventClickArg } 
 import itLocale from '@fullcalendar/core/locales/it';
 
 import { environment } from '../../../environments/environment';
-import { BookformComponent } from "./bookform/bookform.component";
+import { BookModalComponent } from "./book-modal/book-modal.component";
 import { EventApi } from "@fullcalendar/common";
 import { CalendarService } from "../../services/calendar.service";
 declare var $: any;
@@ -105,7 +105,7 @@ export class BookFlightComponent implements OnInit, ViewDidEnter {
 
     async book() {
         const modal = await this.modalController.create({
-            component: BookformComponent
+            component: BookModalComponent
         });
         modal.onDidDismiss().then((data) => this.onEditorDismiss(data));
         return await modal.present();
@@ -113,7 +113,7 @@ export class BookFlightComponent implements OnInit, ViewDidEnter {
 
     async edit(event: EventApi) {
         const modal = await this.modalController.create({
-            component: BookformComponent,
+            component: BookModalComponent,
             componentProps: {
                 event: event
             }
