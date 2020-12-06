@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, ModalController } from "@ionic/angular";
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { EventApi } from '@fullcalendar/angular';
-import { CalendarService } from "../../services/calendar.service";
-import { CalEvent } from '../../models/calevent.model';
+import { CalendarService } from "../../../services/calendar.service";
+import { CalEvent } from '../../../models/calevent.model';
 import * as SunCalc from 'suncalc';
-import * as datetime from "../../utils/datetime";
-import { ConfigService } from "../../services/config.service";
+import * as datetime from "../../../utils/datetime";
+import { ConfigService } from "../../../services/config.service";
 
 @Component({
     selector: 'app-bookform',

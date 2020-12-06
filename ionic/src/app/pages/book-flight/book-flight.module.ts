@@ -3,20 +3,20 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 
-import { HomePage } from './home.page';
-import { HomePageRoutingModule } from './home-routing.module';
+import { BookFlightComponent } from './book-flight.component';
+import { BookFlightRoutingModule } from './book-flight-routing.module';
 import { FullCalendarModule } from "@fullcalendar/angular";
 import { BookformComponent } from "./bookform/bookform.component";
-import { ConfigService } from "../services/config.service";
-import { CalendarService } from "../services/calendar.service";
-import { GoogleCalendarApiService } from "../services/gcalendar.api.service";
+import { ConfigService } from "../../services/config.service";
+import { CalendarService } from "../../services/calendar.service";
+import { GoogleCalendarApiService } from "../../services/gcalendar.api.service";
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
-        HomePageRoutingModule,
+        BookFlightRoutingModule,
         FullCalendarModule,
     ],
     providers: [
@@ -25,9 +25,9 @@ import { GoogleCalendarApiService } from "../services/gcalendar.api.service";
         CalendarService,
     ],
     declarations: [
-        HomePage,
+        BookFlightComponent,
         BookformComponent
     ]
 })
-export class HomePageModule {
+export class BookFlightModule {
 }

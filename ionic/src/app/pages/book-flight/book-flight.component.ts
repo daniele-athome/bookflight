@@ -7,18 +7,18 @@ const { SplashScreen } = Plugins;
 import { CalendarOptions, FullCalendarComponent, EventMountArg, EventClickArg } from '@fullcalendar/angular';
 import itLocale from '@fullcalendar/core/locales/it';
 
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { BookformComponent } from "./bookform/bookform.component";
 import { EventApi } from "@fullcalendar/common";
-import { CalendarService } from "../services/calendar.service";
+import { CalendarService } from "../../services/calendar.service";
 declare var $: any;
 
 @Component({
-    selector: 'app-home',
-    templateUrl: 'home.page.html',
-    styleUrls: ['home.page.scss'],
+    selector: 'app-book-flight',
+    templateUrl: 'book-flight.component.html',
+    styleUrls: ['book-flight.component.scss'],
 })
-export class HomePage implements OnInit, ViewDidEnter {
+export class BookFlightComponent implements OnInit, ViewDidEnter {
 
     calendarOptions: CalendarOptions = {
         initialView: 'listWeek',
