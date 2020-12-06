@@ -115,7 +115,7 @@ export class CalendarService {
         };
         return this.calendarApiService.updateEvent(
             environment.events, eventId, gevent
-        );
+        ).toPromise();
     }
 
     public deleteEvent(eventId: string) {
