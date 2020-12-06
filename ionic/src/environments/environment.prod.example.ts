@@ -3,6 +3,7 @@ export const environment = {
     googleApiKey: 'PUT-YOUR-GOOGLE-API-KEY-HERE',
     googleApiServiceAccount: 'PUT-YOUR-SERVICE-ACCOUNT-JSON-ASSET-PATH-HERE',
     events: 'PUT-YOUR-GOOGLE-CALENDAR-ID-HERE',
+    flightlog: 'PUT-YOUR-GOOGLE-SPREADSHEET-ID-HERE',
     pilots: [
         'Anna',
         'Daniele',

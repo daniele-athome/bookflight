@@ -26,7 +26,7 @@ export class FlightLogService {
             .pipe(
                 mergeMap((authToken) => {
                     this.sheetsApiService.setAuthToken(authToken);
-                    return this.sheetsApiService.appendRow('1U7AylLY5OgnXgUJu75Jlfj-veNiT9Pzon0L9ESnpdK8', 0, {
+                    return this.sheetsApiService.appendRow(environment.flightlog, 0, {
                         values: [
                             {
                                 userEnteredValue: {stringValue: 'TEST'}

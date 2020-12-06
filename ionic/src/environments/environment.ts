@@ -37,6 +37,7 @@ export const environment = {
             end: '2020-11-20T10:00:00',
         },
     ],
+    flightlog: null,
     pilots: [
         'Claudia',
         'Daniele',
