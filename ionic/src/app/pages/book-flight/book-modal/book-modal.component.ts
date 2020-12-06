@@ -127,15 +127,17 @@ export class BookModalComponent implements OnInit {
     async doDelete() {
         const loading = await this.startLoading("Un attimo...");
         this.calendarService.deleteEvent(this.event.id)
-            .then(() => {
-                loading.dismiss();
-                this.dismiss('deleted');
-            })
-            .catch(async (error) => {
-                console.log(error);
-                await loading.dismiss();
-                await this.errorAlert("Impossibile cancellare la prenotazione.", "Errore!");
-            });
+            .subscribe(
+                async value => {
+                    await loading.dismiss();
+                    await this.dismiss('deleted');
+                },
+                async error => {
+                    console.log(error);
+                    await loading.dismiss();
+                    await this.errorAlert("Impossibile cancellare la prenotazione.", "Errore!");
+                }
+            );
     }
 
     async save() {
@@ -146,47 +148,52 @@ export class BookModalComponent implements OnInit {
         const loading = await this.startLoading("Un attimo...");
 
         this.calendarService.eventConflicts(this.event ? this.event.id : null, this.eventModel)
-            .then(async (conflicts) => {
-                if (conflicts) {
-                    await loading.dismiss();
-                    await this.errorAlert("Un'altra prenotazione è già presente per l'orario indicato!", "Errore!");
-                }
-                else {
-                    this.doSave(loading);
-                }
-            })
-            .catch(async (error) => {
-                console.log(error);
-                await loading.dismiss();
-                await this.errorAlert("Impossibile verificare la prenotazione.", "Errore!");
-            });
+            .subscribe(
+                (conflicts: boolean) => {
+                    if (conflicts) {
+                        loading.dismiss();
+                        this.errorAlert("Un'altra prenotazione è già presente per l'orario indicato!", "Errore!");
+                    }
+                    else {
+                        this.doSave(loading);
+                    }
+                },
+                error => {
+                    console.log(error);
+                    loading.dismiss();
+                    this.errorAlert("Impossibile verificare la prenotazione.", "Errore!");
+                });
     }
 
     private doSave(loading: HTMLIonLoadingElement) {
         if (this.event) {
             this.calendarService.updateEvent(this.event.id, this.eventModel)
-                .then(async () => {
-                    await loading.dismiss();
-                    await this.dismiss('updated');
-                })
-                .catch(async (error) => {
-                    console.log(error);
-                    await loading.dismiss();
-                    await this.errorAlert("Impossibile modificare la prenotazione.", "Errore!");
-                });
+                .subscribe(
+                    async value => {
+                        await loading.dismiss();
+                        await this.dismiss('updated');
+                    },
+                    async error => {
+                        console.log(error);
+                        await loading.dismiss();
+                        await this.errorAlert("Impossibile modificare la prenotazione.", "Errore!");
+                    }
+                );
         }
         else {
             this.calendarService.createEvent(this.eventModel)
-                .then(async () => {
-                    await this.configService.setLastPilotName(this.eventModel.title);
-                    await loading.dismiss();
-                    await this.dismiss('created');
-                })
-                .catch(async (error) => {
-                    console.log(error);
-                    await loading.dismiss();
-                    await this.errorAlert("Impossibile creare la prenotazione.", "Errore!");
-                });
+                .subscribe(
+                    async value => {
+                        await this.configService.setLastPilotName(this.eventModel.title);
+                        await loading.dismiss();
+                        await this.dismiss('created');
+                    },
+                    async error => {
+                        console.log(error);
+                        await loading.dismiss();
+                        await this.errorAlert("Impossibile creare la prenotazione.", "Errore!");
+                    }
+                );
         }
     }
 

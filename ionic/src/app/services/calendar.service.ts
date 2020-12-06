@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { map, mergeMap } from "rxjs/operators";
+import { Observable, of } from "rxjs";
 import { GoogleCalendarApiService } from "./gcalendar.api.service";
 import { CalEvent } from '../models/calevent.model';
 import { GoogleServiceAccount } from "../models/google.model";
@@ -25,21 +27,26 @@ export class CalendarService {
                 private calendarApiService: GoogleCalendarApiService) {
     }
 
-    async init() {
+    init(): Observable<void> {
         return this.http.get(environment.googleApiServiceAccount)
-            .subscribe(async (data: GoogleServiceAccount) => {
-                console.log(data);
-                this.serviceAccount = data;
-                this.calendarApiService.setApiKey(environment.googleCalendarApiKey);
-                await this.ensureAuthToken();
-            });
+            .pipe(
+                mergeMap((data: GoogleServiceAccount) => {
+                    console.log(data);
+                    this.serviceAccount = data;
+                    this.calendarApiService.setApiKey(environment.googleCalendarApiKey);
+                    return this.ensureAuthToken();
+                })
+            );
     }
 
-    private async ensureAuthToken() {
-        if (!this.isAuthTokenValid()) {
+    private ensureAuthToken(): Observable<void> {
+        if (!this.serviceAccount) {
+            return this.init();
+        }
+        else if (!this.isAuthTokenValid()) {
             return this.requestAuthToken();
         }
-        return Promise.resolve();
+        return of(void 0);
     }
 
     private isAuthTokenValid(): boolean {
@@ -51,7 +58,7 @@ export class CalendarService {
         return false;
     }
 
-    private requestAuthToken() {
+    private requestAuthToken(): Observable<void> {
         const header = JSON.stringify({"alg":"RS256","typ":"JWT"});
         const claim = JSON.stringify({
             aud: "https://www.googleapis.com/oauth2/v3/token",
@@ -66,60 +73,73 @@ export class CalendarService {
             .set("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer")
             .set("assertion", jws);
 
-        return new Promise<void>((resolve, reject) => {
-            this.http.post("https://oauth2.googleapis.com/token", params)
-                .subscribe(
-                    (data: gapi.auth.GoogleApiOAuth2TokenObject) => {
-                        console.log(data);
-                        this.authToken = data;
-                        this.authTokenTimestamp = new Date().getTime();
-                        this.calendarApiService.setAuthToken(data.access_token);
-                        resolve();
-                    },
-                    (error) => {
-                        // TODO error
-                        console.log(error);
-                        reject(error);
-                    });
-        });
+        return this.http.post("https://oauth2.googleapis.com/token", params)
+            .pipe(
+                mergeMap((data: gapi.auth.GoogleApiOAuth2TokenObject) => {
+                    console.log(data);
+                    this.authToken = data;
+                    this.authTokenTimestamp = new Date().getTime();
+                    this.calendarApiService.setAuthToken(data.access_token);
+                    return of(void 0);
+                }),
+            );
     }
 
-    public async eventConflicts(eventId: string, event: CalEvent) {
-        return this.calendarApiService.listEvents(environment.events,
-                datetime.formatDateTime(event.startDate, event.startTime),
-                datetime.formatDateTime(event.endDate, event.endTime))
-            .toPromise()
-            .then((events: gapi.client.calendar.Events) => {
-                return events.items.filter((value) => {
-                    return value.id != eventId;
-                }).length > 0;
-            });
+    public eventConflicts(eventId: string, event: CalEvent): Observable<boolean> {
+        return this.ensureAuthToken()
+            .pipe(
+                mergeMap(() => {
+                    return this.calendarApiService.listEvents(environment.events,
+                        datetime.formatDateTime(event.startDate, event.startTime),
+                        datetime.formatDateTime(event.endDate, event.endTime))
+                        .pipe(
+                            map((events: gapi.client.calendar.Events) => {
+                                return events.items.filter((value) => {
+                                    return value.id != eventId;
+                                }).length > 0;
+                            })
+                        );
+                })
+            );
     }
 
-    public createEvent(event: CalEvent) {
-        const gevent: gapi.client.calendar.Event = {
-            summary: event.title,
-            description: event.description,
-            start: {dateTime: datetime.formatDateTime(event.startDate, event.startTime)} as gapi.client.calendar.EventDateTime,
-            end: {dateTime: datetime.formatDateTime(event.endDate, event.endTime)} as gapi.client.calendar.EventDateTime,
-        };
-        return this.calendarApiService.insertEvent(environment.events, gevent).toPromise();
+    public createEvent(event: CalEvent): Observable<any> {
+        return this.ensureAuthToken()
+            .pipe(
+                mergeMap(() => {
+                    const gevent: gapi.client.calendar.Event = {
+                        summary: event.title,
+                        description: event.description,
+                        start: {dateTime: datetime.formatDateTime(event.startDate, event.startTime)} as gapi.client.calendar.EventDateTime,
+                        end: {dateTime: datetime.formatDateTime(event.endDate, event.endTime)} as gapi.client.calendar.EventDateTime,
+                    };
+                    return this.calendarApiService.insertEvent(environment.events, gevent);
+                })
+            );
     }
 
-    public async updateEvent(eventId: string, event: CalEvent) {
-        const gevent: gapi.client.calendar.Event = {
-            summary: event.title,
-            description: event.description,
-            start: {dateTime: datetime.formatDateTime(event.startDate, event.startTime)} as gapi.client.calendar.EventDateTime,
-            end: {dateTime: datetime.formatDateTime(event.endDate, event.endTime)} as gapi.client.calendar.EventDateTime,
-        };
-        return this.calendarApiService.updateEvent(
-            environment.events, eventId, gevent
-        ).toPromise();
+    public updateEvent(eventId: string, event: CalEvent): Observable<any> {
+        return this.ensureAuthToken()
+            .pipe(
+                mergeMap(() => {
+                    const gevent: gapi.client.calendar.Event = {
+                        summary: event.title,
+                        description: event.description,
+                        start: {dateTime: datetime.formatDateTime(event.startDate, event.startTime)} as gapi.client.calendar.EventDateTime,
+                        end: {dateTime: datetime.formatDateTime(event.endDate, event.endTime)} as gapi.client.calendar.EventDateTime,
+                    };
+                    return this.calendarApiService.updateEvent(environment.events, eventId, gevent);
+                })
+            );
     }
 
-    public deleteEvent(eventId: string) {
-        return this.calendarApiService.deleteEvent(environment.events, eventId).toPromise();
+    public deleteEvent(eventId: string): Observable<any> {
+        return this.ensureAuthToken()
+            .pipe(
+                mergeMap(() => {
+                    return this.calendarApiService.deleteEvent(environment.events, eventId);
+                })
+            );
     }
 
 }

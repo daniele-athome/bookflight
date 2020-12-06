@@ -66,7 +66,10 @@ export class BookFlightComponent implements OnInit, ViewDidEnter {
     }
 
     async ngOnInit() {
-        await this.calendarService.init();
+        this.calendarService.init().subscribe(() => {
+            // TODO do something here?
+            console.log('calendar service init ok');
+        });
     }
 
     ionViewDidEnter() {
