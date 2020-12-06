@@ -1,28 +1,41 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { GoogleApiService } from "../utils/gapi.service";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class GoogleSheetsApiService extends GoogleApiService {
 
-    private BATCH_UPDATE_URL = (spreadsheetId) => `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`
+    private APPEND_URL = (spreadsheetId, range) =>
+        `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}/values/${encodeURIComponent(range)}:append`;
+    private GET_URL = (spreadsheetId, range) =>
+        `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}/values/${encodeURIComponent(range)}`;
 
     constructor(private http: HttpClient) {
         super(http);
     }
 
-    public appendRow(spreadsheetId: string, sheetId: number, rowData: gapi.client.sheets.RowData) {
-        const request = {
-            sheetId: sheetId,
-            rows: [rowData],
-            fields: 'userEnteredValue',
-        } as gapi.client.sheets.AppendCellsRequest;
-        return this.request('post', this.BATCH_UPDATE_URL(spreadsheetId), {
+    private sheetRange = (sheetName: string, range: string) => `'${sheetName}'!${range}`;
+
+    public appendRow(spreadsheetId: string, sheetName: string, range: string, values: any[][]) {
+        const sheetRange = this.sheetRange(sheetName, range);
+        return this.request('post', this.APPEND_URL(spreadsheetId, sheetRange), {
+            params: {
+                valueInputOption: 'USER_ENTERED',
+            },
             body: {
-                requests: [{
-                    appendCells: request
-                }]
-            } as gapi.client.sheets.BatchUpdateSpreadsheetRequest
+                range: sheetRange,
+                values: values,
+            } as gapi.client.sheets.ValueRange
+        });
+    }
+
+    public getRows(spreadsheetId: string, sheetName: string, range: string): Observable<gapi.client.sheets.ValueRange> {
+        const sheetRange = this.sheetRange(sheetName, range);
+        return this.request('get', this.GET_URL(spreadsheetId, sheetRange), {
+            params: {
+                valueRenderOption: 'UNFORMATTED_VALUE',
+            },
         });
     }
 

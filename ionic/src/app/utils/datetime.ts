@@ -11,3 +11,8 @@ export function formatDateTime(date: Date, time: string): string {
 export function joinDateTime(date: Date, time: string): dayjs.Dayjs {
     return dayjs(dayjs(date).format('YYYY-MM-DD') + time, "YYYY-MM-DDHH:mm").local();
 }
+
+/** @see https://stackoverflow.com/a/57184486/1045199 */
+export function xlSerialToDate(serialDate) {
+    return new Date(-2209075200000 + (serialDate - (serialDate < 61 ? 0 : 1)) * 86400000);
+}

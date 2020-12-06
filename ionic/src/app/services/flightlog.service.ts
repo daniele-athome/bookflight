@@ -67,18 +67,43 @@ export class FlightLogService {
         }
     }
 
-    public test() {
+    public testRead() {
         return this.serviceAccountService.ensureAuthToken()
             .pipe(
                 mergeMap((authToken) => {
                     this.sheetsApiService.setAuthToken(authToken);
-                    return this.sheetsApiService.appendRow(environment.flightlog as unknown as string, 0, {
-                        values: [
-                            {
-                                userEnteredValue: {stringValue: 'TEST'}
-                            }
+                    return this.sheetsApiService.getRows(
+                        environment.flightlog as unknown as string,
+                        "Registro voli",
+                        "A2:H"
+                    );
+                })
+            );
+    }
+
+    public testWrite() {
+        return this.serviceAccountService.ensureAuthToken()
+            .pipe(
+                mergeMap((authToken) => {
+                    this.sheetsApiService.setAuthToken(authToken);
+                    return this.sheetsApiService.appendRow(
+                        environment.flightlog as unknown as string,
+                        "Registro voli",
+                        "A:H",
+                        [
+                            [
+                                '2020-12-01 19:18:00',
+                                '2020-12-01',
+                                'Daniele',
+                                '1968.81',
+                                '1969.27',
+                                'Fly Roma',
+                                'Fly Roma',
+                                '16',
+                                '',
+                            ]
                         ]
-                    } as gapi.client.sheets.RowData);
+                    );
                 })
             );
     }
