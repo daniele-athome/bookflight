@@ -4,12 +4,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
     {
         path: '',
-        redirectTo: '/book-flight',
+        redirectTo: 'app',
         pathMatch: 'full'
     },
     {
-        path: 'book-flight',
-        loadChildren: () => import('./pages/book-flight/book-flight.module').then(m => m.BookFlightModule)
+        path: 'app',
+        loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
     },
 ];
 
