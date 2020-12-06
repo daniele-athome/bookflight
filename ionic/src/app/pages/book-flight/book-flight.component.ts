@@ -65,7 +65,7 @@ export class BookFlightComponent implements OnInit, ViewDidEnter {
         this.calendarOptions.initialDate = defaultDate;
     }
 
-    async ngOnInit() {
+    ngOnInit() {
         this.calendarService.init().subscribe(() => {
             // TODO do something here?
             console.log('calendar service init ok');

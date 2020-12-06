@@ -25,14 +25,19 @@ export class GoogleServiceAccountService {
     }
 
     init(): Observable<string> {
-        return this.http.get(environment.googleApiServiceAccount)
-            .pipe(
-                mergeMap((data: GoogleServiceAccount) => {
-                    console.log(data);
-                    this.serviceAccount = data;
-                    return this.ensureAuthToken();
-                })
-            );
+        if (!this.serviceAccount) {
+            return this.http.get(environment.googleApiServiceAccount)
+                .pipe(
+                    mergeMap((data: GoogleServiceAccount) => {
+                        console.log(data);
+                        this.serviceAccount = data;
+                        return this.ensureAuthToken();
+                    })
+                );
+        }
+        else {
+            return this.ensureAuthToken();
+        }
     }
 
     public ensureAuthToken(): Observable<string> {
