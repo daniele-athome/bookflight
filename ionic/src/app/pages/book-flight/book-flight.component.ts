@@ -37,7 +37,7 @@ export class BookFlightComponent implements OnInit, ViewDidEnter {
         eventDidMount: arg => this.renderEvent(arg),
         eventClick: arg => this.onEventClick(arg),
 
-        googleCalendarApiKey: environment.googleCalendarApiKey,
+        googleCalendarApiKey: environment.googleApiKey,
         events: environment.events,
     };
 

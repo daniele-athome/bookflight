@@ -26,7 +26,7 @@ export class CalendarService {
     }
 
     init(): Observable<string> {
-        this.calendarApiService.setApiKey(environment.googleCalendarApiKey);
+        this.calendarApiService.setApiKey(environment.googleApiKey);
         return this.serviceAccountService.init();
     }
 
