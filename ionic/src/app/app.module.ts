@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
+import { registerLocaleData } from "@angular/common";
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -15,6 +16,9 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
 import { HttpClientModule } from "@angular/common/http";
 import { ConfigService } from "./services/config.service";
+
+import localeIt from '@angular/common/locales/it';
+registerLocaleData(localeIt);
 
 // register FullCalendar plugins
 FullCalendarModule.registerPlugins([
@@ -38,7 +42,8 @@ FullCalendarModule.registerPlugins([
         StatusBar,
         SplashScreen,
         ConfigService,
-        {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
+        {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+        {provide: LOCALE_ID, useValue:'it-IT'},
     ],
     bootstrap: [AppComponent]
 })
