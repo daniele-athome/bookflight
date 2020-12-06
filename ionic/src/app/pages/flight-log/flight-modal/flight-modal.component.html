@@ -7,7 +7,7 @@
             </ion-button>
         </ion-buttons>
         <ion-buttons slot="primary">
-            <ion-button *ngIf="logItemId" (click)="delete()" fill="solid" color="danger">
+            <ion-button *ngIf="flightModel.id" (click)="delete()" fill="solid" color="danger">
                 <ion-icon slot="icon-only" name="trash"></ion-icon>
             </ion-button>
             <ion-button (click)="save()" fill="solid" color="success">

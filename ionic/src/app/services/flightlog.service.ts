@@ -47,7 +47,12 @@ export class FlightLogService {
             const lastId = this.lastId;
             this.lastId = Math.max(this.lastId - this.ITEMS_PER_PAGE, 0);
             return of(environment.flightlog
-                .slice(this.lastId, lastId) as FlightLogItem[]);
+                .slice(this.lastId, lastId)
+                .map((value, index) => {
+                    (value as FlightLogItem).id = index + 1;
+                    return value;
+                })
+            );
         }
     }
 

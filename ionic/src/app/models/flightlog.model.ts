@@ -1,4 +1,5 @@
 export interface FlightLogItem {
+    id?: number;
     date?: Date,
     pilot?: string,
     origin?: string,

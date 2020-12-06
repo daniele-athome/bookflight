@@ -18,7 +18,6 @@ export class FlightModalComponent implements OnInit {
 
     title: string;
 
-    logItemId: string;
     flightModel: FlightLogItem = {};
 
     constructor(private modalController: ModalController,
@@ -28,7 +27,7 @@ export class FlightModalComponent implements OnInit {
     }
 
     async ngOnInit() {
-        if (this.logItemId) {
+        if (this.flightModel.id) {
             this.title = 'Modifica';
         }
         else {
@@ -85,7 +84,7 @@ export class FlightModalComponent implements OnInit {
     }
 
     private async doSave(loading: HTMLIonLoadingElement) {
-        if (this.logItemId) {
+        if (this.flightModel.id) {
             // TODO update
             await loading.dismiss();
             await this.dismiss('updated');
