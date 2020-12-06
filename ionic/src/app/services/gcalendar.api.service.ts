@@ -1,69 +1,40 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { CustomHttpParamEncoder } from "../utils/customhttpencoder";
+import { HttpClient } from "@angular/common/http";
+import { GoogleApiService } from "../utils/gapi.service";
 
 @Injectable()
-export class GoogleCalendarApiService {
-
-    // TODO use an interceptor or make the authentication stuff common
+export class GoogleCalendarApiService extends GoogleApiService {
 
     private COLLECTION_URL = (calendarId) => `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`;
     private ITEM_URL = (calendarId, eventId) => `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(eventId)}`;
 
-    private apiKey: string;
-    private accessToken: string;
-
     constructor(private http: HttpClient) {
-    }
-
-    public setApiKey(apiKey: string) {
-        this.apiKey = apiKey;
-    }
-
-    public setAuthToken(accessToken: string) {
-        this.accessToken = accessToken;
+        super(http);
     }
 
     public listEvents(calendarId: string, timeMin?: string, timeMax?: string) {
-        return this.http.get(this.COLLECTION_URL(calendarId), {
-            headers: new HttpHeaders({
-                'Authorization': 'Bearer ' + this.accessToken,
-            }),
-            params: new HttpParams({encoder: new CustomHttpParamEncoder()})
-                .set('key', this.apiKey)
-                .set('timeMin', timeMin)
-                .set('timeMax', timeMax),
+        return this.request('get', this.COLLECTION_URL(calendarId), {
+            params: {
+                'timeMin': timeMin,
+                'timeMax': timeMax,
+            }
         });
     }
 
     public insertEvent(calendarId: string, event: gapi.client.calendar.Event) {
-        return this.http.post(this.COLLECTION_URL(calendarId), event, {
-            headers: new HttpHeaders({
-                'Authorization': 'Bearer ' + this.accessToken,
-            }),
-            params: new HttpParams({encoder: new CustomHttpParamEncoder()})
-                .set('key', this.apiKey),
+        return this.request('post', this.COLLECTION_URL(calendarId), {
+            body: event
         });
     }
 
     public updateEvent(calendarId: string, eventId: string, event: gapi.client.calendar.Event) {
-        return this.http.put(this.ITEM_URL(calendarId, eventId), event, {
-            headers: new HttpHeaders({
-                'Authorization': 'Bearer ' + this.accessToken,
-            }),
-            params: new HttpParams({encoder: new CustomHttpParamEncoder()})
-                .set('key', this.apiKey),
+        return this.request('put', this.ITEM_URL(calendarId, eventId),{
+            body: event
         });
     }
 
     public deleteEvent(calendarId: string, eventId: string) {
-        return this.http.delete(this.ITEM_URL(calendarId, eventId), {
-            headers: new HttpHeaders({
-                'Authorization': 'Bearer ' + this.accessToken,
-            }),
-            params: new HttpParams({encoder: new CustomHttpParamEncoder()})
-                .set('key', this.apiKey),
-        });
+        return this.request('delete', this.ITEM_URL(calendarId, eventId));
     }
 
 }
