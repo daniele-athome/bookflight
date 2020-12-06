@@ -39,6 +39,7 @@ export class FlightLogService {
     public fetchItems(): Observable<FlightLogItem[]> {
         if (typeof environment.flightlog === 'string') {
             // TODO not supported yet
+            return of([]);
         }
         else {
             // no more data
