@@ -19,12 +19,10 @@ const routes: Routes = [
             {
                 path: 'flight-log',
                 children: [
-                    /*
                     {
                         path: '',
                         loadChildren: () => import('../flight-log/flight-log.module').then(m => m.FlightLogModule)
                     },
-                     */
                 ]
             },
             /* TODO about
