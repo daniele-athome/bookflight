@@ -14,6 +14,7 @@
 
 <ion-content>
 
+    <!-- TODO scroll down to refresh -->
     <ion-list>
         <ion-virtual-scroll #virtualScroll [items]="logItems" approxItemHeight="80">
             <ion-item (click)="edit(item)" *virtualItem="let item; let itemBounds = bounds;" class="log-item">
