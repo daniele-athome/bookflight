@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-buttons (click)="true" slot="primary">
+        <ion-buttons (click)="record()" slot="primary">
             <ion-button fill="solid" color="primary">
                 <ion-icon class="ion-hide-sm-up" slot="icon-only" name="add"></ion-icon>
                 <ion-icon class="ion-hide-sm-down" slot="start" name="create"></ion-icon>
@@ -16,7 +16,7 @@
 
     <ion-list>
         <ion-virtual-scroll #virtualScroll [items]="logItems" approxItemHeight="80">
-            <ion-item *virtualItem="let item; let itemBounds = bounds;" class="log-item">
+            <ion-item (click)="edit(item)" *virtualItem="let item; let itemBounds = bounds;" class="log-item">
                 <ion-label>
                     <h3>{{item.date | date:'dd/MM/yyyy'}}</h3>
                     <p>

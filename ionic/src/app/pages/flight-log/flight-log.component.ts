@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { IonRouterOutlet, IonVirtualScroll, ModalController, Platform, ToastController } from "@ionic/angular";
 import { FlightLogService } from "../../services/flightlog.service";
-import { environment } from "../../../environments/environment";
 import { FlightLogItem } from "../../models/flightlog.model";
 import { mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
+import { FlightModalComponent } from "./flight-modal/flight-modal.component";
 
 @Component({
     selector: 'app-flight-log',
@@ -35,6 +35,52 @@ export class FlightLogComponent implements OnInit {
                 console.log('data loaded');
             });
         });
+    }
+
+    async record() {
+        const modal = await this.modalController.create({
+            component: FlightModalComponent
+        });
+        modal.onDidDismiss().then((data) => this.onEditorDismiss(data));
+        return await modal.present();
+    }
+
+    async edit(item: FlightLogItem) {
+        const modal = await this.modalController.create({
+            component: FlightModalComponent,
+            componentProps: {
+                logItemId: 'TODO',
+                flightModel: item,
+            }
+        });
+        modal.onDidDismiss().then((data) => this.onEditorDismiss(data));
+        return await modal.present();
+    }
+
+    private async onEditorDismiss(data) {
+        console.log(data);
+        if (data.role) {
+            let toastMessage;
+            switch (data.role) {
+                case 'deleted':
+                    toastMessage = 'Volo cancellato';
+                    break;
+                case 'updated':
+                    toastMessage = 'Volo modificato';
+                    break;
+                case 'created':
+                    toastMessage = 'Volo registrato';
+                    break;
+            }
+            if (toastMessage) {
+                const toast = await this.toastController.create({
+                    message: toastMessage,
+                    duration: 2000
+                });
+                toast.present();
+            }
+            // TODO reload data?
+        }
     }
 
     public fetchData() {

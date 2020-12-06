@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ConfigService } from "../../services/config.service";
 import { FlightLogRoutingModule } from "./flight-log-routing.module";
 import { FlightLogComponent } from "./flight-log.component";
+import { FlightModalComponent } from "./flight-modal/flight-modal.component";
 import { FlightLogService } from "../../services/flightlog.service";
 import { GoogleSheetsApiService } from "../../services/gsheets.api.service";
 
@@ -23,6 +24,7 @@ import { GoogleSheetsApiService } from "../../services/gsheets.api.service";
     ],
     declarations: [
         FlightLogComponent,
+        FlightModalComponent,
     ]
 })
 export class FlightLogModule {
