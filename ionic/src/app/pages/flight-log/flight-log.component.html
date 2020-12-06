@@ -12,6 +12,28 @@
 
 </ion-header>
 
-<ion-content [fullscreen]="true">
-    TODO
+<ion-content>
+
+    <ion-list>
+        <ion-virtual-scroll #virtualScroll [items]="logItems" approxItemHeight="110">
+            <ion-item *virtualItem="let item; let itemBounds = bounds;" class="log-item">
+                <ion-label>
+                    <h3>{{item.pilot}}</h3>
+                    <p>{{item.date | date:'dd/MM/yyyy'}}</p>
+                    <p>{{item.origin}} &mdash; {{item.destination}}</p>
+                    <p>H {{item.startHour | number:'1.1'}} &mdash; {{item.endHour | number:'1.1'}}</p>
+                </ion-label>
+                <ion-icon *ngIf="item.fuel > 0" color="tertiary" name="color-fill" size="small" slot="end"></ion-icon>
+                <ion-text class="duration" slot="end">{{ (1969.80-1967.60)*60 | number }}&prime;</ion-text>
+            </ion-item>
+        </ion-virtual-scroll>
+    </ion-list>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+        <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Caricamento...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
 </ion-content>

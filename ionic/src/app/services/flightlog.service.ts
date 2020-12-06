@@ -3,13 +3,18 @@ import { GoogleSheetsApiService } from "./gsheets.api.service";
 import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { GoogleServiceAccountService } from "./google-service-account.service";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { mergeMap } from "rxjs/operators";
+import { FlightLogItem } from "../models/flightlog.model";
 
 @Injectable({
     providedIn: 'root',
 })
 export class FlightLogService {
+
+    private ITEMS_PER_PAGE = 5;
+
+    private lastId = 0;
 
     constructor(private http: HttpClient,
                 private serviceAccountService: GoogleServiceAccountService,
@@ -18,7 +23,42 @@ export class FlightLogService {
 
     init(): Observable<string> {
         this.sheetsApiService.setApiKey(environment.googleApiKey);
+        this.reset();
         return this.serviceAccountService.init();
+    }
+
+    public reset() {
+        if (typeof environment.flightlog === 'string') {
+            // TODO not supported yet
+        }
+        else {
+            this.lastId = environment.flightlog.length;
+        }
+    }
+
+    public fetchItems(): Observable<FlightLogItem[]> {
+        if (typeof environment.flightlog === 'string') {
+            // TODO not supported yet
+        }
+        else {
+            // no more data
+            if (!this.lastId) return of([]);
+
+            const lastId = this.lastId;
+            this.lastId = Math.max(this.lastId - this.ITEMS_PER_PAGE, 0);
+            return of(environment.flightlog
+                .slice(this.lastId, lastId) as FlightLogItem[]);
+        }
+    }
+
+    public hasMoreData(): boolean {
+        if (typeof environment.flightlog === 'string') {
+            // TODO not supported yet
+            return false;
+        }
+        else {
+            return this.lastId > 0;
+        }
     }
 
     public test() {
@@ -26,7 +66,7 @@ export class FlightLogService {
             .pipe(
                 mergeMap((authToken) => {
                     this.sheetsApiService.setAuthToken(authToken);
-                    return this.sheetsApiService.appendRow(environment.flightlog, 0, {
+                    return this.sheetsApiService.appendRow(environment.flightlog as unknown as string, 0, {
                         values: [
                             {
                                 userEnteredValue: {stringValue: 'TEST'}
