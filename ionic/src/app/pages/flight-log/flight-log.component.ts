@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import {
     Config,
-    IonInfiniteScroll, IonRefresher,
-    IonRouterOutlet,
+    IonInfiniteScroll,
+    IonRefresher,
     IonVirtualScroll,
     ModalController,
     ToastController
@@ -34,7 +34,6 @@ export class FlightLogComponent implements OnInit {
 
     constructor(
         private config: Config,
-        private routerOutlet: IonRouterOutlet,
         private modalController: ModalController,
         private toastController: ToastController,
         private flightLogService: FlightLogService
