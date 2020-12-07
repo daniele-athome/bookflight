@@ -3,7 +3,10 @@ export const environment = {
     googleApiKey: 'PUT-YOUR-GOOGLE-API-KEY-HERE',
     googleApiServiceAccount: 'PUT-YOUR-SERVICE-ACCOUNT-JSON-ASSET-PATH-HERE',
     events: 'PUT-YOUR-GOOGLE-CALENDAR-ID-HERE',
-    flightlog: 'PUT-YOUR-GOOGLE-SPREADSHEET-ID-HERE',
+    flightlog: {
+        spreadsheetId: 'PUT-YOUR-GOOGLE-SPREADSHEET-ID-HERE',
+        sheetName: 'PUT-YOUR-GOOGLE-SHEET-NAME-HERE',
+    },
     pilots: [
         'Anna',
         'Daniele',

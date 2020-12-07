@@ -4,15 +4,26 @@ import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { GoogleServiceAccountService } from "./google-service-account.service";
 import { Observable, of } from "rxjs";
-import { mergeMap } from "rxjs/operators";
+import { map, mergeMap } from "rxjs/operators";
 import { FlightLogItem } from "../models/flightlog.model";
+import * as datetime from "../utils/datetime";
+
+interface FlightLogSpreadsheet {
+    spreadsheetId: string,
+    sheetName: string,
+}
+
+/** Items per page to fetch. */
+const ITEMS_PER_PAGE = 20;
+/** Cell containing the row count. */
+const SHEET_COUNT_RANGE = 'A1';
+/** Data range generator. +2 because the index is 0-based and to skip the header row. */
+const SHEET_DATA_RANGE = (first, last) => `A${first+2}:I${last+2}`;
 
 @Injectable({
     providedIn: 'root',
 })
 export class FlightLogService {
-
-    private ITEMS_PER_PAGE = 5;
 
     private lastId = 0;
 
@@ -21,33 +32,48 @@ export class FlightLogService {
                 private sheetsApiService: GoogleSheetsApiService) {
     }
 
-    init(): Observable<string> {
+    init(): Observable<void> {
         this.sheetsApiService.setApiKey(environment.googleApiKey);
-        this.reset();
-        return this.serviceAccountService.init();
+        return this.serviceAccountService.init()
+            .pipe(
+                mergeMap(() => {
+                    return this.reset()
+                })
+            );
     }
 
     public reset() {
-        if (typeof environment.flightlog === 'string') {
-            // TODO not supported yet
+        if (this.isTestData()) {
+            this.lastId = (environment.flightlog as unknown as []).length;
+            return of(void 0);
         }
         else {
-            this.lastId = (environment.flightlog as []).length;
+            return this.serviceAccountService.ensureAuthToken()
+                .pipe(
+                    mergeMap((authToken) => {
+                        this.sheetsApiService.setAuthToken(authToken);
+                        const datasource = environment.flightlog as unknown as FlightLogSpreadsheet;
+                        return this.sheetsApiService.getRows(datasource.spreadsheetId, datasource.sheetName, SHEET_COUNT_RANGE)
+                            .pipe(
+                                mergeMap((value: gapi.client.sheets.ValueRange) => {
+                                    this.lastId = value.values[0][0];
+                                    console.log('last id is: ' + this.lastId);
+                                    return of(void 0);
+                                }),
+                            );
+                    })
+                );
         }
     }
 
     public fetchItems(): Observable<FlightLogItem[]> {
-        if (typeof environment.flightlog === 'string') {
-            // TODO not supported yet
-            return of([]);
-        }
-        else {
+        if (this.isTestData()) {
             // no more data
             if (!this.lastId) return of([]);
 
-            const lastId = this.lastId;
-            this.lastId = Math.max(this.lastId - this.ITEMS_PER_PAGE, 0);
-            return of((environment.flightlog as [])
+            const lastId = this.lastId - 1;
+            this.lastId = Math.max(this.lastId - (ITEMS_PER_PAGE - 1), 0);
+            return of((environment.flightlog as unknown as [])
                 .slice(this.lastId, lastId)
                 .map((value, index) => {
                     (value as FlightLogItem).id = index + 1;
@@ -55,30 +81,43 @@ export class FlightLogService {
                 })
             );
         }
+        else {
+            return this.serviceAccountService.ensureAuthToken()
+                .pipe(
+                    mergeMap((authToken) => {
+                        this.sheetsApiService.setAuthToken(authToken);
+                        const datasource = environment.flightlog as unknown as FlightLogSpreadsheet;
+                        const lastId = this.lastId - 1;
+                        this.lastId = Math.max(this.lastId - (ITEMS_PER_PAGE - 1), 0);
+                        console.log(`getting rows from ${this.lastId} to ${lastId}`);
+                        return this.sheetsApiService.getRows(datasource.spreadsheetId, datasource.sheetName, SHEET_DATA_RANGE(this.lastId, lastId))
+                            .pipe(
+                                map((value: gapi.client.sheets.ValueRange) => {
+                                    return value.values.map(rowData => {
+                                        return {
+                                            date: datetime.xlSerialToDate(rowData[1]),
+                                            pilot: rowData[2],
+                                            startHour: rowData[3],
+                                            endHour: rowData[4],
+                                            origin: rowData[5],
+                                            destination: rowData[6],
+                                            fuel: rowData[7],
+                                            notes: rowData[8],
+                                        } as FlightLogItem;
+                                    });
+                                }),
+                            );
+                    })
+                );
+        }
     }
 
     public hasMoreData(): boolean {
-        if (typeof environment.flightlog === 'string') {
-            // TODO not supported yet
-            return false;
-        }
-        else {
-            return this.lastId > 0;
-        }
+        return this.lastId > 0;
     }
 
-    public testRead() {
-        return this.serviceAccountService.ensureAuthToken()
-            .pipe(
-                mergeMap((authToken) => {
-                    this.sheetsApiService.setAuthToken(authToken);
-                    return this.sheetsApiService.getRows(
-                        environment.flightlog as unknown as string,
-                        "Registro voli",
-                        "A2:I"
-                    );
-                })
-            );
+    private isTestData(): boolean {
+        return Array.isArray(environment.flightlog);
     }
 
     public testWrite() {
