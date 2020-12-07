@@ -27,7 +27,7 @@
                     </p>
                     <p>
                         <ion-icon name="time" color="primary"></ion-icon>
-                        <span>{{item.startHour | number:'1.1'}} &mdash; {{item.endHour | number:'1.1'}}</span>
+                        <span>{{item.startHour | number:'1.0-1'}} &mdash; {{item.endHour | number:'1.0-1'}}</span>
                     </p>
                 </ion-label>
                 <ion-text slot="end">
@@ -37,7 +37,7 @@
                     </div>
                     <div class="duration-fuel">
                         <ion-icon class="fuel" *ngIf="item.fuel > 0" color="success" name="color-fill" size="small"></ion-icon>
-                        <span class="duration">{{ (1969.80-1967.60)*60 | number }}&prime;</span>
+                        <span class="duration">{{ (item.endHour-item.startHour)*60 | number:'1.0-0' }}&prime;</span>
                     </div>
                 </ion-text>
             </ion-item>
