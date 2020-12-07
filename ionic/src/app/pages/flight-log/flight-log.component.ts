@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import {
+    Config,
     IonInfiniteScroll,
     IonRouterOutlet,
     IonVirtualScroll,
     ModalController,
-    Platform,
     ToastController
 } from "@ionic/angular";
 import { FlightLogService } from "../../services/flightlog.service";
@@ -29,7 +29,7 @@ export class FlightLogComponent implements OnInit {
     logItems: FlightLogItem[] = [];
 
     constructor(
-        private platform: Platform,
+        private config: Config,
         private routerOutlet: IonRouterOutlet,
         private modalController: ModalController,
         private toastController: ToastController,
@@ -103,13 +103,19 @@ export class FlightLogComponent implements OnInit {
             );
     }
 
-    public loadMoreData() {
-        return this.fetchData().subscribe(() => {
-            this.infiniteScroll.complete();
-            if (!this.flightLogService.hasMoreData()) {
-                this.infiniteScroll.disabled = true;
-            }
-        });
+    loadMoreData() {
+        setTimeout(() => {
+            return this.fetchData().subscribe(() => {
+                this.infiniteScroll.complete();
+                if (!this.flightLogService.hasMoreData()) {
+                    this.infiniteScroll.disabled = true;
+                }
+            });
+        }, 5000);
+    }
+
+    getLoadingSpinner() {
+        return this.config.get('mode') == 'ios' ? 'lines' : 'circular';
     }
 
 }

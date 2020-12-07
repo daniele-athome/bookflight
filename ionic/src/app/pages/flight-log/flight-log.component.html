@@ -45,10 +45,7 @@
     </ion-list>
 
     <ion-infinite-scroll #infiniteScroll threshold="100px" (ionInfinite)="loadMoreData()">
-        <ion-infinite-scroll-content
-            loadingSpinner="bubbles"
-            loadingText="Caricamento...">
-        </ion-infinite-scroll-content>
+        <ion-infinite-scroll-content [loadingSpinner]="getLoadingSpinner()"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 
 </ion-content>
