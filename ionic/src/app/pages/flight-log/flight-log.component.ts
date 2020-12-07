@@ -1,5 +1,12 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { IonRouterOutlet, IonVirtualScroll, ModalController, Platform, ToastController } from "@ionic/angular";
+import {
+    IonInfiniteScroll,
+    IonRouterOutlet,
+    IonVirtualScroll,
+    ModalController,
+    Platform,
+    ToastController
+} from "@ionic/angular";
 import { FlightLogService } from "../../services/flightlog.service";
 import { FlightLogItem } from "../../models/flightlog.model";
 import { mergeMap } from "rxjs/operators";
@@ -16,6 +23,9 @@ export class FlightLogComponent implements OnInit {
     @ViewChild('virtualScroll')
     virtualScroll: IonVirtualScroll;
 
+    @ViewChild('infiniteScroll')
+    infiniteScroll: IonInfiniteScroll;
+
     logItems: FlightLogItem[] = [];
 
     constructor(
@@ -31,9 +41,7 @@ export class FlightLogComponent implements OnInit {
         this.flightLogService.init().subscribe(() => {
             // TODO do something here?
             console.log('flight log service init ok');
-            this.fetchData().subscribe(() => {
-                console.log('data loaded');
-            });
+            this.loadMoreData();
         });
     }
 
@@ -84,7 +92,7 @@ export class FlightLogComponent implements OnInit {
         }
     }
 
-    public fetchData() {
+    private fetchData() {
         return this.flightLogService.fetchItems()
             .pipe(
                 mergeMap((items => {
@@ -95,12 +103,11 @@ export class FlightLogComponent implements OnInit {
             );
     }
 
-    public loadData(event) {
-        // TODO
-        this.fetchData().subscribe(() => {
-            event.target.complete();
+    public loadMoreData() {
+        return this.fetchData().subscribe(() => {
+            this.infiniteScroll.complete();
             if (!this.flightLogService.hasMoreData()) {
-                event.target.disabled = true;
+                this.infiniteScroll.disabled = true;
             }
         });
     }

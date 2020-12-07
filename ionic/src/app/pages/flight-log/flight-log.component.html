@@ -44,7 +44,7 @@
         </ion-virtual-scroll>
     </ion-list>
 
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll #infiniteScroll threshold="100px" (ionInfinite)="loadMoreData()">
         <ion-infinite-scroll-content
             loadingSpinner="bubbles"
             loadingText="Caricamento...">
