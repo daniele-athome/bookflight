@@ -26,6 +26,7 @@ export class FlightLogComponent implements OnInit {
     @ViewChild('infiniteScroll')
     infiniteScroll: IonInfiniteScroll;
 
+    firstLoad = true;
     logItems: FlightLogItem[] = [];
 
     constructor(
@@ -106,6 +107,7 @@ export class FlightLogComponent implements OnInit {
     loadMoreData() {
         setTimeout(() => {
             return this.fetchData().subscribe(() => {
+                this.firstLoad = false;
                 this.infiniteScroll.complete();
                 if (!this.flightLogService.hasMoreData()) {
                     this.infiniteScroll.disabled = true;
@@ -114,6 +116,7 @@ export class FlightLogComponent implements OnInit {
         }, 5000);
     }
 
+    /** There is no default spinner in ion-infinite-scroll-content :-( */
     getLoadingSpinner() {
         return this.config.get('mode') == 'ios' ? 'lines' : 'circular';
     }

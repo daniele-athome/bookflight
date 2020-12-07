@@ -90,6 +90,19 @@
     }
 }
 
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    user-select: none;
+}
+
+.loading-spinner ion-spinner {
+    margin: 20px 0;
+    width: 100%;
+}
+
 .alert-button.alert-button-role-destructive {
     color: var(--ion-color-danger);
 }
