@@ -93,3 +93,17 @@
 .alert-button.alert-button-role-destructive {
     color: var(--ion-color-danger);
 }
+
+// https://github.com/ionic-team/ionic-framework/issues/17499#issuecomment-473769869
+.md .tabs-bottom {
+    transform: translateY(-56px) !important;
+}
+.ios .tabs-bottom {
+    transform: translateY(-50px) !important;
+}
+.md .header-top {
+    top: 56px !important;
+}
+.ios .header-top {
+    top: 44px !important;
+}

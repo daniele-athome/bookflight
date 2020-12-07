@@ -75,7 +75,8 @@ export class FlightLogComponent implements OnInit {
             if (toastMessage) {
                 const toast = await this.toastController.create({
                     message: toastMessage,
-                    duration: 2000
+                    duration: 2000,
+                    cssClass: 'tabs-bottom',
                 });
                 toast.present();
             }
