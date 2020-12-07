@@ -14,11 +14,13 @@
 
 <ion-content>
 
-    <div class="loading-spinner">
-        <ion-spinner *ngIf="firstLoad"></ion-spinner>
+    <div *ngIf="firstLoad" class="loading-spinner">
+        <ion-spinner></ion-spinner>
     </div>
 
-    <!-- TODO scroll down to refresh -->
+    <ion-refresher #refresher slot="fixed" [disabled]="firstLoad" (ionRefresh)="refresh()">
+        <ion-refresher-content [pullingIcon]="getLoadingSpinner()"></ion-refresher-content>
+    </ion-refresher>
     <ion-list>
         <ion-virtual-scroll #virtualScroll [items]="logItems" approxItemHeight="80">
             <ion-item (click)="edit(item)" *virtualItem="let item; let itemBounds = bounds;" class="log-item">

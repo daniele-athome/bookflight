@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import {
     Config,
-    IonInfiniteScroll,
+    IonInfiniteScroll, IonRefresher,
     IonRouterOutlet,
     IonVirtualScroll,
     ModalController,
@@ -25,6 +25,9 @@ export class FlightLogComponent implements OnInit {
 
     @ViewChild('infiniteScroll')
     infiniteScroll: IonInfiniteScroll;
+
+    @ViewChild('refresher')
+    refresher: IonRefresher;
 
     firstLoad = true;
     logItems: FlightLogItem[] = [];
@@ -93,6 +96,12 @@ export class FlightLogComponent implements OnInit {
         }
     }
 
+    refresh() {
+        this.flightLogService.reset().subscribe(() => {
+            this.loadMoreData();
+        });
+    }
+
     private fetchData() {
         return this.flightLogService.fetchItems()
             .pipe(
@@ -105,15 +114,14 @@ export class FlightLogComponent implements OnInit {
     }
 
     loadMoreData() {
-        setTimeout(() => {
-            return this.fetchData().subscribe(() => {
-                this.firstLoad = false;
-                this.infiniteScroll.complete();
-                if (!this.flightLogService.hasMoreData()) {
-                    this.infiniteScroll.disabled = true;
-                }
-            });
-        }, 5000);
+        return this.fetchData().subscribe(() => {
+            this.firstLoad = false;
+            this.refresher.complete();
+            this.infiniteScroll.complete();
+            if (!this.flightLogService.hasMoreData()) {
+                this.infiniteScroll.disabled = true;
+            }
+        });
     }
 
     /** There is no default spinner in ion-infinite-scroll-content :-( */
