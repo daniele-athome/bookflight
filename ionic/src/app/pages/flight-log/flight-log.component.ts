@@ -92,15 +92,22 @@ export class FlightLogComponent implements OnInit {
                 });
                 toast.present();
             }
-            // TODO reload data?
+            // reload from scratch
+            this.firstLoad = true;
+            this.logItems = [];
+            this.refresh();
         }
     }
+
+    // TODO handle race condition between data loading from infinite scroll and refresher
 
     refresh() {
         this.flightLogService.reset().subscribe(() => {
             this.loadMoreData();
         });
     }
+
+    // TODO error handling in all modes: first load, refresher, infinite scroll
 
     private fetchData() {
         return this.flightLogService.fetchItems()
