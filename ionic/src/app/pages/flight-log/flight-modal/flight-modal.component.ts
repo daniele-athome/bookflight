@@ -4,6 +4,7 @@ import { environment } from '../../../../environments/environment';
 import { ConfigService } from "../../../services/config.service";
 import { FlightLogItem } from "../../../models/flightlog.model";
 import * as datetime from "../../../utils/datetime";
+import { FlightLogService } from "../../../services/flightlog.service";
 
 @Component({
     selector: 'app-flight-modal',
@@ -24,7 +25,8 @@ export class FlightModalComponent implements OnInit {
     constructor(private modalController: ModalController,
                 private alertController: AlertController,
                 private loadingController: LoadingController,
-                private configService: ConfigService) {
+                private configService: ConfigService,
+                private flightLogService: FlightLogService) {
     }
 
     async ngOnInit() {
@@ -95,10 +97,18 @@ export class FlightModalComponent implements OnInit {
             await this.dismiss('updated');
         }
         else {
-            // TODO create
-            await this.configService.setLastPilotName(this.flightModel.pilot);
-            loading.dismiss();
-            await this.dismiss('created');
+            this.flightLogService.appendItem(this.flightModel).subscribe(
+                async () => {
+                    await this.configService.setLastPilotName(this.flightModel.pilot);
+                    loading.dismiss();
+                    await this.dismiss('created');
+                },
+                async error => {
+                    console.log(error);
+                    await loading.dismiss();
+                    await this.errorAlert("Impossibile registrare il volo.", "Errore!");
+                }
+            );
         }
     }
 

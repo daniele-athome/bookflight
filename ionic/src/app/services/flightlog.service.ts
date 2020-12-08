@@ -19,6 +19,8 @@ const ITEMS_PER_PAGE = 20;
 const SHEET_COUNT_RANGE = 'A1';
 /** Data range generator. +2 because the index is 0-based and to skip the header row. */
 const SHEET_DATA_RANGE = (first, last) => `A${first+2}:I${last+2}`;
+/** Data range for appending. */
+const SHEET_APPEND_RANGE = 'A:I';
 
 @Injectable({
     providedIn: 'root',
@@ -115,39 +117,39 @@ export class FlightLogService {
         }
     }
 
+    public appendItem(item: FlightLogItem): Observable<Object> {
+        return this.serviceAccountService.ensureAuthToken()
+            .pipe(
+                mergeMap((authToken) => {
+                    this.sheetsApiService.setAuthToken(authToken);
+                    return this.sheetsApiService.appendRow(
+                        environment.flightlog.spreadsheetId,
+                        environment.flightlog.sheetName,
+                        SHEET_APPEND_RANGE,
+                        [
+                            [
+                                datetime.formatDateCustom(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+                                datetime.formatISODate(item.date),
+                                item.pilot,
+                                item.startHour,
+                                item.endHour,
+                                item.origin,
+                                item.destination,
+                                item.fuel,
+                                item.notes,
+                            ]
+                        ]
+                    );
+                })
+            );
+    }
+
     public hasMoreData(): boolean {
         return this.lastId > 0;
     }
 
     private isTestData(): boolean {
         return Array.isArray(environment.flightlog);
-    }
-
-    public testWrite() {
-        return this.serviceAccountService.ensureAuthToken()
-            .pipe(
-                mergeMap((authToken) => {
-                    this.sheetsApiService.setAuthToken(authToken);
-                    return this.sheetsApiService.appendRow(
-                        environment.flightlog as unknown as string,
-                        "Registro voli",
-                        "A:I",
-                        [
-                            [
-                                '2020-12-01 19:18:00',
-                                '2020-12-01',
-                                'Daniele',
-                                '1968.81',
-                                '1969.27',
-                                'Fly Roma',
-                                'Fly Roma',
-                                '16',
-                                '',
-                            ]
-                        ]
-                    );
-                })
-            );
     }
 
 }
