@@ -97,7 +97,7 @@ export class FlightLogComponent implements OnInit {
                     duration: 2000,
                     cssClass: 'tabs-bottom',
                 });
-                await toast.present();
+                toast.present();
             }
             // reload from scratch
             this.reload();
@@ -183,7 +183,7 @@ export class FlightLogComponent implements OnInit {
                             },
                         ],
                     });
-                    await toast.present();
+                    toast.present();
                 }
                 else {
                     console.log('scroll error');

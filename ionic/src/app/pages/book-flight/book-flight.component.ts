@@ -137,7 +137,7 @@ export class BookFlightComponent implements OnInit, ViewDidEnter {
                     duration: 2000,
                     cssClass: 'tabs-bottom',
                 });
-                await toast.present();
+                toast.present();
             }
             this.calendarComponent.getApi().refetchEvents();
         }
