@@ -150,13 +150,6 @@ export class FlightModalComponent implements OnInit {
             return false;
         }
 
-        // if it's a non-flight it is allowed to leave origin and destination empty
-        if (this.flightModel.startHour != this.flightModel.endHour &&
-            (!this.flightModel.origin || !this.flightModel.destination)) {
-            this.errorAlert("Inserisci i campi di partenza e arrivo.", "Errore");
-            return false;
-        }
-
         return true;
     }
 

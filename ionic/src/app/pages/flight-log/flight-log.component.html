@@ -35,6 +35,7 @@
                     <h3>{{item.date | date:'dd/MM/yyyy'}}</h3>
                     <p>
                         <ion-icon name="location" color="danger"></ion-icon>
+                        <span *ngIf="!item.origin && !item.destination">(non volato)</span>
                         <span *ngIf="item.origin == item.destination">{{item.origin}}</span>
                         <span *ngIf="item.origin != item.destination">{{item.origin}} &mdash; {{item.destination}}</span>
                     </p>
