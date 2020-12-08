@@ -103,7 +103,6 @@ export class FlightModalComponent implements OnInit {
         if (this.flightModel.id) {
             this.flightLogService.updateItem(this.flightModel).subscribe(
                 async () => {
-                    await this.configService.setLastPilotName(this.flightModel.pilot);
                     loading.dismiss();
                     await this.dismiss('updated');
                 },
