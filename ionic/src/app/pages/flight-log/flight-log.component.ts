@@ -143,9 +143,9 @@ export class FlightLogComponent implements OnInit {
             () => {
                 this.loadMoreData();
             },
-            error => {
-                // TODO
-                this.refreshing = false;
+            async error => {
+                console.log('error: ' + error);
+                await this.refreshError();
             });
     }
 
@@ -179,22 +179,7 @@ export class FlightLogComponent implements OnInit {
                     this.firstError = true;
                 }
                 else if (this.refreshing) {
-                    console.log('refresh error');
-                    this.refreshing = false;
-                    await this.refresher.complete();
-                    const toast = await this.toastController.create({
-                        id: 'refresh-error',
-                        message: 'Errore nel caricamento dati.',
-                        color: 'danger',
-                        cssClass: 'tabs-bottom',
-                        buttons: [
-                            {
-                                text: 'OK',
-                                role: 'cancel'
-                            },
-                        ],
-                    });
-                    toast.present();
+                    await this.refreshError();
                 }
                 else {
                     console.log('scroll error');
@@ -203,6 +188,25 @@ export class FlightLogComponent implements OnInit {
                     // we need it to be enabled to display the error text -- this.infiniteScroll.disabled = true;
                 }
             });
+    }
+
+    private async refreshError() {
+        console.log('refresh error');
+        this.refreshing = false;
+        await this.refresher.complete();
+        const toast = await this.toastController.create({
+            id: 'refresh-error',
+            message: 'Errore nel caricamento dati.',
+            color: 'danger',
+            cssClass: 'tabs-bottom',
+            buttons: [
+                {
+                    text: 'OK',
+                    role: 'cancel'
+                },
+            ],
+        });
+        toast.present();
     }
 
     /** There is no default spinner in ion-infinite-scroll-content :-( */
