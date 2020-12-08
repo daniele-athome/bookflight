@@ -126,6 +126,7 @@ export class FlightLogComponent implements OnInit {
     }
 
     refresh() {
+        this.toastController.dismiss({id: 'refresh-error'}).catch(() => {});
         this.scrollError = false;
         this.infiniteScroll.disabled = false;
         this.refreshing = true;
@@ -173,6 +174,7 @@ export class FlightLogComponent implements OnInit {
                     this.refreshing = false;
                     await this.refresher.complete();
                     const toast = await this.toastController.create({
+                        id: 'refresh-error',
                         message: 'Errore nel caricamento dati.',
                         color: 'danger',
                         cssClass: 'tabs-bottom',
