@@ -30,6 +30,7 @@ export class FlightLogComponent implements OnInit {
     refresher: IonRefresher;
 
     firstLoad = true;
+    refreshing = false;
     logItems: FlightLogItem[] = [];
 
     constructor(
@@ -94,26 +95,39 @@ export class FlightLogComponent implements OnInit {
             // reload from scratch
             this.firstLoad = true;
             this.logItems = [];
+            this.virtualScroll.checkRange(0);
             this.refresh();
         }
     }
 
     // TODO handle race condition between data loading from infinite scroll and refresher
+    // TODO error handling in all modes: first load, refresher, infinite scroll
 
     refresh() {
-        this.flightLogService.reset().subscribe(() => {
-            this.loadMoreData();
-        });
+        this.refreshing = true;
+        this.flightLogService.reset().subscribe(
+            () => {
+                this.loadMoreData();
+            },
+            error => {
+                // TODO
+                this.refreshing = false;
+            });
     }
-
-    // TODO error handling in all modes: first load, refresher, infinite scroll
 
     private fetchData() {
         return this.flightLogService.fetchItems()
             .pipe(
                 mergeMap((items => {
-                    this.logItems.push(...items.reverse());
-                    this.virtualScroll.checkEnd();
+                    if (this.refreshing) {
+                        this.refreshing = false;
+                        this.logItems = items.reverse();
+                        this.virtualScroll.checkRange(0);
+                    }
+                    else {
+                        this.logItems.push(...items.reverse());
+                        this.virtualScroll.checkEnd();
+                    }
                     return of(items);
                 }))
             );
@@ -124,9 +138,7 @@ export class FlightLogComponent implements OnInit {
             this.firstLoad = false;
             this.refresher.complete();
             this.infiniteScroll.complete();
-            if (!this.flightLogService.hasMoreData()) {
-                this.infiniteScroll.disabled = true;
-            }
+            this.infiniteScroll.disabled = !this.flightLogService.hasMoreData();
         });
     }
 
