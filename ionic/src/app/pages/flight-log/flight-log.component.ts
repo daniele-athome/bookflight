@@ -32,6 +32,7 @@ export class FlightLogComponent implements OnInit {
     scrollError = false;
     refreshing = false;
     logItems: FlightLogItem[] = [];
+    selectedItem?: FlightLogItem;
 
     constructor(
         private config: Config,
@@ -72,6 +73,7 @@ export class FlightLogComponent implements OnInit {
     }
 
     async edit(item: FlightLogItem) {
+        this.selectedItem = item;
         const modal = await this.modalController.create({
             component: FlightModalComponent,
             componentProps: {
@@ -84,6 +86,7 @@ export class FlightLogComponent implements OnInit {
 
     private async onEditorDismiss(data) {
         console.log(data);
+        this.selectedItem = null;
         if (data.role) {
             let toastMessage;
             switch (data.role) {

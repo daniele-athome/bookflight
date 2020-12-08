@@ -1,6 +1,25 @@
 
 ion-item.log-item {
 
+    &.selected {
+        --background: var(--ion-color-primary);
+        --color: var(--ion-color-light);
+
+        ion-icon {
+            // turn any color into light
+            --ion-color-base: var(--ion-color-light, #f4f5f8) !important;
+            --ion-color-base-rgb: var(--ion-color-light-rgb, 244, 245, 248) !important;
+            --ion-color-contrast: var(--ion-color-light-contrast, #000) !important;
+            --ion-color-contrast-rgb: var(--ion-color-light-contrast-rgb, 0, 0, 0) !important;
+            --ion-color-shade: var(--ion-color-light-shade, #d7d8da) !important;
+            --ion-color-tint: var(--ion-color-light-tint, #f5f6f9) !important;
+        }
+
+        ion-label, ion-label p {
+            color: var(--ion-color-light);
+        }
+    }
+
     ion-label h3 {
         font-weight: bold;
     }

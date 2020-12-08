@@ -30,7 +30,8 @@
     </ion-refresher>
     <ion-list [style.display]="!firstLoad && !firstError ? '' : 'none'">
         <ion-virtual-scroll #virtualScroll [items]="logItems" approxItemHeight="80">
-            <ion-item (click)="edit(item)" *virtualItem="let item; let itemBounds = bounds;" class="log-item">
+            <ion-item (click)="edit(item)" *virtualItem="let item; let itemBounds = bounds;"
+                      [class]="(item.id==selectedItem?.id ? 'selected ': '') + 'log-item'">
                 <ion-label>
                     <h3>{{item.date | date:'dd/MM/yyyy'}}</h3>
                     <p>
