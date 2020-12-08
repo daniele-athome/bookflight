@@ -91,13 +91,13 @@ export class FlightModalComponent implements OnInit {
     private async doSave(loading: HTMLIonLoadingElement) {
         if (this.flightModel.id) {
             // TODO update
-            await loading.dismiss();
+            loading.dismiss();
             await this.dismiss('updated');
         }
         else {
             // TODO create
             await this.configService.setLastPilotName(this.flightModel.pilot);
-            await loading.dismiss();
+            loading.dismiss();
             await this.dismiss('created');
         }
     }
