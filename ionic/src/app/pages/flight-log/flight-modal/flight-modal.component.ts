@@ -76,9 +76,18 @@ export class FlightModalComponent implements OnInit {
 
     async doDelete() {
         const loading = await this.startLoading("Un attimo...");
-        // TODO delete
-        await loading.dismiss();
-        await this.dismiss('deleted');
+        this.flightLogService.deleteItem(this.flightModel)
+            .subscribe(
+                async () => {
+                    loading.dismiss();
+                    await this.dismiss('deleted');
+                },
+                async error => {
+                    console.log(error);
+                    await loading.dismiss();
+                    await this.errorAlert("Impossibile cancellare il volo.", "Errore!");
+                }
+            );
     }
 
     async save() {

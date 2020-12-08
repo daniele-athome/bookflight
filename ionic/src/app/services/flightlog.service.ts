@@ -21,6 +21,8 @@ const SHEET_COUNT_RANGE = 'A1';
 const SHEET_DATA_RANGE = (first, last) => `A${first+2}:I${last+2}`;
 /** Data range for appending. */
 const SHEET_APPEND_RANGE = 'A:I';
+/** Convert item ID to sheet row number. +1 is for skipping the header row. */
+const ITEM_ID_TO_ROWNUM = (id) => id + 1;
 
 @Injectable({
     providedIn: 'root',
@@ -167,6 +169,22 @@ export class FlightLogService {
                                 item.notes,
                             ]
                         ]
+                    );
+                })
+            );
+    }
+
+    public deleteItem(item: FlightLogItem): Observable<Object> {
+        return this.serviceAccountService.ensureAuthToken()
+            .pipe(
+                mergeMap((authToken) => {
+                    console.log(`delete row with range: ${SHEET_DATA_RANGE(item.id-1, item.id-1)}`);
+                    this.sheetsApiService.setAuthToken(authToken);
+                    const rowNumber = ITEM_ID_TO_ROWNUM(item.id);
+                    return this.sheetsApiService.deleteRows(
+                        environment.flightlog.spreadsheetId,
+                        environment.flightlog.sheetName,
+                        rowNumber, rowNumber,
                     );
                 })
             );
