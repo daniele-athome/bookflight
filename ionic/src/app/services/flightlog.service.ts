@@ -72,11 +72,12 @@ export class FlightLogService {
             if (!this.lastId) return of([]);
 
             const lastId = this.lastId - 1;
-            this.lastId = Math.max(this.lastId - (ITEMS_PER_PAGE - 1), 0);
+            this.lastId = Math.max(this.lastId - ITEMS_PER_PAGE, 0);
+            const firstId = this.lastId;
             return of((environment.flightlog as unknown as [])
                 .slice(this.lastId, lastId)
                 .map((value, index) => {
-                    (value as FlightLogItem).id = index + 1;
+                    (value as FlightLogItem).id = firstId+index+1;
                     return value;
                 })
             );
@@ -88,13 +89,15 @@ export class FlightLogService {
                         this.sheetsApiService.setAuthToken(authToken);
                         const datasource = environment.flightlog as unknown as FlightLogSpreadsheet;
                         const lastId = this.lastId - 1;
-                        this.lastId = Math.max(this.lastId - (ITEMS_PER_PAGE - 1), 0);
-                        console.log(`getting rows from ${this.lastId} to ${lastId}`);
-                        return this.sheetsApiService.getRows(datasource.spreadsheetId, datasource.sheetName, SHEET_DATA_RANGE(this.lastId, lastId))
+                        this.lastId = Math.max(this.lastId - ITEMS_PER_PAGE, 0);
+                        const firstId = this.lastId;
+                        console.log(`getting rows from ${firstId} to ${lastId}`);
+                        return this.sheetsApiService.getRows(datasource.spreadsheetId, datasource.sheetName, SHEET_DATA_RANGE(firstId, lastId))
                             .pipe(
                                 map((value: gapi.client.sheets.ValueRange) => {
-                                    return value.values.map(rowData => {
+                                    return value.values.map((rowData, index) => {
                                         return {
+                                            id: firstId+index+1,
                                             date: datetime.xlSerialToDate(rowData[1]),
                                             pilot: rowData[2],
                                             startHour: rowData[3],
