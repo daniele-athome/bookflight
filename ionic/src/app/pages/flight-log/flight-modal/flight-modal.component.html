@@ -22,13 +22,42 @@
     <ion-list lines="full">
 
         <ion-item>
+            <ion-label color="primary">Data</ion-label>
+            <ion-input [ngModel]="flightModel.date | date:'yyyy-MM-dd'"
+                       (ngModelChange)="setFlightDate($event)" type="date" required="true"></ion-input>
+        </ion-item>
+
+        <ion-item>
             <ion-label position="stacked" color="primary">Pilota</ion-label>
             <ion-select [(ngModel)]="flightModel.pilot" interface="alert" [interfaceOptions]="selectOptions" required="true">
                 <ion-select-option *ngFor="let pilot of getPilotList()">{{ pilot }}</ion-select-option>
             </ion-select>
         </ion-item>
 
-        <!-- TODO inputs -->
+        <ion-item>
+            <ion-label color="primary">Orametro inizio</ion-label>
+            <ion-input [ngModel]="flightModel.startHour" type="number" placeholder="orametro" required="true"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label color="primary">Orametro fine</ion-label>
+            <ion-input [ngModel]="flightModel.endHour" type="number" placeholder="orametro" required="true"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label color="primary">Partenza</ion-label>
+            <ion-input [ngModel]="flightModel.origin" type="text" placeholder="campo partenza" required="true"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label color="primary">Arrivo</ion-label>
+            <ion-input [ngModel]="flightModel.destination" type="text" placeholder="campo arrivo" required="true"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label color="primary">Benzina</ion-label>
+            <ion-input [ngModel]="flightModel.fuel" placeholder="litri" type="number"></ion-input>
+        </ion-item>
 
         <ion-item>
             <ion-label position="stacked" color="primary">Note</ion-label>

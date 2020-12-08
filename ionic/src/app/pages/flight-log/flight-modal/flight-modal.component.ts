@@ -3,6 +3,7 @@ import { AlertController, LoadingController, ModalController } from "@ionic/angu
 import { environment } from '../../../../environments/environment';
 import { ConfigService } from "../../../services/config.service";
 import { FlightLogItem } from "../../../models/flightlog.model";
+import * as datetime from "../../../utils/datetime";
 
 @Component({
     selector: 'app-flight-modal',
@@ -127,6 +128,11 @@ export class FlightModalComponent implements OnInit {
             buttons: ['OK']
         });
         await alert.present();
+    }
+
+    setFlightDate(date: string) {
+        const parsedDate = datetime.parseISODate(date);
+        this.flightModel.date = parsedDate.isValid() ? parsedDate.toDate() : null;
     }
 
     getPilotList() {
