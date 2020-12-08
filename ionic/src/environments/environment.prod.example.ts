@@ -14,6 +14,7 @@ export const environment = {
         'Marta',
     ],
     location: {
+        name: 'Fly Roma',
         // Fly Roma coordinates and height (190 ft)
         latitude: 41.88,
         longitude: 12.71,

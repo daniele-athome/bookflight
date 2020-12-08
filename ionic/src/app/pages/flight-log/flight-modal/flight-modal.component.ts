@@ -34,8 +34,12 @@ export class FlightModalComponent implements OnInit {
         else {
             this.title = 'Registra';
 
+            // some data might have been passed in input so don't recreare the model
+            this.flightModel.date = new Date();
             // use last used pilot name
             this.flightModel.pilot = await this.configService.getLastPilotName();
+            this.flightModel.origin = environment.location.name;
+            this.flightModel.destination = environment.location.name;
         }
     }
 

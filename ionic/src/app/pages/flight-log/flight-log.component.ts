@@ -57,8 +57,15 @@ export class FlightLogComponent implements OnInit {
     }
 
     async record() {
+        const data: FlightLogItem = {};
+        if (this.logItems && this.logItems.length > 0) {
+            data.startHour = this.logItems[0].endHour;
+        }
         const modal = await this.modalController.create({
-            component: FlightModalComponent
+            component: FlightModalComponent,
+            componentProps: {
+                flightModel: data,
+            }
         });
         modal.onDidDismiss().then((data) => this.onEditorDismiss(data));
         return await modal.present();
@@ -68,7 +75,6 @@ export class FlightLogComponent implements OnInit {
         const modal = await this.modalController.create({
             component: FlightModalComponent,
             componentProps: {
-                logItemId: 'TODO',
                 flightModel: item,
             }
         });
