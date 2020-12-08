@@ -87,7 +87,7 @@ export class FlightLogComponent implements OnInit {
     private async onEditorDismiss(data) {
         console.log(data);
         this.selectedItem = null;
-        if (data.role) {
+        if (data.role && data.role != 'backdrop') {
             let toastMessage;
             switch (data.role) {
                 case 'deleted':

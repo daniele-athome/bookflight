@@ -118,7 +118,7 @@ export class BookFlightComponent implements OnInit, ViewDidEnter {
 
     private async onEditorDismiss(data) {
         console.log(data);
-        if (data.role) {
+        if (data.role && data.role != 'backdrop') {
             let toastMessage;
             switch (data.role) {
                 case 'deleted':
