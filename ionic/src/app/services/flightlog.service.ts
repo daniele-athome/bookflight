@@ -93,7 +93,7 @@ export class FlightLogService {
                         const lastId = this.lastId - 1;
                         this.lastId = Math.max(this.lastId - ITEMS_PER_PAGE, 0);
                         const firstId = this.lastId;
-                        console.log(`getting rows from ${firstId} to ${lastId}`);
+                        console.log(`getting rows from ${firstId} to ${lastId} (range: ${SHEET_DATA_RANGE(firstId, lastId)})`);
                         return this.sheetsApiService.getRows(datasource.spreadsheetId, datasource.sheetName, SHEET_DATA_RANGE(firstId, lastId))
                             .pipe(
                                 map((value: gapi.client.sheets.ValueRange) => {
@@ -122,10 +122,38 @@ export class FlightLogService {
             .pipe(
                 mergeMap((authToken) => {
                     this.sheetsApiService.setAuthToken(authToken);
-                    return this.sheetsApiService.appendRow(
+                    return this.sheetsApiService.appendRows(
                         environment.flightlog.spreadsheetId,
                         environment.flightlog.sheetName,
                         SHEET_APPEND_RANGE,
+                        [
+                            [
+                                datetime.formatDateCustom(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+                                datetime.formatISODate(item.date),
+                                item.pilot,
+                                item.startHour,
+                                item.endHour,
+                                item.origin,
+                                item.destination,
+                                item.fuel,
+                                item.notes,
+                            ]
+                        ]
+                    );
+                })
+            );
+    }
+
+    public updateItem(item: FlightLogItem): Observable<Object> {
+        return this.serviceAccountService.ensureAuthToken()
+            .pipe(
+                mergeMap((authToken) => {
+                    console.log(`updating row with range: ${SHEET_DATA_RANGE(item.id-1, item.id-1)}`);
+                    this.sheetsApiService.setAuthToken(authToken);
+                    return this.sheetsApiService.updateRows(
+                        environment.flightlog.spreadsheetId,
+                        environment.flightlog.sheetName,
+                        SHEET_DATA_RANGE(item.id-1, item.id-1),
                         [
                             [
                                 datetime.formatDateCustom(new Date(), 'YYYY-MM-DD HH:mm:ss'),

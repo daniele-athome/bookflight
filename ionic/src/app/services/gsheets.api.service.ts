@@ -6,10 +6,9 @@ import { Observable } from "rxjs";
 @Injectable()
 export class GoogleSheetsApiService extends GoogleApiService {
 
-    private APPEND_URL = (spreadsheetId, range) =>
-        `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}/values/${encodeURIComponent(range)}:append`;
-    private GET_URL = (spreadsheetId, range) =>
+    private RANGE_URL = (spreadsheetId, range) =>
         `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}/values/${encodeURIComponent(range)}`;
+    private APPEND_URL = (spreadsheetId, range) => `${this.RANGE_URL(spreadsheetId, range)}:append`;
 
     constructor(private http: HttpClient) {
         super(http);
@@ -17,7 +16,7 @@ export class GoogleSheetsApiService extends GoogleApiService {
 
     private sheetRange = (sheetName: string, range: string) => `'${sheetName}'!${range}`;
 
-    public appendRow(spreadsheetId: string, sheetName: string, range: string, values: any[][]) {
+    public appendRows(spreadsheetId: string, sheetName: string, range: string, values: any[][]) {
         const sheetRange = this.sheetRange(sheetName, range);
         return this.request('post', this.APPEND_URL(spreadsheetId, sheetRange), {
             params: {
@@ -30,9 +29,22 @@ export class GoogleSheetsApiService extends GoogleApiService {
         });
     }
 
+    public updateRows(spreadsheetId: string, sheetName: string, range: string, values: any[]) {
+        const sheetRange = this.sheetRange(sheetName, range);
+        return this.request('put', this.RANGE_URL(spreadsheetId, sheetRange), {
+            params: {
+                valueInputOption: 'USER_ENTERED',
+            },
+            body: {
+                range: sheetRange,
+                values: values,
+            } as gapi.client.sheets.ValueRange
+        });
+    }
+
     public getRows(spreadsheetId: string, sheetName: string, range: string): Observable<gapi.client.sheets.ValueRange> {
         const sheetRange = this.sheetRange(sheetName, range);
-        return this.request('get', this.GET_URL(spreadsheetId, sheetRange), {
+        return this.request('get', this.RANGE_URL(spreadsheetId, sheetRange), {
             params: {
                 valueRenderOption: 'UNFORMATTED_VALUE',
             },

@@ -92,9 +92,18 @@ export class FlightModalComponent implements OnInit {
 
     private async doSave(loading: HTMLIonLoadingElement) {
         if (this.flightModel.id) {
-            // TODO update
-            loading.dismiss();
-            await this.dismiss('updated');
+            this.flightLogService.updateItem(this.flightModel).subscribe(
+                async () => {
+                    await this.configService.setLastPilotName(this.flightModel.pilot);
+                    loading.dismiss();
+                    await this.dismiss('updated');
+                },
+                async error => {
+                    console.log(error);
+                    await loading.dismiss();
+                    await this.errorAlert("Impossibile modificare il volo.", "Errore!");
+                }
+            );
         }
         else {
             this.flightLogService.appendItem(this.flightModel).subscribe(
