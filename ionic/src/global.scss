@@ -90,17 +90,21 @@
     }
 }
 
-.content-loading-spinner {
+.content-loading-spinner, .content-loading-error {
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
     user-select: none;
+    height: 100%;
 }
 
 .content-loading-spinner ion-spinner {
-    margin: 20px 0;
     width: 100%;
+}
+
+.content-loading-error ion-icon {
+    font-size: 64px;
 }
 
 .alert-button.alert-button-role-destructive {

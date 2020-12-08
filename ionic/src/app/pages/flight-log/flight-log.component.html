@@ -17,11 +17,18 @@
     <div *ngIf="firstLoad" class="content-loading-spinner">
         <ion-spinner></ion-spinner>
     </div>
+    <div *ngIf="firstError" class="content-loading-error ion-padding">
+        <ion-text>
+            <ion-icon name="warning" color="danger"></ion-icon>
+            <h5>Errore nel caricamento dati. Verifica la connessione a Internet.</h5>
+            <ion-button (click)="reload()">Riprova</ion-button>
+        </ion-text>
+    </div>
 
-    <ion-refresher #refresher slot="fixed" [disabled]="firstLoad" (ionRefresh)="refresh()">
+    <ion-refresher #refresher slot="fixed" [disabled]="firstLoad || firstError" (ionRefresh)="refresh()">
         <ion-refresher-content [pullingIcon]="getLoadingSpinner()"></ion-refresher-content>
     </ion-refresher>
-    <ion-list>
+    <ion-list [style.display]="!firstLoad && !firstError ? '' : 'none'">
         <ion-virtual-scroll #virtualScroll [items]="logItems" approxItemHeight="80">
             <ion-item (click)="edit(item)" *virtualItem="let item; let itemBounds = bounds;" class="log-item">
                 <ion-label>
@@ -50,8 +57,12 @@
         </ion-virtual-scroll>
     </ion-list>
 
-    <ion-infinite-scroll #infiniteScroll threshold="100px" (ionInfinite)="loadMoreData()">
-        <ion-infinite-scroll-content [loadingSpinner]="getLoadingSpinner()"></ion-infinite-scroll-content>
+    <ion-infinite-scroll [style.display]="(!firstLoad && !firstError) || scrollError ? '' : 'none'" #infiniteScroll threshold="100px" (ionInfinite)="loadMoreData()">
+        <ion-infinite-scroll-content [loadingSpinner]="getLoadingSpinner()">
+            <ion-text *ngIf="scrollError" class="ion-padding">
+                Errore nel caricamento dati. Verifica la connessione a Internet.
+            </ion-text>
+        </ion-infinite-scroll-content>
     </ion-infinite-scroll>
 
 </ion-content>

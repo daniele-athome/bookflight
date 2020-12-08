@@ -9,8 +9,6 @@ import {
 } from "@ionic/angular";
 import { FlightLogService } from "../../services/flightlog.service";
 import { FlightLogItem } from "../../models/flightlog.model";
-import { mergeMap } from "rxjs/operators";
-import { of } from "rxjs";
 import { FlightModalComponent } from "./flight-modal/flight-modal.component";
 
 @Component({
@@ -30,6 +28,8 @@ export class FlightLogComponent implements OnInit {
     refresher: IonRefresher;
 
     firstLoad = true;
+    firstError = false;
+    scrollError = false;
     refreshing = false;
     logItems: FlightLogItem[] = [];
 
@@ -42,11 +42,18 @@ export class FlightLogComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.flightLogService.init().subscribe(() => {
-            // TODO do something here?
-            console.log('flight log service init ok');
-            this.loadMoreData();
-        });
+        this.flightLogService.init().subscribe(
+            () => {
+                // TODO do something here?
+                console.log('flight log service init ok');
+                this.loadMoreData();
+            },
+            error => {
+                console.log('error: ' + error);
+                this.firstLoad = false;
+                this.firstError = true;
+            }
+        );
     }
 
     async record() {
@@ -90,20 +97,37 @@ export class FlightLogComponent implements OnInit {
                     duration: 2000,
                     cssClass: 'tabs-bottom',
                 });
-                toast.present();
+                await toast.present();
             }
             // reload from scratch
-            this.firstLoad = true;
-            this.logItems = [];
-            this.virtualScroll.checkRange(0);
-            this.refresh();
+            this.reload();
         }
     }
 
     // TODO handle race condition between data loading from infinite scroll and refresher
-    // TODO error handling in all modes: first load, refresher, infinite scroll
+
+    reload() {
+        this.firstLoad = true;
+        this.firstError = false;
+        this.scrollError = false;
+        this.infiniteScroll.disabled = false;
+        this.logItems = [];
+        this.virtualScroll.checkRange(0);
+        this.flightLogService.reset().subscribe(
+            () => {
+                this.loadMoreData();
+            },
+            error => {
+                console.log('error: ' + error);
+                this.firstLoad = false;
+                this.firstError = true;
+            }
+        );
+    }
 
     refresh() {
+        this.scrollError = false;
+        this.infiniteScroll.disabled = false;
         this.refreshing = true;
         this.flightLogService.reset().subscribe(
             () => {
@@ -116,30 +140,58 @@ export class FlightLogComponent implements OnInit {
     }
 
     private fetchData() {
-        return this.flightLogService.fetchItems()
-            .pipe(
-                mergeMap((items => {
-                    if (this.refreshing) {
-                        this.refreshing = false;
-                        this.logItems = items.reverse();
-                        this.virtualScroll.checkRange(0);
-                    }
-                    else {
-                        this.logItems.push(...items.reverse());
-                        this.virtualScroll.checkEnd();
-                    }
-                    return of(items);
-                }))
-            );
+        return this.flightLogService.fetchItems();
     }
 
     loadMoreData() {
-        return this.fetchData().subscribe(() => {
-            this.firstLoad = false;
-            this.refresher.complete();
-            this.infiniteScroll.complete();
-            this.infiniteScroll.disabled = !this.flightLogService.hasMoreData();
-        });
+        this.scrollError = false;
+        return this.fetchData().subscribe(
+            (items) => {
+                if (this.refreshing) {
+                    this.refreshing = false;
+                    this.logItems = items.reverse();
+                    this.virtualScroll.checkRange(0);
+                }
+                else {
+                    this.logItems.push(...items.reverse());
+                    this.virtualScroll.checkEnd();
+                }
+
+                this.firstLoad = false;
+                this.refresher.complete();
+                this.infiniteScroll.complete();
+                this.infiniteScroll.disabled = !this.flightLogService.hasMoreData();
+            },
+            async error => {
+                console.log('error: ' + error);
+                if (this.firstLoad) {
+                    this.firstLoad = false;
+                    this.firstError = true;
+                }
+                else if (this.refreshing) {
+                    console.log('refresh error');
+                    this.refreshing = false;
+                    await this.refresher.complete();
+                    const toast = await this.toastController.create({
+                        message: 'Errore nel caricamento dati.',
+                        color: 'danger',
+                        cssClass: 'tabs-bottom',
+                        buttons: [
+                            {
+                                text: 'OK',
+                                role: 'cancel'
+                            },
+                        ],
+                    });
+                    await toast.present();
+                }
+                else {
+                    console.log('scroll error');
+                    this.scrollError = true;
+                    await this.infiniteScroll.complete();
+                    // we need it to be enabled to display the error text -- this.infiniteScroll.disabled = true;
+                }
+            });
     }
 
     /** There is no default spinner in ion-infinite-scroll-content :-( */
