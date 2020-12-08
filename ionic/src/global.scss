@@ -90,7 +90,7 @@
     }
 }
 
-.loading-spinner {
+.content-loading-spinner {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -98,7 +98,7 @@
     user-select: none;
 }
 
-.loading-spinner ion-spinner {
+.content-loading-spinner ion-spinner {
     margin: 20px 0;
     width: 100%;
 }
