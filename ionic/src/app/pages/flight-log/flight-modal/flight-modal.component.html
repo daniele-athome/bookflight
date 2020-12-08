@@ -36,27 +36,29 @@
 
         <ion-item>
             <ion-label color="primary">Orametro inizio</ion-label>
-            <ion-input [ngModel]="flightModel.startHour" type="number" placeholder="orametro" required="true"></ion-input>
+            <ion-input [(ngModel)]="flightModel.startHour" type="number" placeholder="orametro" required="true"></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label color="primary">Orametro fine</ion-label>
-            <ion-input [ngModel]="flightModel.endHour" type="number" placeholder="orametro" required="true"></ion-input>
+            <ion-input [(ngModel)]="flightModel.endHour" type="number" placeholder="orametro" required="true"></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label color="primary">Partenza</ion-label>
-            <ion-input [ngModel]="flightModel.origin" type="text" placeholder="campo partenza" required="true"></ion-input>
+            <ion-input [(ngModel)]="flightModel.origin" type="text" placeholder="campo partenza"
+                       [required]="flightModel.startHour != flightModel.endHour"></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label color="primary">Arrivo</ion-label>
-            <ion-input [ngModel]="flightModel.destination" type="text" placeholder="campo arrivo" required="true"></ion-input>
+            <ion-input [(ngModel)]="flightModel.destination" type="text" placeholder="campo arrivo"
+                       [required]="flightModel.startHour != flightModel.endHour"></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label color="primary">Benzina</ion-label>
-            <ion-input [ngModel]="flightModel.fuel" placeholder="litri" type="number"></ion-input>
+            <ion-input [(ngModel)]="flightModel.fuel" placeholder="litri" type="number"></ion-input>
         </ion-item>
 
         <ion-item>

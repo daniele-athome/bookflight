@@ -103,12 +103,32 @@ export class FlightModalComponent implements OnInit {
     }
 
     private validate(): boolean {
+        if (!this.flightModel.date) {
+            this.errorAlert("Inserisci la data del volo.", "Errore");
+            return false;
+        }
+
         if (!this.flightModel.pilot) {
             this.errorAlert("Scegli il pilota.", "Errore");
             return false;
         }
 
-        // TODO other validations
+        if (!this.flightModel.startHour || !this.flightModel.endHour) {
+            this.errorAlert("Inserisci orametro di inizio e di fine.", "Errore");
+            return false;
+        }
+
+        if (this.flightModel.startHour > this.flightModel.endHour) {
+            this.errorAlert("Orametro di inizio maggiore di quello di fine!", "Errore");
+            return false;
+        }
+
+        // if it's a non-flight it is allowed to leave origin and destination empty
+        if (this.flightModel.startHour != this.flightModel.endHour &&
+            (!this.flightModel.origin || !this.flightModel.destination)) {
+            this.errorAlert("Inserisci i campi di partenza e arrivo.", "Errore");
+            return false;
+        }
 
         return true;
     }
