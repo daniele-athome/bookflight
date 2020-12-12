@@ -123,10 +123,11 @@ export class FlightLogService {
         return this.serviceAccountService.ensureAuthToken()
             .pipe(
                 mergeMap((authToken) => {
+                    const datasource = environment.flightlog as unknown as FlightLogSpreadsheet;
                     this.sheetsApiService.setAuthToken(authToken);
                     return this.sheetsApiService.appendRows(
-                        environment.flightlog.spreadsheetId,
-                        environment.flightlog.sheetName,
+                        datasource.spreadsheetId,
+                        datasource.sheetName,
                         SHEET_APPEND_RANGE,
                         [
                             [
@@ -151,10 +152,11 @@ export class FlightLogService {
             .pipe(
                 mergeMap((authToken) => {
                     console.log(`updating row with range: ${SHEET_DATA_RANGE(item.id-1, item.id-1)}`);
+                    const datasource = environment.flightlog as unknown as FlightLogSpreadsheet;
                     this.sheetsApiService.setAuthToken(authToken);
                     return this.sheetsApiService.updateRows(
-                        environment.flightlog.spreadsheetId,
-                        environment.flightlog.sheetName,
+                        datasource.spreadsheetId,
+                        datasource.sheetName,
                         SHEET_DATA_RANGE(item.id-1, item.id-1),
                         [
                             [
@@ -179,11 +181,12 @@ export class FlightLogService {
             .pipe(
                 mergeMap((authToken) => {
                     console.log(`delete row with range: ${SHEET_DATA_RANGE(item.id-1, item.id-1)}`);
+                    const datasource = environment.flightlog as unknown as FlightLogSpreadsheet;
                     this.sheetsApiService.setAuthToken(authToken);
                     const rowNumber = ITEM_ID_TO_ROWNUM(item.id);
                     return this.sheetsApiService.deleteRows(
-                        environment.flightlog.spreadsheetId,
-                        environment.flightlog.sheetName,
+                        datasource.spreadsheetId,
+                        datasource.sheetName,
                         rowNumber, rowNumber,
                     );
                 })
