@@ -14,6 +14,7 @@ export class GoogleServiceAccountService {
     private SCOPES = [
         "https://www.googleapis.com/auth/calendar",
         "https://www.googleapis.com/auth/calendar.events",
+        "https://www.googleapis.com/auth/spreadsheets",
     ];
 
     private serviceAccount: GoogleServiceAccount;
@@ -24,14 +25,19 @@ export class GoogleServiceAccountService {
     }
 
     init(): Observable<string> {
-        return this.http.get(environment.googleApiServiceAccount)
-            .pipe(
-                mergeMap((data: GoogleServiceAccount) => {
-                    console.log(data);
-                    this.serviceAccount = data;
-                    return this.ensureAuthToken();
-                })
-            );
+        if (!this.serviceAccount) {
+            return this.http.get(environment.googleApiServiceAccount)
+                .pipe(
+                    mergeMap((data: GoogleServiceAccount) => {
+                        console.log(data);
+                        this.serviceAccount = data;
+                        return this.ensureAuthToken();
+                    })
+                );
+        }
+        else {
+            return this.ensureAuthToken();
+        }
     }
 
     public ensureAuthToken(): Observable<string> {

@@ -1,0 +1,70 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons (click)="record()" slot="primary">
+            <ion-button fill="solid" color="primary">
+                <ion-icon class="ion-hide-sm-up" slot="icon-only" name="add"></ion-icon>
+                <ion-icon class="ion-hide-sm-down" slot="start" name="create"></ion-icon>
+                <span class="ion-hide-sm-down">Registra</span>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Log book</ion-title>
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+    <div *ngIf="firstLoad" class="content-loading-spinner">
+        <ion-spinner></ion-spinner>
+    </div>
+    <div *ngIf="firstError" class="content-loading-error ion-padding">
+        <ion-text>
+            <ion-icon name="warning" color="danger"></ion-icon>
+            <h5>Errore nel caricamento dati. Verifica la connessione a Internet.</h5>
+            <ion-button (click)="reload()">Riprova</ion-button>
+        </ion-text>
+    </div>
+
+    <ion-refresher #refresher slot="fixed" [disabled]="firstLoad || firstError" (ionRefresh)="refresh()">
+        <ion-refresher-content [pullingIcon]="getLoadingSpinner()"></ion-refresher-content>
+    </ion-refresher>
+    <ion-list [style.display]="!firstLoad && !firstError ? '' : 'none'">
+        <ion-virtual-scroll #virtualScroll [items]="logItems" approxItemHeight="80">
+            <ion-item (click)="edit(item)" *virtualItem="let item; let itemBounds = bounds;"
+                      [class]="(item.id==selectedItem?.id ? 'selected ': '') + 'log-item'">
+                <ion-label>
+                    <h3>{{item.date | date:'dd/MM/yyyy'}}</h3>
+                    <p>
+                        <ion-icon name="location" color="danger"></ion-icon>
+                        <span *ngIf="!item.origin && !item.destination">(non volato)</span>
+                        <span *ngIf="item.origin == item.destination">{{item.origin}}</span>
+                        <span *ngIf="item.origin != item.destination">{{item.origin}} &mdash; {{item.destination}}</span>
+                    </p>
+                    <p>
+                        <ion-icon name="time" color="primary"></ion-icon>
+                        <span>{{item.startHour | number:'1.0-1'}} &mdash; {{item.endHour | number:'1.0-1'}}</span>
+                    </p>
+                </ion-label>
+                <ion-text slot="end">
+                    <div class="pilot">
+                        <ion-icon name="person" color="medium" size="small"></ion-icon>
+                        {{item.pilot}}
+                    </div>
+                    <div class="duration-fuel">
+                        <ion-icon class="fuel" *ngIf="item.fuel > 0" color="success" name="color-fill" size="small"></ion-icon>
+                        <span class="duration">{{ (item.endHour-item.startHour)*60 | number:'1.0-0' }}&prime;</span>
+                    </div>
+                </ion-text>
+            </ion-item>
+        </ion-virtual-scroll>
+    </ion-list>
+
+    <ion-infinite-scroll [style.display]="(!firstLoad && !firstError) || scrollError ? '' : 'none'" #infiniteScroll threshold="100px" (ionInfinite)="loadMoreData()">
+        <ion-infinite-scroll-content [loadingSpinner]="getLoadingSpinner()">
+            <ion-text *ngIf="scrollError" class="ion-padding">
+                Errore nel caricamento dati. Verifica la connessione a Internet.
+            </ion-text>
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+</ion-content>

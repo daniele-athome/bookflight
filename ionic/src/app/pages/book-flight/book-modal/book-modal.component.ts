@@ -129,7 +129,7 @@ export class BookModalComponent implements OnInit {
         this.calendarService.deleteEvent(this.event.id)
             .subscribe(
                 async value => {
-                    await loading.dismiss();
+                    loading.dismiss();
                     await this.dismiss('deleted');
                 },
                 async error => {
@@ -170,7 +170,7 @@ export class BookModalComponent implements OnInit {
             this.calendarService.updateEvent(this.event.id, this.eventModel)
                 .subscribe(
                     async value => {
-                        await loading.dismiss();
+                        loading.dismiss();
                         await this.dismiss('updated');
                     },
                     async error => {
@@ -185,7 +185,7 @@ export class BookModalComponent implements OnInit {
                 .subscribe(
                     async value => {
                         await this.configService.setLastPilotName(this.eventModel.title);
-                        await loading.dismiss();
+                        loading.dismiss();
                         await this.dismiss('created');
                     },
                     async error => {

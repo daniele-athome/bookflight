@@ -5,7 +5,8 @@
     "types": [
       "gapi",
       "gapi.client",
-      "gapi.client.calendar"
+      "gapi.client.calendar",
+      "gapi.client.sheets"
     ]
   },
   "files": [

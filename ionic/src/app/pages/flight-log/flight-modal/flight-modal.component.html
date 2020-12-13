@@ -1,0 +1,69 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ title }}</ion-title>
+        <ion-buttons slot="start">
+            <ion-button (click)="dismiss()">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="primary">
+            <ion-button *ngIf="flightModel.id" (click)="delete()" fill="solid" color="danger">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-button>
+            <ion-button (click)="save()" fill="solid" color="success">
+                <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding">
+
+    <ion-list lines="full">
+
+        <ion-item>
+            <ion-label color="primary">Data</ion-label>
+            <ion-input [ngModel]="flightModel.date | date:'yyyy-MM-dd'"
+                       (ngModelChange)="setFlightDate($event)" type="date" required="true"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked" color="primary">Pilota</ion-label>
+            <ion-select [(ngModel)]="flightModel.pilot" interface="alert" [interfaceOptions]="selectOptions" required="true">
+                <ion-select-option *ngFor="let pilot of getPilotList()">{{ pilot }}</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item>
+            <ion-label color="primary">Orametro inizio</ion-label>
+            <ion-input [(ngModel)]="flightModel.startHour" type="number" placeholder="orametro" required="true"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label color="primary">Orametro fine</ion-label>
+            <ion-input [(ngModel)]="flightModel.endHour" type="number" placeholder="orametro" required="true"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label color="primary">Partenza</ion-label>
+            <ion-input [(ngModel)]="flightModel.origin" type="text" placeholder="campo partenza"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label color="primary">Arrivo</ion-label>
+            <ion-input [(ngModel)]="flightModel.destination" type="text" placeholder="campo arrivo"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label color="primary">Benzina</ion-label>
+            <ion-input [(ngModel)]="flightModel.fuel" placeholder="litri" type="number"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked" color="primary">Note</ion-label>
+            <ion-textarea rows="4" [(ngModel)]="flightModel.notes"></ion-textarea>
+        </ion-item>
+
+    </ion-list>
+
+</ion-content>

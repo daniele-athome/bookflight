@@ -52,8 +52,6 @@ export abstract class GoogleApiService {
         }
         myOptions.headers = myHeaders;
 
-        console.log(options);
-        console.log(myOptions);
         return this._http.request(method, url, myOptions);
     }
 

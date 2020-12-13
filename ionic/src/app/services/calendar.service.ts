@@ -35,7 +35,7 @@ export class CalendarService {
             .pipe(
                 mergeMap((authToken) => {
                     this.calendarApiService.setAuthToken(authToken);
-                    return this.calendarApiService.listEvents(environment.events,
+                    return this.calendarApiService.listEvents(environment.events as unknown as string,
                         datetime.formatDateTime(event.startDate, event.startTime),
                         datetime.formatDateTime(event.endDate, event.endTime))
                         .pipe(
@@ -60,7 +60,7 @@ export class CalendarService {
                         start: {dateTime: datetime.formatDateTime(event.startDate, event.startTime)} as gapi.client.calendar.EventDateTime,
                         end: {dateTime: datetime.formatDateTime(event.endDate, event.endTime)} as gapi.client.calendar.EventDateTime,
                     };
-                    return this.calendarApiService.insertEvent(environment.events, gevent);
+                    return this.calendarApiService.insertEvent(environment.events as unknown as string, gevent);
                 })
             );
     }
@@ -76,7 +76,7 @@ export class CalendarService {
                         start: {dateTime: datetime.formatDateTime(event.startDate, event.startTime)} as gapi.client.calendar.EventDateTime,
                         end: {dateTime: datetime.formatDateTime(event.endDate, event.endTime)} as gapi.client.calendar.EventDateTime,
                     };
-                    return this.calendarApiService.updateEvent(environment.events, eventId, gevent);
+                    return this.calendarApiService.updateEvent(environment.events as unknown as string, eventId, gevent);
                 })
             );
     }
@@ -86,7 +86,7 @@ export class CalendarService {
             .pipe(
                 mergeMap((authToken) => {
                     this.calendarApiService.setAuthToken(authToken);
-                    return this.calendarApiService.deleteEvent(environment.events, eventId);
+                    return this.calendarApiService.deleteEvent(environment.events as unknown as string, eventId);
                 })
             );
     }

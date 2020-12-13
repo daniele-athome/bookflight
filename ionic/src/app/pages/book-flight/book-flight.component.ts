@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonRouterOutlet, ModalController, Platform, ToastController, ViewDidEnter } from "@ionic/angular";
+import { ModalController, ToastController, ViewDidEnter } from "@ionic/angular";
 import { Plugins } from "@capacitor/core";
-const { App } = Plugins;
 const { SplashScreen } = Plugins;
 
 import { CalendarOptions, FullCalendarComponent, EventMountArg, EventClickArg } from '@fullcalendar/angular';
@@ -45,18 +44,10 @@ export class BookFlightComponent implements OnInit, ViewDidEnter {
     calendarComponent: FullCalendarComponent;
 
     constructor(
-        private platform: Platform,
-        private routerOutlet: IonRouterOutlet,
         private modalController: ModalController,
         private toastController: ToastController,
         private calendarService: CalendarService
     ) {
-        this.platform.backButton.subscribeWithPriority(-1, () => {
-            if (!this.routerOutlet.canGoBack()) {
-                App.exitApp();
-            }
-        });
-
         const defaultDate = new Date();
         if (defaultDate.getDay() === 0 && defaultDate.getHours() >= 22) {
             // week is ending, move to next one
@@ -65,7 +56,7 @@ export class BookFlightComponent implements OnInit, ViewDidEnter {
         this.calendarOptions.initialDate = defaultDate;
     }
 
-    async ngOnInit() {
+    ngOnInit() {
         this.calendarService.init().subscribe(() => {
             // TODO do something here?
             console.log('calendar service init ok');
@@ -127,7 +118,7 @@ export class BookFlightComponent implements OnInit, ViewDidEnter {
 
     private async onEditorDismiss(data) {
         console.log(data);
-        if (data.role) {
+        if (data.role && data.role != 'backdrop') {
             let toastMessage;
             switch (data.role) {
                 case 'deleted':
@@ -143,7 +134,8 @@ export class BookFlightComponent implements OnInit, ViewDidEnter {
             if (toastMessage) {
                 const toast = await this.toastController.create({
                     message: toastMessage,
-                    duration: 2000
+                    duration: 2000,
+                    cssClass: 'tabs-bottom',
                 });
                 toast.present();
             }

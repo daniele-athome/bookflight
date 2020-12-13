@@ -2,8 +2,8 @@
     <ion-toolbar>
         <ion-buttons slot="primary">
             <ion-button (click)="book()" fill="solid" color="danger">
-                <ion-icon class="ion-hide-sm-up" slot="icon-only" ios="airplane" md="airplane"></ion-icon>
-                <ion-icon class="ion-hide-sm-down" slot="start" ios="airplane" md="airplane"></ion-icon>
+                <ion-icon class="ion-hide-sm-up" slot="icon-only" name="airplane"></ion-icon>
+                <ion-icon class="ion-hide-sm-down" slot="start" name="airplane"></ion-icon>
                 <span class="ion-hide-sm-down">Prenota</span>
             </ion-button>
         </ion-buttons>
@@ -12,7 +12,7 @@
 
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
 
     <ion-toolbar>
         <ion-segment value="listWeek" (ionChange)="setCalendarMode($event)">
@@ -35,7 +35,7 @@
         <ion-row>
             <ion-col size-xl="1" offset-xl="4">
                 <ion-button (click)="previous()" expand="block" fill="solid" color="primary">
-                    <ion-icon slot="icon-only" ios="chevron-back" md="chevron-back"></ion-icon>
+                    <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
                 </ion-button>
             </ion-col>
             <ion-col size-xl="2">
@@ -45,7 +45,7 @@
             </ion-col>
             <ion-col size-xl="1">
                 <ion-button (click)="next()" expand="block" fill="solid" color="primary">
-                    <ion-icon slot="icon-only" ios="chevron-forward" md="chevron-forward"></ion-icon>
+                    <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
                 </ion-button>
             </ion-col>
         </ion-row>
