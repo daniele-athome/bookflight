@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+
+export DATABASE_URL=$(php -r "echo addslashes(getenv('DATABASE_URL'));")
+export SERVICE_ACCOUNT_PATH=$(php -r "echo addslashes(getenv('SERVICE_ACCOUNT_PATH'));")
+export GOOGLE_CALENDAR_ID=$(php -r "echo addslashes(getenv('GOOGLE_CALENDAR_ID'));")
+
+envsubst < /app/config.php.in > /app/config.php

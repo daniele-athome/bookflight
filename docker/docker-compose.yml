@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  web:
+    image: daniele/bookflight:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./config:/config
+      - ../server/data:/app/data
+      - ../server/service_account.json:/config/service_account.json
+    environment:
+      - TZ=UTC
+      - PUID=1000
+      - PGID=1000
+      - DATABASE_URL=sqlite:/app/data/bookflight.db
+      - SERVICE_ACCOUNT_PATH=/config/service_account.json
+      - GOOGLE_CALENDAR_ID=9kf3jm0tpcfvpc6i8qe7fhm1p0@group.calendar.google.com

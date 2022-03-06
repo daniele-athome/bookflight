@@ -1,0 +1,3 @@
+#!/usr/bin/with-contenv bash
+
+cp /defaults/php/www2.conf.sample /config/php/www2.conf
