@@ -1,6 +1,7 @@
 {
     "require": {
         "google/apiclient": "^2.7",
+        "monolog/monolog": "<3.0.0",
         "delight-im/auth": "*",
         "ext-json": "*",
         "ext-sqlite3": "*",
